@@ -1,5 +1,4 @@
-# :checkered_flag: NOME DO PROJETO
-**QuixasPet**
+# :checkered_flag: QuixasPet
 Portal que conecta ONGs de proteção animal a pessoas interessadas em adotar,
 tornando o processo mais transparente e acessível.
 
