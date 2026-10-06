@@ -31,8 +31,7 @@ dos filtros de busca e do acompanhamento das solicitações.
 
 Desenvolver uma aplicação web na qual petshops possam se cadastrar e anunciar
 animais para adoção, ampliando seu alcance e oferecendo uma vitrine digital e ferramentas
-de gestão do processo e da equipe, e aos interessados um ambiente simples para encontrar animais
-próximos de sua localidade, conhecê-los e solicitar a adoção.
+de gestão do processo e da equipe, e aos interessados um ambiente simples para encontrar animais.
 
 A aplicação atua apenas como intermediadora: ela conecta os petshops aos adotantes
 e organiza as solicitações, visitas e mensagens. Não há comercialização de animais na aplicação,
@@ -61,11 +60,9 @@ e pessoas da região interessadas em adotar um pet de forma responsável.
 
 ### Acessíveis a todos
 - Galeria de animais disponíveis para adoção
-- Busca por localização (cidade e bairro), com ordenação por proximidade
 - Filtros por espécie, porte, idade e petshop
-- Ordenação dos resultados por proximidade e data de publicação
 - Página de detalhes do animal (fotos, descrição, temperamento, situação de vacinação)
-- Página de cada petshop parceiro (endereço, localização no mapa, contato, animais disponíveis)
+- Página de cada petshop parceiro (endereço, contato, animais disponíveis)
 - Página informativa sobre o processo de adoção responsável
 - Recuperação de senha por e-mail
 
@@ -73,7 +70,7 @@ e pessoas da região interessadas em adotar um pet de forma responsável.
 
 **Adotante**
 - Cadastro com confirmação de e-mail
-- Edição de perfil, incluindo a localidade de interesse
+- Edição de perfil
 - Envio de formulário de interesse em adoção
 - Acompanhamento do status das solicitações
 - Lista de animais favoritos
