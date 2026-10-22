@@ -1,113 +1,82 @@
-# :checkered_flag: AdoptME!
+# :checkered_flag: Projeto Aumigo
+Aplicação web que conecta tutores e responsáveis por cães e gatos ao petshop para **consultar serviços, ver horários e valores e agendar** banho, tosa e outros cuidados, e que oferece ao proprietário um **sistema completo de gestão da agenda e administração financeira**.
 
-Aplicação web regional que reúne petshops em um só lugar para a adoção de animais.
-Amplia o alcance dos petshops e conecta pessoas interessadas aos animais
-disponíveis perto delas, tornando o processo mais simples, visível e organizado.
 
 ## :technologist: Membros da equipe
+| Matrícula | Nome | Curso |
+|---|---|---|
+| 580224 | DIOGO ASSUNCAO DA SILVA | Ciência da Computação |
+| 581924 | JOAO DAVID BRANDAO DE ARAUJO | Ciência da Computação |
+| 579284 | JOAO EDUARDO RABELO DE MEDEIROS | Ciência da Computação |
 
-580224 DIOGO ASSUNCAO DA SILVA - Ciência da Computação
-581924 JOAO DAVID BRANDAO DE ARAUJO - Ciência da Computação
-579284 JOAO EDUARDO RABELO DE MEDEIROS - Ciência da Computação
-
-## :handshake: Cliente e participação na concepção
-
-**Cliente:** 
-Petshops da região que promovem ou desejam promover a adoção de animais.
-São eles os principais beneficiados pela aplicação, que lhes oferece uma vitrine digital 
-e ferramentas para organizar facilmente o processo de adoção.
-
-**Participação na concepção do sistema:**
-- **Proprietários e funcionários de petshops:** são os principais interessados no sistema, 
-contribuindo com sua experiência no dia a dia do atendimento e da adoção de animais. 
-Suas necessidades orientam quais funcionalidades a aplicação deve oferecer, como o cadastro dos animais, 
-o recebimento de solicitações e o contato com as pessoas interessadas.
-
-- **Potenciais adotantes:** representam o público que utilizará a aplicação para buscar um novo animal. 
-Suas expectativas em relação a um processo de adoção simples, claro e acessível orientam a organização da galeria, 
-dos filtros de busca e do acompanhamento das solicitações.
 
 ## :bulb: Objetivo Geral
+Desenvolver uma aplicação web que permita ao petshop expor seus serviços (com duração e valores por porte do animal), receber agendamentos online sem conflito de horários e controlar o financeiro do negócio, substituindo agendas de papel, planilhas e conversas soltas de WhatsApp.
 
-Desenvolver uma aplicação web na qual petshops possam se cadastrar e anunciar
-animais para adoção, ampliando seu alcance e oferecendo uma vitrine digital e ferramentas
-de gestão do processo e da equipe, e aos interessados um ambiente simples para encontrar animais.
 
-A aplicação atua apenas como intermediadora: ela conecta os petshops aos adotantes
-e organiza as solicitações, visitas e mensagens. Não há comercialização de animais na aplicação,
-e a decisão final e a entrega do animal são combinadas diretamente entre o adotante e o petshop.
+## :dart: Objetivos Específicos
+- Disponibilizar uma vitrine pública de serviços, com horários livres e valores transparentes para cães e gatos.
+- Automatizar o agendamento, evitando conflitos de horário e respeitando a duração de cada serviço.
+- Dar ao proprietário visão financeira clara: quanto entrou, quanto saiu e quanto cada serviço rende.
+- Reduzir faltas e esquecimentos com confirmações e lembretes por e-mail.
+- Manter o histórico de atendimentos de cada animal, facilitando a fidelização do cliente.
+
 
 ## :eyes: Público-Alvo
+- **Proprietário do petshop**, que precisa organizar a agenda e as finanças do negócio.
+- **Tutores e responsáveis por cães e gatos**, que querem agendar serviços de forma rápida, sabendo o valor e o horário antes de sair de casa.
 
-Petshops que desejam divulgar e gerenciar animais disponíveis para adoção
-e pessoas da região interessadas em adotar um pet de forma responsável.
 
 ## :star2: Impacto Esperado
+Profissionalizar a gestão do petshop, reduzindo horários vagos, conflitos de agenda e faltas; dar ao proprietário controle financeiro que hoje costuma ser informal; e tornar a experiência de quem cuida de cães e gatos mais prática, com agendamento a qualquer hora e acompanhamento do histórico do animal.
 
-- Para os petshops: maior visibilidade dos animais, redução do trabalho manual no atendimento, organização das solicitações e visitas em um só lugar e divisão das tarefas entre os funcionários.
-- Para os adotantes: acesso centralizado a diversos animais da sua região, com informações claras sobre saúde e temperamento, e acompanhamento transparente do processo, com avisos a cada mudança de status.
-- Para a sociedade: aumento das adoções responsáveis e redução do abandono de animais.
 
 ## :people_holding_hands: Papéis ou tipos de usuário da aplicação
+- **Visitante** (não autenticado): navega pelo catálogo de serviços, valores e horários disponíveis; pode se cadastrar.
+- **Cliente** (autenticado): tutor ou responsável por cães e gatos; cadastra seus animais, agenda, remarca e cancela serviços, acompanha o histórico e avalia atendimentos.
+- **Proprietário** (autenticado): administra o petshop (serviços, preços, agenda) e tem acesso exclusivo ao módulo financeiro.
 
-- **Visitante** (não autenticado): navega pela galeria, filtra animais e consulta detalhes e petshops parceiros.
-- **Adotante** (autenticado): envia e acompanha solicitações de adoção, favorita animais, agenda visitas e avalia o atendimento.
-- **Petshop (lojista)** (autenticado): cadastra seu estabelecimento e gerencia seus animais, solicitações, visitas, mensagens e funcionários.
-- **Funcionário do petshop** (autenticado): acessa apenas as funções liberadas pelo petshop, como atender mensagens, gerenciar visitas ou cadastrar animais.
-- **Administrador da aplicação** (autenticado): aprova o cadastro de petshops, modera conteúdo e acompanha métricas gerais.
+> Cada papel possui permissões diferentes: o Cliente só enxerga os próprios animais e agendamentos, e somente o Proprietário acessa a agenda geral e o financeiro.
+
 
 ## :triangular_flag_on_post: Principais funcionalidades da aplicação
 
 ### Acessíveis a todos
-- Galeria de animais disponíveis para adoção
-- Filtros por espécie, porte, idade e petshop
-- Página de detalhes do animal (fotos, descrição, temperamento, situação de vacinação)
-- Página de cada petshop parceiro (endereço, contato, animais disponíveis)
-- Página informativa sobre o processo de adoção responsável
-- Recuperação de senha por e-mail
+- Página do petshop (endereço, horário de funcionamento, serviços e avaliações)
+- Catálogo de serviços (banho, tosa, banho e tosa, hidratação, corte de unhas, etc.) com descrição, duração e **valor por porte** do animal
+- Consulta de horários livres por serviço e data
+- Cadastro, login, confirmação de e-mail e recuperação de senha
 
 ### Restritas a usuários logados
 
-**Adotante**
-- Cadastro com confirmação de e-mail
-- Edição de perfil
-- Envio de formulário de interesse em adoção
-- Acompanhamento do status das solicitações
-- Lista de animais favoritos
-- Agendamento de visita ao petshop para conhecer o animal
-- Troca de mensagens com o petshop
-- Avaliação do atendimento após a adoção
-- Notificações por e-mail e na aplicação sobre mudanças de status
+**Cliente**
+- Cadastro e edição dos próprios animais (nome, espécie, raça, porte, tipo de pelagem, idade, observações como alergias, temperamento e cuidados especiais)
+- Agendamento de serviço em horário livre, com duração e valor calculados automaticamente conforme o porte do animal
+- Remarcação e cancelamento, respeitando uma antecedência mínima
+- Acompanhamento do status do agendamento (pendente, confirmado, em atendimento, concluído, cancelado, falta)
+- Histórico de atendimentos e gastos por animal
+- Avaliação (nota e comentário) após atendimento concluído
+- Lembretes e confirmações por e-mail
 
-**Petshop**
-- Cadastro do petshop na aplicação, informando a localização (sujeito à aprovação do administrador)
-- Cadastro, edição e remoção de animais, com upload de fotos e registro de saúde (vacinas, vermifugação, castração)
-- Gestão de solicitações (aprovar/recusar) com atualização automática do status do animal para "adotado"
-- Gestão da agenda de visitas (confirmar, remarcar, cancelar)
-- Caixa de mensagens com os interessados
-- Gestão da equipe: cadastro de funcionários e definição do nível de permissão de cada um (por exemplo, gerente ou atendente)
-- Notificações por e-mail e na aplicação sobre novas solicitações, visitas e mensagens
-- Painel com indicadores (animais cadastrados, adoções realizadas, solicitações pendentes)
+**Proprietário**
+- *Tela principal (hub)*: agenda diária e semanal, com visão dos agendamentos dos próximos dias do mês e de quem está agendado (cliente, animal, serviço e horário)
+- *Serviços e preços*: CRUD de serviços, com duração, valor por porte e ativação/desativação
+- *Agenda geral*: criação de agendamentos manuais (cliente que ligou ou veio ao balcão), bloqueio de horários, remarcações, atualização de status e controle de faltas
+- *Módulo financeiro*:
+  - Registro de pagamentos por atendimento (dinheiro, PIX, cartão)
+  - Registro de gastos gerais do petshop, como compra de produtos para tratamento animal, com descrição, valor, data e categoria
+  - Fluxo de caixa diário e mensal (entradas x saídas) e fechamento de caixa
+  - Painel (dashboard) com faturamento, lucro, serviços mais vendidos e taxa de faltas
+  - Relatórios por período e por serviço
+  - Metas mensais de faturamento e comparação com o realizado
+  - Acompanhamento de valores a receber e atendimentos não pagos
 
-**Funcionário do petshop**
-- Acesso às funções do petshop de acordo com o nível de permissão recebido (cadastro de animais, atendimento de solicitações, agenda de visitas ou mensagens)
-- Recebimento de notificações relacionadas às funções que exerce
-
-**Administrador da aplicação**
-- Aprovação e bloqueio de petshops
-- Moderação de animais, avaliações e mensagens denunciadas
-- Relatórios gerais de uso e de adoções por região
 
 ## :spiral_calendar: Entidades ou tabelas do sistema
-
-- **Usuario**: dados de autenticação, e-mail (com status de confirmação), localidade e papel (adotante, petshop, funcionário ou administrador)
-- **Petshop**: dados do estabelecimento (nome, CNPJ, endereço, cidade, bairro, coordenadas, contato, status de aprovação), vinculado a um usuário responsável
-- **FuncionarioPetshop**: relaciona Usuario e Petshop; inclui o nível de permissão e o status (ativo ou inativo)
-- **Animal**: espécie, nome, idade, porte, descrição, temperamento, fotos, status (disponível ou adotado); pertence a um petshop
-- **SolicitacaoAdocao**: relaciona Usuario e Animal; inclui data, respostas do formulário e status (pendente / aprovada / recusada)
-- **AgendamentoVisita**: relaciona Usuario, Animal e Petshop; inclui data/hora e status
-- **Favorito**: relaciona Usuario e Animal
-- **Mensagem**: conversa entre adotante e petshop, ligada a um animal
-- **Avaliacao**: nota e comentário do adotante sobre o petshop
-- **Notificacao**: avisos enviados ao usuário sobre mudanças de status, por e-mail e na aplicação
-- **TokenVerificacao**: código temporário usado na confirmação de e-mail e na recuperação de senha, com validade e uso único
+- **Usuario** — dados de autenticação, e-mail confirmado e papel (cliente ou proprietário)
+- **Animal** — nome, espécie (cão ou gato), raça, porte, pelagem, idade e observações; pertence a um cliente (Usuario)
+- **Servico** — nome, descrição, duração, valor por porte (pequeno, médio e grande) e status ativo/inativo
+- **Agendamento** — relaciona Cliente, Animal e Servico; data/hora, status e valor cobrado
+- **Pagamento** — receita vinculada a um Agendamento: forma de pagamento, valor, data e status
+- **Despesa** — saída financeira com descrição, valor, data e categoria (ex.: produtos para tratamento, materiais)
+- **Avaliacao** — nota e comentário do cliente sobre um Agendamento concluído
