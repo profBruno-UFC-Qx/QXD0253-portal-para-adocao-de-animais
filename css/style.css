@@ -1,0 +1,198 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    
+}
+
+h1, h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px;
+    color: var(--navy);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+}
+
+:root {
+    --pink: #cd1265;
+    --pink-dark: #b50d56;
+    --pink-soft: #fdeaf1;
+    --navy: #063d89;
+    --sky: #3fa8e7;
+    --sky-soft: #e8f4fd;
+    --bg: #fff8fb;
+    --line: #f0dde6;
+}
+
+.app {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+}
+
+.topBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+}
+
+.sideBar {
+    background: #fff;
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.logo {
+    display: block;
+    width: 160px;
+    margin: 0 auto 32px;
+}
+
+.menu a{
+    color: #5b6270;
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 20px;
+    border-radius: 16px;
+    text-decoration: none;
+    margin-bottom: 10px;
+
+}
+
+.menu a.active {
+    background: var(--pink-soft);
+    color: var(--pink);
+}
+
+.menu a:hover {
+    background: var(--pink-soft);
+    color: var(--pink);
+}
+
+.logout {
+    color: red;
+    margin-top: auto;
+    text-decoration: none;
+    border-top: 1px solid var(--line);
+    padding-top: 10px;
+}
+
+.content {
+    padding: 30px 40px;
+    max-width: 1080px;
+}
+
+.subText { color: 
+    #5b6270; 
+}
+
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.card, .info, .formCard, .bookingCard, .suggestCard, .historyCard {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.formCard, .bookingCard, .suggestCard, .historyCard { 
+    margin-top: 24px; 
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 24px;
+}
+
+.field { 
+    margin-bottom: 20px; 
+}
+
+.field label, .fieldTitle {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2b2d42;
+    margin-bottom: 6px;
+}
+
+.field input, .field select, .field textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
+    font-family: inherit;
+    font-size: 16px;
+}
+
+.field textarea { 
+    min-height: 100px; 
+    resize: vertical; 
+}
+
+.field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--pink);
+}
+
+.requiredNote { 
+    font-size: 12px; margin-bottom: 10px; 
+}
+
+.requiredNote .asterisk {
+    color: var(--pink);
+}
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+}
+
+.btnSave, .btnCancel, .btnPrimary {
+    padding: 12px 28px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btnSave, .btnPrimary { 
+    background: var(--pink); 
+    color: #fff; 
+}
+
+.btnSave:hover, .btnPrimary:hover {
+    background: var(--pink-dark);
+}
+
+.btnCancel { 
+    background: #fff; 
+    color: var(--navy);
+    border-color: var(--line); 
+}

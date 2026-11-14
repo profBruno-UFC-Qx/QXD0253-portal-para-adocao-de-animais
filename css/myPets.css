@@ -1,0 +1,7 @@
+.petCards {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 24px;
+margin-top: 24px;
+max-width: 1080px;
+}
