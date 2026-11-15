@@ -1,0 +1,82 @@
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.label {
+    color: #5b6270;
+}
+
+.number {
+    color: var(--pink);
+    font-size: 30px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.twoColumns {
+    display: grid;
+    align-items: start;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.twoColumns .card:first-child {
+    grid-column: span 2;
+}
+
+.cardFunctional {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.btnSeeAll, .btnManage {
+    color:var(--pink);
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.btnDashed {
+    color:var(--pink);
+    display: block;
+    text-align: center;
+    padding: 12px;
+    margin-top: 10px;
+    border: 2px dashed;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.addServiceBanner h2 {
+    color: var(--sky);
+}
+
+.addServiceBanner {
+    color: #fff;
+    background: linear-gradient(135deg, var(--navy), var(--pink));
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.btnSchedule {
+    background: #fff;
+    color:var(--pink);
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+
+}
