@@ -10,49 +10,49 @@ const routes = {
         template: "myPets",
         titulo: "Meus Animais de Estimação",
         menu: "/myPets",
-        //init: initMyPets
+        init: initMyPets
     },
 
-    "/myPets/configPet": {
-        template: "configPet",
+    "/myPets/petConfig": {
+        template: "petConfig",
         titulo: "Gerenciamento de Pet",
         menu: "/myPets",
-        //init: initConfigPet
+        init: initPetConfig
     },
 
     "/myPets/petHistory": {
         template: "petHistory",
         titulo: "Histórico do Pet",
         menu: "/myPets",
-        //init: initPetHistory
+        init: initPetHistory
     },
 
     "/schedules": {
         template: "schedules",
         titulo: "Histórico e Acompanhamento",
         menu: "/schedules",
-        //init: initSchedules
+        init: initSchedules
     },
 
     "/newService": {
         template: "newService",
         titulo: "Novo Agendamento",
         menu: "/schedules",
-        //init: initNewService
+        init: initNewService
     },
 
     "/rateService": {
         template: "rateService",
         titulo: "Avaliar Atendimento",
         menu: "/schedules",
-        //init: initRateService
+        init: initRateService
     },
 
     "/myProfile": {
         template: "myProfile",
         titulo: "Configurações da Conta",
         menu: "/myProfile",
-        //init: initMyProfile
+        init: initMyProfile
     }
 };
 
@@ -85,3 +85,27 @@ navigate();
 getUser().then(user => {
     document.getElementById("userName").textContent = user.name
 })
+
+function showDialog(message, onClose) {
+    const dialog = document.getElementById("appDialog")
+    document.getElementById("appDialogMessage").textContent = message
+    dialog.onclose = () => {
+        dialog.onclose = null
+        if (onClose) onClose()
+    }
+    dialog.showModal()
+}
+
+document.getElementById("appDialogBtn").addEventListener("click", () => {
+    document.getElementById("appDialog").close()
+})
+
+document.addEventListener("submit", e => e.preventDefault())
+
+function showConfirm(message, onConfirm) {
+    const dialog = document.getElementById("confirmDialog")
+    document.getElementById("confirmDialogMessage").textContent = message
+    document.getElementById("confirmDialogYes").onclick = () => { dialog.close(); onConfirm() }
+    document.getElementById("confirmDialogNo").onclick = () => dialog.close()
+    dialog.showModal()
+}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mainPage.css">
-    <link rel="stylesheet" href="css/myPets.css">
+    <link rel="stylesheet" href="css/myPets.css">   
     <link rel="stylesheet" href="css/petHistory.css">
     <link rel="stylesheet" href="css/newService.css">
     <link rel="stylesheet" href="css/rateService.css">
     <link rel="stylesheet" href="css/myProfile.css">
+    <link rel="stylesheet" href="css/schedules.css">
 </head>
 <body>
     <div class="app">
@@ -68,7 +69,7 @@
                             <a href="#/myPets" class="btnManage">Gerenciar</a>   
                         </div>
                         <div id="petList"></div>                         
-                        <a href="#/myPets/configPet" class="btnDashed">+ Adicionar Novo Pet</a>
+                        <a href="#/myPets/petConfig" class="btnDashed">+ Adicionar Novo Pet</a>
                     </div>
                 </section>
                 <section class="addServiceBanner">
@@ -85,13 +86,13 @@
                 <h1>Gerenciar Meus Pets</h1>
                 <p class="subText">Visualize, edite ou cadastre novos animais para os atendimentos.</p>
             </div>
-            <a href="#/myPets/configPet" class="btnPrimary">+ Novo Pet</a>
+            <a href="#/myPets/petConfig" class="btnPrimary">+ Novo Pet</a>
         </div>
         <section class="pets">
             <div class="petCards" id="petCards"></div>
         </section>
     </template>
-    <template id="configPet">
+    <template id="petConfig">
         <h1>Configurar Pet</h1>
         <p class="subText">Preencha as informações do animal para facilitar o atendimento no petshop.</p>
         <section class="managePet">
@@ -111,20 +112,20 @@
                             </select>
                         </div>
                         <div class="field">
-                            <label for="typeRace">Raça *</label>
-                            <input type="text" name="typeRace" id="typeRace" placeholder="Ex: Husky, Golden Retriever ..." required>
+                            <label for="breed">Raça *</label>
+                            <input type="text" name="breed" id="breed" placeholder="Ex: Husky, Golden Retriever ..." required>
                         </div>
                         <div class="field">
-                            <label for="typeSize">Porte *</label>
-                            <select name="typeSize" id="typeSize" required>
+                            <label for="size">Porte *</label>
+                            <select name="size" id="size" required>
                                 <option value="small">Pequeno (até 10kg)</option>
                                 <option value="medium">Médio (até 25kg)</option>
                                 <option value="big">Grande (acima de 25kg)</option>
                             </select>
                         </div>
                         <div class="field">
-                            <label for="typeFur">Tipo de Pelagem *</label>
-                            <select name="typeFur" id="typeFur" required>
+                            <label for="fur">Tipo de Pelagem *</label>
+                            <select name="fur" id="fur" required>
                                 <option value="smoothCoat">Curto e liso</option>
                                 <option value="silkyCoat">Longo e liso</option>
                                 <option value="wavy/curlyCoat">Longo ou ondulado/encaracolado</option>
@@ -133,13 +134,13 @@
                             </select>
                         </div>
                         <div class="field">
-                            <label for="petAge">Idade *</label>
-                            <input type="text" name="petAge" id="petAge" placeholder="Ex: 2 anos ou 4 meses" required>
+                            <label for="age">Idade *</label>
+                            <input type="text" name="age" id="age" placeholder="Ex: 2 anos ou 4 meses" pattern="\d{1,2} (ano|anos|mês|meses)" title="Use o formato: 3 anos ou 8 meses" required>
                         </div>
                     </div>
                     <div class="field">
-                        <label for="tips">Observações (Alergias, Temperamento, Cuidados Especiais)</label>
-                        <textarea name="tips" id="tips" placeholder="Ex: Sensível a secador quente, um pouco arisco com outros animais, alergia a shampoo com essência de lavanda..."></textarea>
+                        <label for="notes">Observações (Alergias, Temperamento, Cuidados Especiais)</label>
+                        <textarea name="notes" id="notes" placeholder="Ex: Sensível a secador quente, um pouco arisco com outros animais, alergia a shampoo com essência de lavanda..."></textarea>
                     </div>
                     <div class="formActions">
                         <a href="#/myPets" class="btnCancel">Cancelar</a>
@@ -153,7 +154,7 @@
         <div class="pageHeader">
                     <div>
                         <h1>Histórico de atendimentos</h1>
-                        <p class="subText petInfo"> <strong id="petName"></strong> • <strong id="petSize"></strong> • <strong id="petAge"></strong> • <strong id="numServices"></strong></p>
+                        <p class="subText petInfo"> <strong id="petName"></strong> • <strong id="petSize"></strong> • <strong id="age"></strong> • <strong id="numServices"></strong></p>
                     </div>
                     <a href="#/myPets" class="btnPrimary">Voltar para Meus Pets</a>
                 </div>
@@ -271,23 +272,23 @@
     </template>
     <template id="myProfile">
         <h1>Meu Perfil</h1>
-                <p class="subText">Atualize suas informações pessoais e credenciais de acesso</p>
+                <p class="subText">Atualize suas informações pessoais e credenciais de acesso.</p>
                 <section class="data">
                     <div class="info">
                         <h2>Informações Pessoais</h2>
-                        <form action="">
+                        <form action="" id="personalForm">
                             <div class="field">
                                 <label for="name">Nome Completo</label>
-                                <input type="text" id="name" name="name" placeholder="Seu Nome Completo" required>
+                                <input type="text" id="name" name="name" placeholder="Seu Nome Completo">
                             </div>
                             <div class="row">
                                 <div class="field">
                                     <label for="mail">E-mail</label>
-                                    <input type="email" id="mail" name="mail" placeholder="Seu E-mail" required>
+                                    <input type="email" id="mail" name="mail" placeholder="Seu E-mail">
                                 </div>
                                 <div class="field">
                                      <label for="contact">Telefone/WhatsApp</label>
-                                    <input type="tel" id="contact" name="contact" placeholder="(XX) 9XXXX-XXXX" required>
+                                    <input type="tel" id="contact" name="contact" placeholder="(XX) 9XXXX-XXXX">
                                 </div>
                             </div>
                             <button type="submit" class="btnSave btnRight">Salvar Alterações</button>
@@ -295,7 +296,7 @@
                     </div>
                     <div class="info">
                         <h2>Segurança e Senha</h2>
-                        <form action="">
+                        <form action="" id="securityForm">
                             <p class="subText requiredNote"> <span class="asterisk">*</span> Campos Obrigatórios .</p>
                             <div class="field">
                                 <label for="passWord">Senha Atual *</label>
@@ -304,7 +305,7 @@
                             <div class="row">
                                 <div class="field">
                                     <label for="newPassword">Nova Senha *</label>
-                                    <input type="password" id="newPassword" name="newPassword" placeholder="Mínimo 6 caracteres, um número e um símbolo" minlength="6" required>
+                                    <input type="password" id="newPassword" name="newPassword" placeholder="Mín. 6 caracteres, 1 maiúscula, 1 número, 1 símbolo" required>
                                 </div>
                                 <div class="field">
                                      <label for="confirmPassWord">Confirme Nova Senha *</label>
@@ -316,9 +317,28 @@
                     </div>
                 </section>
     </template>
+    <dialog id="appDialog" class="customDialog">
+        <p id="appDialogMessage"></p>
+        <button type="button" id="appDialogBtn" class="btnSave">OK</button>
+    </dialog>
     
+    <dialog id="confirmDialog" class="customDialog">
+        <p id="confirmDialogMessage"></p>
+        <div class="dialogActions">
+            <button type="button" id="confirmDialogNo" class="btnCancel">Voltar</button>
+            <button type="button" id="confirmDialogYes" class="btnSave">Confirmar</button>
+        </div>
+    </dialog>
+
     <script src="js/data.js"></script>
     <script src="js/mainPage.js"></script>
+    <script src="js/myPets.js"></script>
+    <script src="js/petHistory.js"></script>
+    <script src="js/petConfig.js"></script>
+    <script src="js/newService.js"></script>
+    <script src="js/rateService.js"></script>
+    <script src="js/myProfile.js"></script>
+    <script src="js/schedules.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

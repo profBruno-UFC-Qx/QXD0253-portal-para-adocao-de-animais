@@ -2,7 +2,7 @@ async function initMainPage() {
     const pets = await getPets();
     const appointments = await getAppointments();
 
-    const active = appointments.filter(a => a.status !== "done")
+    const active = appointments.filter(a => a.status === "confirmed" || a.status === "pending")
     const completed = appointments.filter(a => a.status === "done")
 
     document.getElementById("numPets").textContent = pets.length
@@ -36,10 +36,10 @@ async function initMainPage() {
     document.getElementById("petList").innerHTML = pets.map(p =>
         `
             <div class="item">
-                <div class="avatar">${p.name.chartAt(0)}</div>
+                <div class="avatar">${p.name.charAt(0)}</div>
                 <div>
                     <strong>${p.name}</strong>
-                    <small>${p.breed} (${sizeLabel[p.size]})</small
+                    <small>${p.breed} (${sizeLabel[p.size]})</small>
                 </div>
             </div>
         `).join("")
