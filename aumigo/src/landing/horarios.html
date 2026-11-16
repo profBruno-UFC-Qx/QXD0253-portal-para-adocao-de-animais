@@ -1,438 +1,378 @@
- <!DOCTYPE html>
- <html lang="pt-br">
- <head>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta de Horários - AuMigo pet shop</title>
+    <title>Consulta de Horários - AuMigo Pet Shop</title>
 
-    <!-- links de referencia/fontes -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-   <style>     
-    :root {
-        --primary: #A8356A;
-        --primary-hover: #084eda9c;
-        --primary-light: #FDF2F7;
-        --secondary: #2EC4B6;
-        --neutral-dark: #42332b;
-        --neutral-light: #F8F9FA;
-        --white: #FFFFFF;
-        --accent: #FF6B6B;
-        --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-        --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: var(--neutral-light);
-        color: var(--neutral-dark);
-        line-height: 1.6;
-        -webkit-font-smoothing: antialiased;
-    }
-
-    h1, h2, h3, h4 {
-        font-family: 'Poppins', sans-serif;
-        color: var(--neutral-dark);
-    }
-
-    /* Animação */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate-fade {
-        animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     
-    /* Header / Nav */
-    header {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        padding: 1rem 5%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-    }
-
-    .logo {
-        font-family: 'Poppins', sans-serif;
-        font-size: 1.6rem;
-        font-weight: 700;
-        color: var(--primary);
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition: var(--transition);
-    }
-
-    .logo:hover {
-        transform: scale(1.02);
-    }
-
-    nav {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-    }
- 
-    nav a {
-        text-decoration: none;
-        color: var(--neutral-dark);
-        font-weight: 500;
-        transition: var(--transition);
-    }
-
-    nav a:hover {
-        color: var(--primary);
-    }
-
-    .btn-primary {
-        background-color: var(--primary);
-        color: var(--white);
-        padding: 0.75rem 1.5rem;
-        border-radius: 50px;
-        text-decoration: none;
-        font-weight: 600;
-        box-shadow: var(--shadow);
-        transition: var(--transition);
-        display: inline-block;
-        border: none;
-        cursor: pointer;
-        text-align: center;
-    }
-
-    .btn-primary:hover {
-        background-color: var(--primary-hover);
-         color: var(--white);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(8, 78, 218, 0.3);
-    }
-
-    /* Banner da página */
-    .page-banner {
-        background: linear-gradient(rgba(43, 45, 66, 0.65), rgba(43, 45, 66, 0.75)), 
-                    url('../img/Convivencia-de-caes-e-gatos.jpg');
-        background-size: cover;      
-        background-position: center; 
-        background-repeat: no-repeat;
-        color: var(--white);
-        text-align: center;
-        padding: 4rem 5%;
-    }
-
-    .page-banner h1 {
-        font-size: 2.8rem;
-        margin-bottom: 0.8rem;
-        color: var(--white);
-    }
-
-    .page-banner p {
-        font-size: 1.15rem;
-        color: #D1D2DC;
-        max-width: 600px;
-        margin: 0 auto;
-    }
-
-    /* Container Principal */
-    .container {
-        max-width: 900px;
-        margin: -2rem auto 4rem auto;
-        padding: 0 5%;
-        position: relative;
-        z-index: 10;
-    }
-
-    /* Card de Filtro / Busca */
-    .filter-card {
-        background: var(--white);
-        border-radius: 16px;
-        padding: 2.5rem;
-        box-shadow: var(--shadow);
-        border: 1px solid rgba(0,0,0,0.03);
-        margin-bottom: 2.5rem;
-    }
-
-    .filter-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr auto;
-        gap: 1.5rem;
-        align-items: flex-end;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .form-group label {
-        font-weight: 600;
-        font-size: 0.9rem;
-        color: var(--neutral-dark);
-    }
-
-    .form-control {
-        padding: 0.75rem 1rem;
-        border-radius: 10px;
-        border: 1px solid #ddd;
-        font-family: 'Inter', sans-serif;
-        font-size: 1rem;
-        outline: none;
-        transition: var(--transition);
-        background: var(--neutral-light);
-    }
-
-    .form-control:focus {
-        border-color: var(--primary);
-        background: var(--white);
-        box-shadow: 0 0 0 3px rgba(168, 53, 106, 0.15);
-    }
-
-    /* Banner de status */
-    .status-wrapper {
-        text-align: center;
-        margin-bottom: 1.5rem;
-    }
-
-    .status-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        font-size: 0.85rem;
-        padding: 0.3rem 0.9rem;
-        border-radius: 20px;
-        background: #E6F8F6;
-        color: var(--secondary);
-        font-weight: 500;
-    }
-
-    /* Grade de Horários Disponíveis */
-    .horarios-section {
-        background: var(--white);
-        border-radius: 16px;
-        padding: 2.5rem;
-        box-shadow: var(--shadow);
-        border: 1px solid rgba(0,0,0,0.03);
-    }
-
-    .horarios-section h3 {
-        font-size: 1.3rem;
-        margin-bottom: 1.5rem;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 0.75rem;
-    }
-
-    .slots-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-        gap: 1rem;
-    }
-
-    .slot-card {
-        background: var(--neutral-light);
-        border: 2px solid transparent;
-        border-radius: 12px;
-        padding: 1rem;
-        text-align: center;
-        font-weight: 600;
-        color: var(--neutral-dark);
-        cursor: pointer;
-        transition: var(--transition);
-        text-decoration: none;
-        display: block;
-    }
-
-    .slot-card:hover {
-        border-color: var(--primary);
-        background: var(--primary-light);
-        transform: translateY(-3px);
-        box-shadow: 0 4px 12px rgba(168, 53, 106, 0.15);
-    }
-
-    .slot-empty {
-        text-align: center;
-        color: #777;
-        padding: 2rem;
-        font-style: italic;
-    }
-
-    /* Rodapé */
-    footer {
-        background: var(--neutral-dark);
-        color: var(--white);
-        padding: 3rem 5%;
-        text-align: center;
-        margin-top: 5rem;
-    }
-
-    footer p {
-        color: #AAA;
-        font-size: 0.9rem;
-        margin-top: 1rem;
-    }
-
-    @media (max-width: 768px) {
-        .filter-grid {
-            grid-template-columns: 1fr;
+    <style>     
+        :root {
+            --cor-principal: #A8356A;
+            --cor-hover: #084eda;
+            --cor-clara: #FDF2F7;
+            --verde-agua: #2EC4B6;
+            --texto-escuro: #2B2D42;
+            --fundo-pagina: #F8F9FA;
+            --branco: #FFFFFF;
         }
-        .page-banner h1 { font-size: 2.2rem; }
-        nav { display: none; }
-    }
-</style>
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
- </head> 
- 
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--fundo-pagina);
+            color: var(--texto-escuro);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--texto-escuro);
+        }
+
+        @keyframes surgir {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--cor-principal);
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.03);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--texto-escuro);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--cor-principal);
+        }
+
+        .btn-principal {
+            background-color: var(--cor-principal);
+            color: var(--branco);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-principal:hover {
+            background-color: var(--cor-hover);
+            color: var(--branco);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(8, 78, 218, 0.25);
+        }
+
+        .banner-topo {
+            background: linear-gradient(rgba(43, 45, 66, 0.7), rgba(43, 45, 66, 0.75)), 
+                        url('img/Convivencia-de-caes-e-gatos.jpg') center/cover no-repeat;
+            color: var(--branco);
+            text-align: center;
+            padding: 4rem 5%;
+        }
+
+        .banner-topo h1 {
+            font-size: 2.6rem;
+            margin-bottom: 0.6rem;
+            color: var(--branco);
+        }
+
+        .banner-topo p {
+            font-size: 1.1rem;
+            color: #DCDDE5;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container-principal {
+            max-width: 900px;
+            margin: -2rem auto 4rem auto;
+            padding: 0 5%;
+            position: relative;
+            z-index: 10;
+            animation: surgir 0.5s ease;
+        }
+
+        .caixa-filtro {
+            background: var(--branco);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            margin-bottom: 2rem;
+        }
+
+        .grade-filtro {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 1.5rem;
+            align-items: flex-end;
+        }
+
+        .grupo-campo {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .grupo-campo label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .campo-input {
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border: 1px solid #DDD;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            background: var(--fundo-pagina);
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .campo-input:focus {
+            border-color: var(--cor-principal);
+            background: var(--branco);
+            box-shadow: 0 0 0 3px rgba(168, 53, 106, 0.15);
+        }
+
+        .secao-horarios {
+            background: var(--branco);
+            border-radius: 16px;
+            padding: 2.2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .secao-horarios h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #EEE;
+            padding-bottom: 0.75rem;
+        }
+
+        .grade-horarios {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 1rem;
+        }
+
+        .cartao-horario {
+            background: var(--fundo-pagina);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            color: var(--texto-escuro);
+            text-decoration: none;
+            transition: 0.3s;
+            display: block;
+        }
+
+        .cartao-horario:hover {
+            border-color: var(--cor-principal);
+            background: var(--cor-clara);
+            transform: translateY(-3px);
+        }
+
+        .status-livre {
+            font-size: 0.75rem;
+            color: var(--verde-agua);
+            margin-top: 0.3rem;
+            font-weight: 500;
+        }
+
+        .mensagem-vazia {
+            text-align: center;
+            color: #777;
+            padding: 2rem;
+            font-style: italic;
+        }
+
+        .dica-rodape {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: #666;
+            text-align: center;
+        }
+
+        footer {
+            background: var(--texto-escuro);
+            color: var(--branco);
+            padding: 3rem 5%;
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        footer p {
+            color: #BBB;
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .grade-filtro { grid-template-columns: 1fr; }
+            .banner-topo h1 { font-size: 2rem; }
+            nav { display: none; }
+        }
+    </style>
+</head> 
 <body>
 
-    <!-- Header / Navbar / ainda vai ter alterções -->
-    <header class="animate-fade">
+    <header>
         <a href="index.html" class="logo">🐾 AuMigo</a>
         <nav>
             <a href="index.html">Início</a>
             <a href="servicos.html">Serviços</a>
-            <a href="horarios.html" style="color: var(--primary); font-weight: 600;">Horários</a>
-            <a href="login.html" class="btn-primary" style="padding: 0.5rem 1.2rem;">Entrar / Agendar</a>
+            <a href="horarios.html" style="color: var(--cor-principal); font-weight: 600;">Horários</a>
+            <a href="login.html" class="btn-principal" style="padding: 0.5rem 1.2rem;">Entrar / Agendar</a>
         </nav>
     </header>
 
-    <!-- Banner da Página -->
-    <section class="page-banner animate-fade">
+    <section class="banner-topo">
         <h1>Consulta de Horários</h1>
         <p>Verifique a disponibilidade de horários livres para o serviço desejado sem compromisso.</p>
     </section>
 
-    <!-- Container Principal -->
-    <div class="container animate-fade">
-        
-        <!-- Formulário de Filtro -->
-        <div class="filter-card">
-            <div class="filter-grid">
-                <div class="form-group">
+    <main class="container-principal">
+        <div class="caixa-filtro">
+            <div class="grade-filtro">
+                <div class="grupo-campo">
                     <label for="select-servico">Selecione o Serviço:</label>
-                    <select id="select-servico" class="form-control">
-                        <option value="1">Banho Completo (45 min)</option>
-                        <option value="2">Tosa Higiênica (30 min)</option>
-                        <option value="3">Banho & Tosa Raça (1h 30min)</option>
-                        <option value="4">Hidratação de Pelos (25 min)</option>
+                    <select id="select-servico" class="campo-input">
+                        <option value="banho">Banho Completo (45 min)</option>
+                        <option value="tosa">Tosa Higiênica (30 min)</option>
+                        <option value="completo">Banho & Tosa Raça (1h 30min)</option>
+                        <option value="hidratacao">Hidratação de Pelos (25 min)</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="grupo-campo">
                     <label for="input-data">Escolha a Data:</label>
-                    <input type="date" id="input-data" class="form-control">
+                    <input type="date" id="input-data" class="campo-input">
                 </div>
                 <div>
-                    <button type="button" class="btn-primary" onclick="buscarHorarios()" style="width: 100%; height: 48px;">Consultar</button>
+                    <button type="button" id="btn-consultar" class="btn-principal" style="width: 100%; height: 48px;">Consultar</button>
                 </div>
             </div>
         </div>
 
-        <div class="status-wrapper" id="status-container"></div>
+        <section class="secao-horarios">
+            <h3 id="titulo-resultado">Horários Disponíveis</h3>
+            <div id="area-horarios"></div>
+        </section>
+    </main>
 
-        <!-- Seção de Resultados -->
-        <div class="horarios-section animate-fade">
-            <h3 id="resultado-titulo">Horários Disponíveis</h3>
-            <div id="slots-container">
-                <!-- horários serão carregados aqui -->
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Rodapé ainda a ser alterado -->
     <footer>
-        <a href="index.html" class="logo" style="justify-content: center; color: var(--white);">🐾 AuMigo</a>
+        <a href="index.html" class="logo" style="color: var(--branco);">🐾 AuMigo</a>
         <p>&copy; 2026 Projeto AuMigo - Todos os direitos reservados. Praticidade para você e seu pet.</p>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
+        const horariosPorServico = {
+            banho: ["08:00", "09:00", "10:00", "11:30", "13:30", "14:30", "16:00", "17:15"],
+            tosa: ["08:30", "10:30", "14:00", "15:30", "17:00"],
+            completo: ["08:00", "10:00", "13:30", "15:30"],
+            hidratacao: ["09:00", "11:00", "14:00", "16:30"]
+        };
+
+        const selectServico = document.getElementById('select-servico');
         const inputData = document.getElementById('input-data');
-        
-        
-        const agora = new Date();
-        const ano = agora.getFullYear();
-        const mes = String(agora.getMonth() + 1).padStart(2, '0');
-        const dia = String(agora.getDate()).padStart(2, '0');
-        const hojeLocal = `${ano}-${mes}-${dia}`;
+        const btnConsultar = document.getElementById('btn-consultar');
+        const areaHorarios = document.getElementById('area-horarios');
+        const tituloResultado = document.getElementById('titulo-resultado');
 
-        inputData.value = hojeLocal;
-        inputData.min = hojeLocal; 
+        function configurarDataInicial() {
+            const hoje = new Date();
+            const ano = hoje.getFullYear();
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const dataFormatada = `${ano}-${mes}-${dia}`;
 
-        buscarHorarios();
+            inputData.value = dataFormatada;
+            inputData.min = dataFormatada;
+        }
+
+        function carregarHorarios() {
+            const servico = selectServico.value;
+            const data = inputData.value;
+
+            if (!data) {
+                areaHorarios.innerHTML = '<div class="mensagem-vazia">Por favor, selecione uma data válida.</div>';
+                return;
+            }
+
+            const dataBrasil = data.split('-').reverse().join('/');
+            tituloResultado.textContent = `Horários Disponíveis para ${dataBrasil}`;
+
+            const lista = horariosPorServico[servico] || [];
+
+            if (lista.length === 0) {
+                areaHorarios.innerHTML = '<div class="mensagem-vazia">Nenhum horário disponível para esta data.</div>';
+                return;
+            }
+
+            areaHorarios.innerHTML = `
+                <div class="grade-horarios">
+                    ${lista.map(hora => `
+                        <a href="login.html?servico=${servico}&data=${data}&hora=${hora}" class="cartao-horario">
+                            <span>🕒 ${hora}</span>
+                            <div class="status-livre">Disponível</div>
+                        </a>
+                    `).join('')}
+                </div>
+                <p class="dica-rodape">
+                    💡 Clique em qualquer horário para entrar e confirmar o seu agendamento.
+                </p>
+            `;
+        }
+
+        configurarDataInicial();
+        carregarHorarios();
+
+        btnConsultar.addEventListener('click', carregarHorarios);
     });
-
-    const fallbackHorarios = [
-        "08:00", "09:00", "10:00", "11:30", "13:30", "14:30", "16:00", "17:15"
-    ];
-
-    async function buscarHorarios() {
-        const servicoId = document.getElementById('select-servico').value;
-        const dataEscolhida = document.getElementById('input-data').value;
-        const slotsContainer = document.getElementById('slots-container');
-        const statusContainer = document.getElementById('status-container');
-        const titulo = document.getElementById('resultado-titulo');
-
-        if (!dataEscolhida) {
-            slotsContainer.innerHTML = '<div class="slot-empty">Por favor, selecione uma data válida.</div>';
-            return;
-        }
-
-        titulo.textContent = `Horários Disponíveis para ${dataEscolhida.split('-').reverse().join('/')}`;
-        slotsContainer.innerHTML = '<div class="slot-empty">Buscando horários livres...</div>';
-        statusContainer.innerHTML = '';
-
-        try {
-            const response = await fetch(`https://api.exemplo-auMigo.com/horarios?servico=${servicoId}&data=${dataEscolhida}`, { 
-                signal: AbortSignal.timeout(2000) 
-            });
-            
-            if (!response.ok) throw new Error('API indisponível');
-            
-            const horarios = await response.json();
-            renderizarSlots(horarios);
-            
-        } catch (erro) {
-            
-            renderizarSlots(fallbackHorarios);
-        }
-    }
-
-    function renderizarSlots(lista) {
-        const slotsContainer = document.getElementById('slots-container');
-        
-        if (!lista || lista.length === 0) {
-            slotsContainer.innerHTML = '<div class="slot-empty">Nenhum horário disponível para esta data. Tente outro dia!</div>';
-            return;
-        }
-
-        slotsContainer.innerHTML = `
-            <div class="slots-grid">
-                ${lista.map((horario, index) => `
-                    <a href="login.html?horario=${horario}" class="slot-card" style="opacity: 0; animation: fadeIn 0.4s ease ${index * 0.05}s forwards;">
-                        <span>🕒 ${horario}</span>
-                        <div style="font-size: 0.75rem; color: #2EC4B6; margin-top: 0.3rem; font-weight: 500;">Disponível</div>
-                    </a>
-                `).join('')}
-            </div>
-            <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #666; text-align: center;">
-                💡 Clique em qualquer horário para entrar e realizar o seu agendamento.
-            </p>
-        `;
-        }
-    </script>
-</body>
-</html>
+</script>

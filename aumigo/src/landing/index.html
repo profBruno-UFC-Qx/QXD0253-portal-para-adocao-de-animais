@@ -5,22 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuMigo - Pet Shop & Cuidados para Cães e Gatos</title>
     
-    <!-- fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-    --primary: #A8356A;
-    --primary-hover: #084eda;
-    --secondary: #2EC4B6;
-    --neutral-dark: #2B2D42;
-    --neutral-light: #F8F9FA;
-    --white: #FFFFFF;
-    --accent: #FF6B6B;
-    --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --cor-principal: #A8356A;
+            --cor-hover: #084eda;
+            --texto-escuro: #2B2D42;
+            --fundo-pagina: #F8F9FA;
+            --branco: #FFFFFF;
         }
 
         * {
@@ -35,55 +30,45 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--neutral-light);
-            color: var(--neutral-dark);
+            background-color: var(--fundo-pagina);
+            color: var(--texto-escuro);
             line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, h4 {
+        h1, h2, h3 {
             font-family: 'Poppins', sans-serif;
-            color: var(--neutral-dark);
+            color: var(--texto-escuro);
         }
 
-        /*Animações*/
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes surgir {
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .animate-fade {
-            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        /* Header / Navbar */
+        /* Cabeçalho */
         header {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
             padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 100;
         }
 
         .logo {
             font-family: 'Poppins', sans-serif;
             font-size: 1.6rem;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--cor-principal);
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
+            transition: transform 0.3s ease;
         }
 
         .logo:hover {
-            transform: scale(1.02);
+            transform: scale(1.03);
         }
 
         nav {
@@ -94,369 +79,259 @@
 
         nav a {
             text-decoration: none;
-            color: var(--neutral-dark);
+            color: var(--texto-escuro);
             font-weight: 500;
-            transition: var(--transition);
+            transition: color 0.3s;
         }
 
         nav a:hover {
-            color: var(--primary);
+            color: var(--cor-principal);
         }
 
-        .btn-primary {
-            background-color: var(--primary);
-            color: var(--white);
+        .btn-principal {
+            background-color: var(--cor-principal);
+            color: var(--branco);
             padding: 0.75rem 1.5rem;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+            transition: 0.3s;
             display: inline-block;
-            border: none;
-            cursor: pointer;
         }
 
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-             color: var(--white);
+        .btn-principal:hover {
+            background-color: var(--cor-hover);
+            color: var(--branco);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(8, 78, 218, 0.3);
+            box-shadow: 0 6px 18px rgba(8, 78, 218, 0.25);
         }
 
-        .btn-outline {
+        .btn-contorno {
             background: transparent;
-            border: 2px solid var(--white);
-            color: var(--white);
+            border: 2px solid var(--branco);
+            color: var(--branco);
             padding: 0.75rem 1.5rem;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
-            transition: var(--transition);
+            transition: 0.3s;
             display: inline-block;
         }
 
-        .btn-outline:hover {
-            background: var(--white);
-            color: var(--neutral-dark);
+        .btn-contorno:hover {
+            background: var(--branco);
+            color: var(--texto-escuro);
             transform: translateY(-2px);
         }
 
-        /* baner / Imagem de Fundo */
-        .hero {
-             background: linear-gradient(rgba(43, 45, 66, 0.65), rgba(43, 45, 66, 0.75)), 
-                    url('../img/photo-1548767797-d8c844163c4c.avif');
-        background-size: cover;      
-        background-position: center; 
-        background-repeat: no-repeat;
-        color: var(--white);
-        text-align: center;
-        padding: 4rem 5%;
+        /* Banner Principal */
+        .banner-principal {
+            background: linear-gradient(rgba(43, 45, 66, 0.65), rgba(43, 45, 66, 0.65)), 
+                        url('img/photo-1548767797-d8c844163c4c.avif') center/cover no-repeat;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 5%;
+            color: var(--branco);
         }
 
-        .hero-content {
-            max-width: 800px;
+        .conteudo-banner {
+            max-width: 780px;
+            animation: surgir 0.6s ease;
         }
 
-        .hero h1 {
-            font-size: 3rem;
+        .conteudo-banner h1 {
+            font-size: 2.8rem;
             line-height: 1.2;
             margin-bottom: 1.2rem;
-            color: var(--white);
+            color: var(--branco);
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2.5rem;
-            color: #E2E2E2;
-            font-weight: 400;
+        .conteudo-banner p {
+            font-size: 1.15rem;
+            margin-bottom: 2.2rem;
+            color: #EAEAEA;
         }
 
-        .hero-buttons {
+        .botoes-banner {
             display: flex;
             gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
         }
 
-        /* Seção Benefícios */
-        .features {
-            padding: 5rem 5%;
-            background: var(--white);
-        }
-
-        .features-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: var(--neutral-light);
-            padding: 2rem;
-            border-radius: 16px;
-            text-align: center;
-            transition: var(--transition);
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-            background: var(--white);
-        }
-
-        .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: inline-block;
-        }
-
-        .feature-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-card p {
-            font-size: 0.95rem;
-            color: #666;
-        }
-
         /* Vitrine de Serviços */
-        .container {
-            max-width: 1200px;
+        .secao-servicos {
+            max-width: 1150px;
             margin: 4rem auto;
             padding: 0 5%;
         }
 
-        .section-header {
+        .titulo-secao {
             text-align: center;
             margin-bottom: 3rem;
         }
 
-        .section-header h2 {
-            font-size: 2.2rem;
+        .titulo-secao h2 {
+            font-size: 2.1rem;
             margin-bottom: 0.5rem;
         }
 
-        .section-header p {
+        .titulo-secao p {
             color: #666;
             font-size: 1.05rem;
         }
 
-        .grid-servicos {
+        .grade-servicos {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
             gap: 2rem;
         }
 
-        .card {
-            background: var(--white);
+        .cartao-servico {
+            background: var(--branco);
             border-radius: 16px;
             padding: 2rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            border: 1px solid rgba(0,0,0,0.03);
-            opacity: 0;
+            transition: 0.3s;
+            animation: surgir 0.5s ease forwards;
         }
 
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        .cartao-servico:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
         }
 
-        .card h3 {
-            font-size: 1.4rem;
+        .cartao-servico h3 {
+            font-size: 1.35rem;
             margin-bottom: 0.75rem;
         }
 
-        .card p {
+        .cartao-servico p {
             color: #666;
             font-size: 0.95rem;
             margin-bottom: 1.5rem;
         }
 
-        .card-footer-info {
+        .rodape-cartao {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: auto;
             padding-top: 1rem;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #EEE;
         }
 
         .preco {
-            color: var(--primary);
+            color: var(--cor-principal);
             font-weight: 700;
             font-size: 1.25rem;
         }
 
-        /*baner de status*/
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.85rem;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            margin-bottom: 2rem;
-            background: #E6F8F6;
-            color: var(--secondary);
-            font-weight: 500;
-        }
-
-        /* Seção de Avaliações */
-        .testimonials {
-            background: #FFFDF9;
-            padding: 5rem 5%;
-            text-align: center;
-        }
-
-        .testimonial-grid {
-            max-width: 1200px;
-            margin: 3rem auto 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .testimonial-card {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            text-align: left;
-        }
-
-        .testimonial-card p {
-            font-style: italic;
-            color: #555;
-            margin-bottom: 1rem;
-        }
-
-        .testimonial-author {
-            font-weight: 600;
-            color: var(--neutral-dark);
-            font-size: 0.95rem;
-        }
-
-        /*rodapé*/
+        /* Rodapé */
         footer {
-            background: var(--neutral-dark);
-            color: var(--white);
+            background: var(--texto-escuro);
+            color: var(--branco);
             padding: 3rem 5%;
             text-align: center;
+            margin-top: 4rem;
         }
 
         footer p {
-            color: #AAA;
+            color: #BBB;
             font-size: 0.9rem;
-            margin-top: 1rem;
+            margin-top: 0.8rem;
         }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.2rem; }
-            nav { display: none; } /*menu mobile futuramente*/
+            .conteudo-banner h1 { font-size: 2.1rem; }
+            nav { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header / Navbar -->
-    <header class="animate-fade">
+    <header>
         <a href="index.html" class="logo">🐾 AuMigo</a>
         <nav>
             <a href="#servicos">Serviços</a>
             <a href="servicos.html">Catálogo Completo</a>
             <a href="horarios.html">Horários</a>
-            <a href="login.html" class="btn-primary" style="padding: 0.5rem 1.2rem;">Entrar / Agendar</a>
+            <a href="login.html" class="btn-principal" style="padding: 0.5rem 1.2rem;">Entrar / Agendar</a>
         </nav>
     </header>
 
-    <!-- Hero Landing Page -->
-    <section class="hero animate-fade">
-        <div class="hero-content">
+    <section class="banner-principal">
+        <div class="conteudo-banner">
             <h1>O cuidado que o seu pet merece, na palma da sua mão.</h1>
             <p>Agende banhos, tosas e consultas de forma rápida, transparente e sem complicação. Seu melhor amigo tratado com todo o amor e profissionalismo.</p>
-            <div class="hero-buttons">
-                <a href="servicos.html" class="btn-primary">Explorar Serviços</a>
-                <a href="login.html" class="btn-outline">Fazer Agendamento</a>
+            <div class="botoes-banner">
+                <a href="servicos.html" class="btn-principal">Explorar Serviços</a>
+                <a href="login.html" class="btn-contorno">Fazer Agendamento</a>
             </div>
         </div>
     </section>
 
-
-
-    <!-- Vitrine de Serviços-->
-    <div class="container animate-fade" id="servicos">
-        <div class="section-header">
+    <main class="secao-servicos" id="servicos">
+        <div class="titulo-secao">
             <h2>Nossos Serviços em Destaque</h2>
             <p>Conheça os cuidados mais procurados pelos tutores para cães e gatos</p>
-            <div id="status-container" style="margin-top: 1rem;"></div>
         </div>
         
-        <div class="grid-servicos" id="servicos-grid">
-            <!-- Injetado dinamicamente via JavaScript -->
+        <div class="grade-servicos" id="lista-servicos">
+            <!-- Preenchido pelo JavaScript -->
         </div>
-    </div>
+    </main>
 
-
-
-    <!-- Rodapé -->
     <footer>
-        <a href="index.html" class="logo" style="justify-content: center; color: var(--white);">🐾 AuMigo</a>
+        <a href="index.html" class="logo" style="color: var(--branco);">🐾 AuMigo</a>
         <p>&copy; 2026 Projeto AuMigo - Todos os direitos reservados. Conectando tutores e petshops com amor.</p>
     </footer>
 
     <script>
-         const fallbackServicos = [
-        { id: 1, nome: "Banho Completo", descricao: "Banho com shampoo especial antialérgico, secagem profissional, escovação e perfume duradouro.", preco: "R$ 45,00" },
-        { id: 2, nome: "Tosa Higiênica", descricao: "Aparagem cuidadosa de pelos nas patas, barriga e região higiênica com total segurança.", preco: "R$ 35,00" },
-        { id: 3, nome: "Banho & Tosa Raça", descricao: "Pacote completo incluindo corte específico conforme o padrão da raça e cuidados estéticos.", preco: "R$ 80,00" }
-    ];
+        const servicosDestaque = [
+            { 
+                id: 1, 
+                nome: "Banho Completo", 
+                descricao: "Banho com shampoo especial antialérgico, secagem profissional, escovação e perfume duradouro.", 
+                preco: "R$ 45,00" 
+            },
+            { 
+                id: 2, 
+                nome: "Tosa Higiênica", 
+                descricao: "Aparagem cuidadosa de pelos nas patas, barriga e região higiênica com total segurança.", 
+                preco: "R$ 35,00" 
+            },
+            { 
+                id: 3, 
+                nome: "Banho & Tosa Raça", 
+                descricao: "Pacote completo incluindo corte específico conforme o padrão da raça e cuidados estéticos.", 
+                preco: "R$ 80,00" 
+            }
+        ];
 
-    async function carregarServicos() {
-        const statusContainer = document.getElementById('status-container');
-        
-        try {
-            const response = await fetch('https://api.exemplo-auMigo.com/servicos/destaque', { 
-                signal: AbortSignal.timeout(2000) 
-            });
+        function exibirServicos() {
+            const container = document.getElementById('lista-servicos');
             
-            if (!response.ok) throw new Error('API indisponível');
-            
-            const servicos = await response.json();
-            renderizarCards(servicos);
-            
-        } catch (erro) {
-    
-            renderizarCards(fallbackServicos);
+            container.innerHTML = servicosDestaque.map(servico => `
+                <div class="cartao-servico">
+                    <div>
+                        <h3>${servico.nome}</h3>
+                        <p>${servico.descricao}</p>
+                    </div>
+                    <div class="rodape-cartao">
+                        <span class="preco">${servico.preco}</span>
+                        <a href="servicos.html?id=${servico.id}" class="btn-principal" style="padding: 0.5rem 1.1rem; font-size: 0.9rem;">Ver Detalhes</a>
+                    </div>
+                </div>
+            `).join('');
         }
-    }
 
-    function renderizarCards(lista) {
-        const grid = document.getElementById('servicos-grid');
-        
-        grid.innerHTML = lista.map((item, index) => `
-            <div class="card" style="animation: fadeIn 0.6s ease ${index * 0.15}s forwards;">
-                <div>
-                    <h3>${item.nome}</h3>
-                    <p>${item.descricao}</p>
-                </div>
-                <div class="card-footer-info">
-                    <span class="preco">${item.preco}</span>
-                    <a href="servicos.html?id=${item.id}" class="btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Ver Detalhes</a>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    window.addEventListener('DOMContentLoaded', carregarServicos);
+        document.addEventListener('DOMContentLoaded', exibirServicos);
     </script>
 </body>
 </html>
