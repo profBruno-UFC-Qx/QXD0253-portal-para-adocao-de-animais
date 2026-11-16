@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "avaliacoes",
+  "info": {
+    "singularName": "avaliacao",
+    "pluralName": "avaliacoes",
+    "displayName": "Avaliações"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nota": {
+      "type": "integer",
+      "required": true,
+      "default": 5,
+      "min": 0,
+      "max": 5
+    },
+    "descricao": {
+      "type": "text"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "avaliacoes"
+    }
+  }
+}

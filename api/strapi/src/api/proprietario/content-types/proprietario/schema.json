@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "proprietarios",
+  "info": {
+    "singularName": "proprietario",
+    "pluralName": "proprietarios",
+    "displayName": "Proprietario"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "email": {
+      "type": "email",
+      "required": true,
+      "unique": true
+    },
+    "senha": {
+      "type": "password",
+      "private": true,
+      "required": true
+    }
+  }
+}
