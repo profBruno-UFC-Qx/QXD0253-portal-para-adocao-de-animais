@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Senha - AuMigo Pet Shop</title>
+    
+    <!-- fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #A8356A;
+            --primary-hover: #084eda;
+            --secondary: #2EC4B6;
+            --neutral-dark: #2B2D42;
+            --neutral-light: #F8F9FA;
+            --white: #FFFFFF;
+            --accent: #FF6B6B;
+            --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--neutral-light);
+            color: var(--neutral-dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--neutral-dark);
+        }
+
+        /* Animações Suaves */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        /* Layout  */
+        .auth-card {
+            width: 100%;
+            max-width: 480px;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.03);
+            padding: 3rem;
+            margin: 2rem;
+            text-align: center;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .auth-header {
+            margin-bottom: 2rem;
+        }
+
+        .auth-header h1 {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--neutral-dark);
+        }
+
+        .form-control {
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+            background: var(--neutral-light);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            background: var(--white);
+            box-shadow: 0 0 0 3px rgba(168, 53, 106, 0.15);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 0.85rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: block;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 78, 218, 0.3);
+        }
+
+        .auth-footer {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .auth-footer a:hover {
+            color: var(--primary-hover);
+        }
+
+        .alert-success {
+            background: #E6F8F6;
+            color: #1a7a70;
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            display: none;
+            text-align: left;
+        }
+
+        .alert-error {
+            background: #FFEDED;
+            color: #D32F2F;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: none;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-card animate-fade">
+        <a href="index.html" class="logo">🐾 AuMigo</a>
+        
+        <div class="auth-header">
+            <h1>Recuperar Senha</h1>
+            <p>Esqueceu sua senha? Digite seu e-mail abaixo e enviaremos instruções para redefinição.</p>
+        </div>
+
+        <div id="alert-success" class="alert-success">
+            <strong>E-mail enviado!</strong> Verifique sua caixa de entrada para redefinir sua senha.
+        </div>
+
+        <div id="alert-error" class="alert-error"></div>
+
+        <form id="recovery-form" onsubmit="solicitarRecuperacao(event)">
+            <div class="form-group">
+                <label for="email">E-mail cadastrado</label>
+                <input type="email" id="email" class="form-control" placeholder="seu@email.com" required>
+            </div>
+
+            <button type="submit" class="btn-primary">Enviar Instruções</button>
+        </form>
+
+        <div class="auth-footer">
+            Lembrou da senha? <a href="login.html">Voltar para o login</a>
+        </div>
+    </div>
+
+    <script>
+        async function solicitarRecuperacao(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const alertSuccess = document.getElementById('alert-success');
+            const alertError = document.getElementById('alert-error');
+            const form = document.getElementById('recovery-form');
+
+            alertSuccess.style.display = 'none';
+            alertError.style.display = 'none';
+
+            try {
+                const response = await fetch('https://api.exemplo-aumigo.com/auth/recuperar-senha', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email }),
+                    signal: AbortSignal.timeout(3000)
+                });
+
+                if (!response.ok) throw new Error('E-mail não encontrado');
+
+                form.style.display = 'none';
+                alertSuccess.style.display = 'block';
+
+            } catch (error) {
+                if (email) {
+                    form.style.display = 'none';
+                    alertSuccess.style.display = 'block';
+                } else {
+                    alertError.textContent = 'Por favor, insira um e-mail válido.';
+                    alertError.style.display = 'block';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
