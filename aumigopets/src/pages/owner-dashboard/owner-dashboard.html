@@ -1,234 +1,49 @@
- <!DOCTYPE html>
- <html lang="pt-br">
- <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="../../styles/owner-dashboard.css">
- </head>
- <body>
-
-    <aside id="sidebar">
-
-      <section class="titulo">
-         <img src="" alt="Logo">
-         <h1>AuMigo</h1>
-      </section>
-
-      <nav class="menu">
-
-         <nav class="painel">
-            <h2>Painel Operacional</h2>
-            <ul>
-               <li>&#x1F4CA;Pipeline</li>
-               <li>&#x1F4C5;Gestão de Agenda</li>
-               <li>&#x1F4DD;Serviços & Preços</li>
-               <li>&#x1F465;Tutores & Pets</li>
-            </ul>
-         </nav>
-
-         <nav class="financeiro">
-            <h2>Administração e Finanças</h2>
-            <ul>
-               <li>&#x1F4B0;Caixa & Financeiro</li>
-               <li>&#x1F4C8;Relatórios & Lucro</li>
-               <li>&#x2B50;Avaliações</li>
-            </ul>
-         </nav>
-
-      </nav>
-
-      <button type="button" class="sair">Sair da Conta</button>
-
-    </aside>
-
-    <main>
-       <header>
-         <h1>Painel Administrativo AumigoPet</h1>
-       </header>
-       
-       <!-- O conteudo de cada pagina fica aqui -->
-       <section id="conteudo">
-
-         <section id="section-header">
-
-            <section class="titulo">
-               <h1>Pipeline de Atendimentos</h1>
-               <p>Acompanhe em tempo real o fluxo dos serviços agendados, em andamento e concluídos hoje.</p>
-            </section>
-
-            <button >+ Novo Agendamento</button>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Dashboard do Proprietário</title>
+   <link rel="stylesheet" href="../../../../css/style.css">
+   <link rel="stylesheet" href="../../styles/owner-dashboard.css">
+</head>
+<body>
+   <div class="app">
+      <aside class="sideBar">
+         <section class="logo">
+            <img src="../../../../assets/logo.webp" alt="AuMigo" class="logo">
          </section>
 
-         <section id="section-content">
-            
-            <section class="cards">
+         <nav class="menu" aria-label="Menu do proprietário">
+            <a class="active" href="#" data-dashboard-option="pipeline">&#x1F4CA; Pipeline</a>
+            <a href="#" data-dashboard-option="agenda">&#x1F4C5; Gestão de Agenda</a>
+            <a href="#" data-dashboard-option="servicos">&#x1F4DD; Serviços &amp; Preços</a>
+            <a href="#" data-dashboard-option="clientes">&#x1F465; Tutores &amp; Pets</a>
+            <a href="#" data-dashboard-option="financeiro">&#x1F4B0; Caixa &amp; Financeiro</a>
+            <a href="#" data-dashboard-option="despesas">&#x1F4B8; Controle de Despesas</a>
+            <a href="#" data-dashboard-option="relatorios">&#x1F4C8; Relatórios &amp; Lucro</a>
+            <a href="#" data-dashboard-option="avaliacoes">&#x2B50; Avaliações</a>
+         </nav>
 
-               <article class="info-card">
-                  <h1>Agendamentos</h1>
-                  <p>6</p>
-               </article>
+         <a class="logout" href="#">Sair da Conta</a>
+      </aside>
 
-               <article class="info-card">
-                  <h1>Faturamento Previsto</h1>
-                  <p>R$ 540,00</p>
-               </article>
+      <main class="dashboardMain">
+         <header class="topBar">
+            <h1>Painel Administrativo AumigoPet</h1>
+         </header>
 
-               <article class="conversao">
-                  <h1>Taxa de Conclusão</h1>
-                  <p>85%</p>
-               </article>
-
-            </section>  <!-- Fim dos cards de cima -->
-
-            <section class="items">
-
-               <article class="pendente">
-                  <div class="item-header">
-                     <h1>Pendentes</h1>
-                     <p>2</p>
-                  </div>
-
-                  <hr>
-
-                  <div class="item-card">
-                     <h1>Fernanda Costa</h1>
-                     <p>R$ 100,00</p>
-
-
-                     <div class="item-info">
-                        <p><span>Bela (Siames)</span> - Tosa Felina</p>
-                        <p>Gato arisco, usar luvas de contenção</p>
-
-                     <hr>
-
-                     <div class="hora">
-                        <p class="item-hora">15:30</p>
-                        <p class="item-id">ID #5</p>
-                     </div>
-
-
-                     </div>
-
-                  </div>
-
-                  
-
-               </article>
-
-               <article class="andamento">
-                  <div class="item-header">
-                     <h1>Em Andamento</h1>
-                     <p>2</p>
-                  </div>
-
-                  <hr>
-
-                  <div class="item-card">
-                     <h1>Fernanda Costa</h1>
-                     <p>R$ 100,00</p>
-
-
-                     <div class="item-info">
-                        <p><span>Bela (Siames)</span> - Tosa Felina</p>
-                        <p>Gato arisco, usar luvas de contenção</p>
-
-                     <hr>
-
-                     <div class="hora">
-                        <p class="item-hora">15:30</p>
-                        <p class="item-id">ID #5</p>
-                     </div>
-
-
-                     </div>
-
-                  </div>
-
-                  <div class="item-card">
-                     <h1>Fernanda Costa</h1>
-                     <p>R$ 100,00</p>
-
-
-                     <div class="item-info">
-                        <p><span>Bela (Siames)</span> - Tosa Felina</p>
-                        <p>Gato arisco, usar luvas de contenção</p>
-
-                     <hr>
-
-                     <div class="hora">
-                        <p class="item-hora">15:30</p>
-                        <p class="item-id">ID #5</p>
-                     </div>
-
-
-                     </div>
-
-                  </div>
-
-               </article>
-
-               <article class="concluidos">
-                  <div class="item-header">
-                     <h1>Concluídos</h1>
-                     <p>2</p>
-                  </div>
-
-                  <hr>
-
-                  <div class="item-card">
-                     <h1>Fernanda Costa</h1>
-                     <p>R$ 100,00</p>
-
-
-                     <div class="item-info">
-                        <p><span>Bela (Siames)</span> - Tosa Felina</p>
-                        <p>Gato arisco, usar luvas de contenção</p>
-
-                     <hr>
-
-                     <div class="hora">
-                        <p class="item-hora">15:30</p>
-                        <p class="item-id">ID #5</p>
-                     </div>
-
-
-                     </div>
-
-                  </div>
-
-                  <div class="item-card">
-                     <h1>Fernanda Costa</h1>
-                     <p>R$ 100,00</p>
-
-
-                     <div class="item-info">
-                        <p><span>Bela (Siames)</span> - Tosa Felina</p>
-                        <p>Gato arisco, usar luvas de contenção</p>
-
-                     <hr>
-
-                     <div class="hora">
-                        <p class="item-hora">15:30</p>
-                        <p class="item-id">ID #5</p>
-                     </div>
-
-
-                     </div>
-
-                  </div>
-
-
-               </article>
-
-            </section>
-
+         <!--
+            Área exclusiva para o JavaScript inserir os fragmentos de
+            owner-dashboard-content.html. Troque o conteúdo deste elemento
+            conforme a opção selecionada na sidebar.
+         -->
+         <section class="content" id="dashboard-content" aria-live="polite">
+            <!-- Conteúdo carregado pelo JavaScript -->
          </section>
+      </main>
+   </div>
 
-
-       </section>
-
-    </main>
-
- </body>
- </html>
+   <script type="module" src="js/main.js"></script>
+</body>
+</html>
