@@ -507,17 +507,19 @@ export interface ApiAgendamentoAgendamento extends Struct.CollectionTypeSchema {
       'api::agendamento.agendamento'
     > &
       Schema.Attribute.Private;
-    pet: Schema.Attribute.Relation<'oneToOne', 'api::pet.pet'>;
+    pet: Schema.Attribute.Relation<'oneToOne', 'api::pet.pet'> &
+      Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
-    servico: Schema.Attribute.String & Schema.Attribute.Required;
+    servico: Schema.Attribute.Relation<'oneToOne', 'api::servico.servico'> &
+      Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     user: Schema.Attribute.Relation<
       'manyToOne',
       'plugin::users-permissions.user'
-    >;
-    valor: Schema.Attribute.Integer & Schema.Attribute.Required;
+    > &
+      Schema.Attribute.Required;
   };
 }
 
@@ -559,7 +561,8 @@ export interface ApiAvaliacaoAvaliacao extends Struct.CollectionTypeSchema {
     user: Schema.Attribute.Relation<
       'manyToOne',
       'plugin::users-permissions.user'
-    >;
+    > &
+      Schema.Attribute.Required;
   };
 }
 
@@ -607,40 +610,6 @@ export interface ApiPetPet extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiProprietarioProprietario
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'proprietarios';
-  info: {
-    displayName: 'Proprietario';
-    pluralName: 'proprietarios';
-    singularName: 'proprietario';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    email: Schema.Attribute.Email &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::proprietario.proprietario'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    senha: Schema.Attribute.Password &
-      Schema.Attribute.Required &
-      Schema.Attribute.Private;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiServicoServico extends Struct.CollectionTypeSchema {
   collectionName: 'servicos';
   info: {
@@ -668,7 +637,7 @@ export interface ApiServicoServico extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    tempo: Schema.Attribute.Integer;
+    tempo: Schema.Attribute.Integer & Schema.Attribute.Required;
     titulo: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
@@ -1229,7 +1198,6 @@ declare module '@strapi/strapi' {
       'api::agendamento.agendamento': ApiAgendamentoAgendamento;
       'api::avaliacao.avaliacao': ApiAvaliacaoAvaliacao;
       'api::pet.pet': ApiPetPet;
-      'api::proprietario.proprietario': ApiProprietarioProprietario;
       'api::servico.servico': ApiServicoServico;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

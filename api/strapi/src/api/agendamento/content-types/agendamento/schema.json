@@ -11,20 +11,12 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "servico": {
-      "type": "string",
-      "required": true
-    },
     "data": {
       "type": "date",
       "required": true
     },
     "hora": {
       "type": "time",
-      "required": true
-    },
-    "valor": {
-      "type": "integer",
       "required": true
     },
     "estagio": {
@@ -40,13 +32,21 @@
     "pet": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::pet.pet"
+      "target": "api::pet.pet",
+      "required": true
     },
     "user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
+      "required": true,
       "inversedBy": "agendamentos"
+    },
+    "servico": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::servico.servico",
+      "required": true
     }
   }
 }
