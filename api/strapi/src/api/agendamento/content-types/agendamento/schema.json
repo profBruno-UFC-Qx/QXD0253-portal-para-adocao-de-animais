@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "agendamentos",
+  "info": {
+    "singularName": "agendamento",
+    "pluralName": "agendamentos",
+    "displayName": "Agendamentos"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "data": {
+      "type": "date",
+      "required": true
+    },
+    "hora": {
+      "type": "time",
+      "required": true
+    },
+    "estagio": {
+      "type": "enumeration",
+      "required": true,
+      "default": "pendente",
+      "enum": [
+        "pendente",
+        "andamento",
+        "concluido"
+      ]
+    },
+    "pet": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::pet.pet",
+      "required": true
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "required": true,
+      "inversedBy": "agendamentos"
+    },
+    "servico": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::servico.servico",
+      "required": true
+    }
+  }
+}
