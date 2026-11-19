@@ -495,6 +495,7 @@ export interface ApiAgendamentoAgendamento extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     data: Schema.Attribute.Date & Schema.Attribute.Required;
+    descricao: Schema.Attribute.Text;
     estagio: Schema.Attribute.Enumeration<
       ['pendente', 'andamento', 'concluido']
     > &

@@ -1,39 +1,48 @@
-const columnsName = ["pendingColumn", "progressColumn", "completedColumn"];
+import { listAgendamentos } from "./api.js";
 
-function createItemInfo() {
+const columnsName = ["pendingColumn", "progressColumn", "completedColumn"];
+let agendamentos;
+
+async function createItemInfo(agendamento) {
     const itemInfo = document.createElement('div');
     itemInfo.classList.add("itemInfo");
 
+    const pet = agendamento.pet;
+    let descricao = agendamento.descricao;
+    if (!descricao) {
+        descricao = "-"
+    }
+
     const htmlContent =  `
-    <p><span>Bela (Siames)</span> - Tosa Felina</p>
-    <p>Gato arisco, usar luvas de contenção</p>
+    <p><span>${pet.nome} (${pet.raca})</span> - ${agendamento.servico.titulo}</p>
+    <p>${descricao}</p>
     <hr>
     <div class="itemTime">
-    <p>15:30</p>
-    <p>ID #5</p>
+    <p>${agendamento.hora.slice(0, 5)}</p>
+    <p>ID #${agendamento.id}</p>
     </div>`
     itemInfo.innerHTML = htmlContent;
     return itemInfo
 }
 
-function createPipelineCard(customer, value) {
-    const pipelineCard = document.createElement('div')
-    pipelineCard.classList.add('pipelineCard')
+async function createPipelineCard(agendamento) {
+    const pipelineCard = document.createElement('div');
+    pipelineCard.classList.add('pipelineCard');
 
-    const customerName = document.createElement('h1')
-    const serviceValue = document.createElement('p')
-    customerName.innerText = customer
-    serviceValue.innerText = value
+    const customerName = document.createElement('h1');
+    const serviceValue = document.createElement('p');
+    customerName.innerText = agendamento.user.username;
+    serviceValue.innerText = "R$ " + agendamento.servico.valor.toString().replace(".", ",");
 
-    pipelineCard.appendChild(customerName)
-    pipelineCard.appendChild(serviceValue)
+    pipelineCard.appendChild(customerName);
+    pipelineCard.appendChild(serviceValue);
 
-    pipelineCard.appendChild(createItemInfo());
+    pipelineCard.appendChild(await createItemInfo(agendamento));
 
     return pipelineCard;
 }
 
-function createPipelineColumnHeader(columnName) {
+async function createPipelineColumnHeader(columnName) {
     const itemHeader = document.createElement("div");
     itemHeader.classList.add("itemHeader");
 
@@ -63,32 +72,46 @@ function createPipelineColumnHeader(columnName) {
 
 }
 
-function createPipelineColumn(columnName) {
+async function createPipelineColumn(columnName) {
     const article = document.createElement("article");
     article.classList.add("pipelineColumn");
     article.classList.add(columnName);
 
-    const itemHeader = createPipelineColumnHeader(columnName);
+    const itemHeader = await createPipelineColumnHeader(columnName);
 
     article.appendChild(itemHeader);
-    article.appendChild(createPipelineCard("Edmilson", "R$ 100,00"));
+
+    console.log(agendamentos)
+
+    for (const agendamento of agendamentos) {
+        if (columnName === "pendingColumn" && agendamento.estagio === "pendente") {
+            article.appendChild(
+                await createPipelineCard(
+                    agendamento
+                ));
+        } else if (columnName === "progressColumn" && agendamento.estagio === "andamento") {
+            article.appendChild(
+                await createPipelineCard(
+                    agendamento
+                ));
+        }
+    }
 
     return article;
 }
 
-
-function createPipelineSection() {
+async function createPipelineSection() {
     const section = document.createElement('section');
     section.classList.add("pipelineItems");
 
     for (const col of columnsName) {
-        section.appendChild(createPipelineColumn(col))
+        section.appendChild(await createPipelineColumn(col))
     }
 
     return section;
 }
 
-function createMetricCard(name, value, isCompMetric) {
+async function createMetricCard(name, value, isCompMetric) {
     const article = document.createElement("article");
     if (isCompMetric) {
         article.classList.add("card", "pipelineMetric", "completionMetric");
@@ -108,7 +131,7 @@ function createMetricCard(name, value, isCompMetric) {
     return article;
 }
 
-function createPipelineCards() {
+async function createPipelineCards() {
     const cardsList = ["Agendamentos", "Faturamento Previsto", "Taxa de Conclusão"];
 
     const section = document.createElement("section");
@@ -117,16 +140,16 @@ function createPipelineCards() {
 
     for (const card of cardsList) {
         if (card === "Taxa de Conclusão") {
-            section.appendChild(createMetricCard(card, "87%", true));
+            section.appendChild(await createMetricCard(card, "87%", true));
             continue;
         }
-        section.appendChild(createMetricCard(card, "R$ 500,00", false));
+        section.appendChild(await createMetricCard(card, "R$ 500,00", false));
     }
 
     return section;
 }
 
-function createMainHeaderContent() {
+async function createMainHeaderContent() {
     const div = document.createElement("div");
 
     const h1 = document.createElement("h1");
@@ -143,7 +166,7 @@ function createMainHeaderContent() {
     
 }
 
-function createMainHeader() {
+async function createMainHeader() {
     const section = document.createElement("section");
     section.classList.add("ownerPage");
     section.setAttribute("data-dashboard-section", "pipeline");
@@ -155,26 +178,29 @@ function createMainHeader() {
     button.innerText = "Novo Agendamento";
 
     header.classList.add("pageHeader", "dashboardPageHeader");
-    header.appendChild(createMainHeaderContent());
+    header.appendChild(await createMainHeaderContent());
     header.appendChild(button);
 
     section.appendChild(header);
     return section
 }
 
-function createPipeline() {
+async function createPipeline() {
     const section = document.createElement("section")
     section.id = "pipeline-content"
 
-    section.appendChild(createMainHeader());
-    section.appendChild(createPipelineCards());
-    section.appendChild(createPipelineSection());
+    section.appendChild(await createMainHeader());
+    section.appendChild(await createPipelineCards());
+    section.appendChild(await createPipelineSection());
 
     return section;
 }
 
 // pendingColumn progressColumn completedColumn
-export function renderMainPipelinePage() {
+export async function renderMainPipelinePage() {
     const mainContent = document.querySelector("#dashboard-content");
-    mainContent.replaceChildren(createPipeline());
+
+    agendamentos = await listAgendamentos();
+
+    mainContent.replaceChildren(await createPipeline());
 }

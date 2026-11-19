@@ -16,6 +16,7 @@ body {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
+    padding-right: 4px;
 }
 
 .sideBar .logout {
@@ -24,101 +25,11 @@ body {
 
 .dashboardMain {
     min-width: 0;
-    height: auto;
-    overflow: visible;
+    height: 100%;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
-}
-
-.pipelineCards,
-.pipelineItems {
-    display: grid;
-    gap: 16px;
-}
-
-.pipelineCards {
-    grid-template-columns: repeat(3, 1fr);
-    margin-bottom: 12px;
-}
-
-.pipelineMetric {
-    padding: 16px 24px;
-}
-
-.pipelineMetric h1 {
-    color: #656565;
-    font-size: 15px;
-    font-weight: 400;
-}
-
-.pipelineMetric p {
-    color: var(--pink);
-    font-size: 32px;
-    font-weight: 700;
-}
-
-.completionMetric p {
-    color: #007700;
-}
-
-.pipelineItems {
-    grid-template-columns: repeat(3, 1fr);
-}
-
-.pipelineColumn {
-    padding: 16px;
-    border-radius: 16px;
-    background: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.itemHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 10px;
-}
-
-.itemHeader h1 {
-    font-size: 17px;
-}
-
-.pipelineCard {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-top: 10px;
-    padding: 10px;
-    border-left: 7px solid #a52a2a;
-    border-radius: 10px;
-    background: var(--bg);
-    color: #545454;
-    transition: transform 300ms ease-in-out;
-}
-
-.pipelineCard:hover {
-    transform: scale(1.03);
-}
-
-.progressColumn .pipelineCard {
-    border-left-color: var(--pink);
-}
-
-.completedColumn .pipelineCard {
-    border-left-color: #007700;
-}
-
-.pipelineCard h1 {
-    font-size: 15px;
-    color: var(--navy);
-}
-
-.itemInfo {
-    grid-column: 1 / -1;
-}
-
-.itemTime {
-    display: flex;
-    justify-content: space-between;
+    scroll-behavior: smooth;
 }
 
 .ownerPage {
@@ -133,20 +44,137 @@ body {
     color: var(--pink);
 }
 
+.pipelineColumn,
+.filterBar,
+.pipelineMetric,
+.metricCard,
+.serviceCard,
+.reportCard,
+.reviewCard {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(6, 61, 137, 0.06);
+    border: 1px solid rgba(240, 221, 230, 0.6);
+}
+
+.pipelineCards,
+.pipelineItems,
+.servicesGrid,
+.metricGrid,
+.reportGrid,
+.reviewsGrid {
+    display: grid;
+    gap: 16px;
+}
+
+.pipelineCards {
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 16px;
+}
+
+.pipelineMetric {
+    padding: 16px 24px;
+}
+
+.pipelineMetric h1 {
+    color: #5b6270;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.pipelineMetric p {
+    color: var(--pink);
+    font-size: 32px;
+    font-weight: 700;
+    margin-top: 4px;
+    line-height: 1.2;
+}
+
+.completionMetric p {
+    color: #15803d; 
+}
+
+.pipelineItems {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+}
+
+.pipelineColumn {
+    padding: 16px;
+}
+
+.itemHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+}
+
+.itemHeader h1 {
+    font-size: 17px;
+}
+
+.pipelineCard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 12px;
+    border-left: 6px solid #c2410c; 
+    border-radius: 10px;
+    background: var(--bg);
+    color: #5b6270;
+    font-size: 14px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pipelineCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(6, 61, 137, 0.08);
+}
+
+.progressColumn .pipelineCard {
+    border-left-color: var(--pink);
+}
+
+.completedColumn .pipelineCard {
+    border-left-color: #15803d;
+}
+
+.pipelineCard h1 {
+    font-size: 15px;
+    color: var(--navy);
+}
+
+.itemInfo {
+    grid-column: 1 / -1;
+}
+
+.itemTime {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    grid-column: 1 / -1;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
 .filterBar {
     display: grid;
     grid-template-columns: 150px 180px 1fr;
     gap: 16px;
     align-items: end;
     margin-bottom: 16px;
-    padding: 16px;
-    border-radius: 16px;
-    background: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 16px 20px;
 }
 
 .filterField {
     margin-bottom: 0;
+}
+
+.searchField {
+    max-width: 560px;
 }
 
 .tableCard {
@@ -160,6 +188,8 @@ body {
 
 .tableScroll {
     overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid var(--line);
 }
 
 .tableScroll table {
@@ -170,15 +200,26 @@ body {
 }
 
 .tableScroll th {
-    padding: 10px 12px;
+    padding: 12px 14px;
     border-bottom: 1px solid var(--line);
-    color: #656565;
+    color: #5b6270;
+    font-weight: 600;
     background: var(--bg);
+    white-space: nowrap;
 }
 
 .tableScroll td {
-    padding: 12px;
+    padding: 12px 14px;
     border-bottom: 1px solid var(--line);
+    color: #2b2d42;
+}
+
+.tableScroll tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.tableScroll tbody tr:hover {
+    background-color: rgba(253, 234, 241, 0.35);
 }
 
 .tableScroll tr:last-child td {
@@ -186,15 +227,9 @@ body {
 }
 
 .tableScroll td small {
-    color: #656565;
-}
-
-.servicesGrid,
-.metricGrid,
-.reportGrid,
-.reviewsGrid {
-    display: grid;
-    gap: 16px;
+    display: block;
+    color: #5b6270;
+    margin-top: 2px;
 }
 
 .servicesGrid {
@@ -205,6 +240,7 @@ body {
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 12px;
+    padding: 20px;
 }
 
 .serviceCard h1 {
@@ -219,10 +255,7 @@ body {
     color: var(--pink);
     font-size: 20px;
     font-weight: 700;
-}
-
-.searchField {
-    max-width: 560px;
+    white-space: nowrap;
 }
 
 .metricGrid {
@@ -230,18 +263,24 @@ body {
     margin-bottom: 16px;
 }
 
+.metricCard {
+    padding: 20px 24px;
+}
+
 .metricCard h1 {
-    margin-top: 4px;
+    margin-top: 6px;
     font-size: 24px;
 }
 
 .metricCard span {
-    color: #656565;
+    color: #5b6270;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .metricCard.positive h1,
 .amountPositive {
-    color: #007700;
+    color: #15803d;
 }
 
 .metricCard.negative h1,
@@ -253,6 +292,10 @@ body {
     grid-template-columns: 2fr 1fr;
 }
 
+.reportCard {
+    padding: 24px;
+}
+
 .reportCard h1 {
     font-size: 17px;
 }
@@ -262,21 +305,33 @@ body {
     display: flex;
     align-items: flex-end;
     justify-content: space-around;
-    margin-top: 16px;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 0 8px;
     border-bottom: 2px solid var(--line);
 }
 
 .reportBars div {
     width: 15%;
+    min-height: 24px; 
     display: flex;
     align-items: flex-end;
     justify-content: center;
     border-radius: 8px 8px 0 0;
     background: var(--pink-soft);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.reportBars div:hover {
+    opacity: 0.85;
 }
 
 .reportBars div:last-child {
     background: var(--pink);
+}
+
+.reportBars div:last-child span {
+    color: #fff; 
 }
 
 .reportBars div span {
@@ -289,8 +344,10 @@ body {
 .ranking p {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 12px 0;
     border-bottom: 1px solid var(--line);
+    font-size: 14px;
 }
 
 .ranking p:last-child {
@@ -301,20 +358,26 @@ body {
     grid-template-columns: repeat(3, 1fr);
 }
 
+.reviewCard {
+    padding: 20px;
+}
+
 .reviewCard h1 {
     font-size: 17px;
 }
 
 .reviewCard blockquote {
-    margin: 16px 0;
+    margin: 14px 0;
     color: #5b6270;
     font-style: italic;
     line-height: 1.5;
+    font-size: 14px;
 }
 
 .stars {
     color: #ffb03a;
     letter-spacing: 2px;
+    font-size: 16px;
 }
 
 .errorDialog {
@@ -323,6 +386,7 @@ body {
 
 .errorDialog h1 {
     font-size: 22px;
+    margin-bottom: 8px;
 }
 
 .errorIcon {
@@ -336,29 +400,4 @@ body {
     color: var(--pink);
     font-size: 24px;
     font-weight: 700;
-}
-
-@media (max-width: 1100px) {
-    .pipelineItems,
-    .metricGrid,
-    .reviewsGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .reportGrid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 700px) {
-    .pipelineCards,
-    .servicesGrid,
-    .filterBar {
-        grid-template-columns: 1fr;
-    }
-
-    .dashboardPageHeader {
-        align-items: flex-start;
-        flex-direction: column;
-    }
 }

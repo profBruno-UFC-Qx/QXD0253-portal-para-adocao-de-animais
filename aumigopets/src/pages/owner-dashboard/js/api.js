@@ -1,21 +1,28 @@
 const URL_BASE = 'http://127.0.0.1:1337/api'
 
-const testToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIzIiwic2Vzc2lvbklkIjoiNjhlM2UwY2FlZDEyNGI1ZmRmNDkyMDM5NTBmN2M2MGYiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzk1MDM4ODMyLCJleHAiOjE3OTUwMzk0MzJ9._2Qud37bZiWJ9nxPZ4dPt5i1RB0ix-Yz58p-FXqVwyQ";
+export async function listAgendamentos() {
+    const endpoint = "/agendamentos?populate=user&populate=servico&populate=pet";
+    const token = localStorage.getItem("auth_token");
 
-export async function listAll(endpoint) {
+    if (!token) {
+        alert("Não autenticado");
+        window.location.href = "index.html"
+        return;
+    }
+
     const response = await fetch(URL_BASE + endpoint, {
         method: "GET",
         headers: {
-            "Authorization": "Bearer " + testToken
+            "Authorization": "Bearer " + token
         }
     });
 
     if (!response.ok) {
-        console.log("Deu erro man -> " + response.status);
+        alert("Error: " + response.status);
         return;
     }
 
     const data = await response.json();
-    console.log(data);
+    return data.data
 }
 

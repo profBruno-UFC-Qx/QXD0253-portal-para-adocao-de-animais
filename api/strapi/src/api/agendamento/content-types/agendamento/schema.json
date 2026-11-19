@@ -11,6 +11,12 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "servico": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::servico.servico",
+      "required": true
+    },
     "data": {
       "type": "date",
       "required": true
@@ -18,6 +24,9 @@
     "hora": {
       "type": "time",
       "required": true
+    },
+    "descricao": {
+      "type": "text"
     },
     "estagio": {
       "type": "enumeration",
@@ -41,12 +50,6 @@
       "target": "plugin::users-permissions.user",
       "required": true,
       "inversedBy": "agendamentos"
-    },
-    "servico": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::servico.servico",
-      "required": true
     }
   }
 }
