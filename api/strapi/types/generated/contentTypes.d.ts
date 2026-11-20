@@ -480,12 +480,12 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiAgendamentoAgendamento extends Struct.CollectionTypeSchema {
-  collectionName: 'agendamentos';
+export interface ApiAppointmentAppointment extends Struct.CollectionTypeSchema {
+  collectionName: 'appointments';
   info: {
-    displayName: 'Agendamentos';
-    pluralName: 'agendamentos';
-    singularName: 'agendamento';
+    displayName: 'Appointments';
+    pluralName: 'appointments';
+    singularName: 'appointment';
   };
   options: {
     draftAndPublish: true;
@@ -494,68 +494,25 @@ export interface ApiAgendamentoAgendamento extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    data: Schema.Attribute.Date & Schema.Attribute.Required;
-    descricao: Schema.Attribute.Text;
-    estagio: Schema.Attribute.Enumeration<
-      ['pendente', 'andamento', 'concluido']
+    current_status: Schema.Attribute.Enumeration<
+      ['pending', 'confirmed', 'done']
     > &
       Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'pendente'>;
-    hora: Schema.Attribute.Time & Schema.Attribute.Required;
+      Schema.Attribute.DefaultTo<'pending'>;
+    date: Schema.Attribute.Date & Schema.Attribute.Required;
+    hour: Schema.Attribute.Time & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::agendamento.agendamento'
+      'api::appointment.appointment'
     > &
       Schema.Attribute.Private;
-    pet: Schema.Attribute.Relation<'oneToOne', 'api::pet.pet'> &
+    notes: Schema.Attribute.Text;
+    pet: Schema.Attribute.Relation<'manyToOne', 'api::pet.pet'> &
       Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
-    servico: Schema.Attribute.Relation<'oneToOne', 'api::servico.servico'> &
+    service: Schema.Attribute.Relation<'oneToOne', 'api::service.service'> &
       Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    user: Schema.Attribute.Relation<
-      'manyToOne',
-      'plugin::users-permissions.user'
-    > &
-      Schema.Attribute.Required;
-  };
-}
-
-export interface ApiAvaliacaoAvaliacao extends Struct.CollectionTypeSchema {
-  collectionName: 'avaliacoes';
-  info: {
-    displayName: 'Avalia\u00E7\u00F5es';
-    pluralName: 'avaliacoes';
-    singularName: 'avaliacao';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    descricao: Schema.Attribute.Text;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::avaliacao.avaliacao'
-    > &
-      Schema.Attribute.Private;
-    nota: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMax<
-        {
-          max: 5;
-          min: 0;
-        },
-        number
-      > &
-      Schema.Attribute.DefaultTo<5>;
-    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -578,28 +535,26 @@ export interface ApiPetPet extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    age: Schema.Attribute.Integer;
+    appointments: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::appointment.appointment'
+    >;
+    breed: Schema.Attribute.String & Schema.Attribute.Required;
+    coat: Schema.Attribute.String & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    especie: Schema.Attribute.Enumeration<['C\u00E3o', 'Gato']> &
-      Schema.Attribute.Required;
-    idade: Schema.Attribute.Integer;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::pet.pet'> &
       Schema.Attribute.Private;
-    nome: Schema.Attribute.String & Schema.Attribute.Required;
-    observacoes: Schema.Attribute.Text;
-    pelagem: Schema.Attribute.String & Schema.Attribute.Required;
-    porte: Schema.Attribute.Enumeration<
-      [
-        'Pequeno (at\u00E9 10kg)',
-        'M\u00E9dio (10kg  25kg)',
-        'Grande (acima de 25kg)',
-      ]
-    > &
-      Schema.Attribute.Required;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    notes: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
-    raca: Schema.Attribute.String & Schema.Attribute.Required;
+    size: Schema.Attribute.Enumeration<['small', 'medium', 'big']> &
+      Schema.Attribute.Required;
+    specie: Schema.Attribute.Enumeration<['dog', 'cat']> &
+      Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -611,12 +566,12 @@ export interface ApiPetPet extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiServicoServico extends Struct.CollectionTypeSchema {
-  collectionName: 'servicos';
+export interface ApiReviewReview extends Struct.CollectionTypeSchema {
+  collectionName: 'reviews';
   info: {
-    displayName: 'Servicos';
-    pluralName: 'servicos';
-    singularName: 'servico';
+    displayName: 'Reviews';
+    pluralName: 'reviews';
+    singularName: 'review';
   };
   options: {
     draftAndPublish: true;
@@ -625,27 +580,68 @@ export interface ApiServicoServico extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    descricao: Schema.Attribute.Text & Schema.Attribute.Required;
-    especies: Schema.Attribute.Enumeration<
-      ['C\u00E3o', 'Gato', 'C\u00E3o e Gato']
-    > &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'C\u00E3o e Gato'>;
+    description: Schema.Attribute.Text;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::servico.servico'
+      'api::review.review'
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    tempo: Schema.Attribute.Integer & Schema.Attribute.Required;
-    titulo: Schema.Attribute.String &
+    stars: Schema.Attribute.Integer &
       Schema.Attribute.Required &
-      Schema.Attribute.Unique;
+      Schema.Attribute.SetMinMax<
+        {
+          max: 5;
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<5>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    valor: Schema.Attribute.Decimal & Schema.Attribute.Required;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    > &
+      Schema.Attribute.Required;
+  };
+}
+
+export interface ApiServiceService extends Struct.CollectionTypeSchema {
+  collectionName: 'services';
+  info: {
+    displayName: 'Services';
+    pluralName: 'services';
+    singularName: 'service';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    duration: Schema.Attribute.Integer & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::service.service'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    price: Schema.Attribute.Decimal & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    species: Schema.Attribute.Enumeration<['dog', 'cat', 'dog&cat']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'dog&cat'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1131,13 +1127,9 @@ export interface PluginUsersPermissionsUser
     timestamps: true;
   };
   attributes: {
-    agendamentos: Schema.Attribute.Relation<
+    appointments: Schema.Attribute.Relation<
       'oneToMany',
-      'api::agendamento.agendamento'
-    >;
-    avaliacoes: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::avaliacao.avaliacao'
+      'api::appointment.appointment'
     >;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1168,6 +1160,7 @@ export interface PluginUsersPermissionsUser
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
+    reviews: Schema.Attribute.Relation<'oneToMany', 'api::review.review'>;
     role: Schema.Attribute.Relation<
       'manyToOne',
       'plugin::users-permissions.role'
@@ -1196,10 +1189,10 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::agendamento.agendamento': ApiAgendamentoAgendamento;
-      'api::avaliacao.avaliacao': ApiAvaliacaoAvaliacao;
+      'api::appointment.appointment': ApiAppointmentAppointment;
       'api::pet.pet': ApiPetPet;
-      'api::servico.servico': ApiServicoServico;
+      'api::review.review': ApiReviewReview;
+      'api::service.service': ApiServiceService;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

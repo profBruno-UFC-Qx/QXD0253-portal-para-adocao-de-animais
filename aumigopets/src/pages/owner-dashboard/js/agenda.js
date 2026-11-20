@@ -1,6 +1,6 @@
- 
+import { listAgendamentos } from './api.js'
 
-function createHeaderContent() {
+async function createHeaderContent() {
     const div = document.createElement("div")
 
     const h1 = document.createElement("h1");
@@ -16,11 +16,11 @@ function createHeaderContent() {
     return div;
 }
 
-function createHeader() {
+async function createHeader() {
     const header = document.createElement("header");
     header.classList.add("pageHeader", "dashboardPageHeader");
 
-    header.appendChild(createHeaderContent());
+    header.appendChild(await createHeaderContent());
 
     const button = document.createElement("button");
     button.classList.add("btnPrimary")
@@ -34,7 +34,7 @@ function createHeader() {
 
 
 // field filterField (filterSearch) <- apenas no filtro de busca
-function createDivFormField(...classes) {
+async function createDivFormField(...classes) {
     const div = document.createElement("div");
     div.classList.add(...classes);
 
@@ -42,8 +42,8 @@ function createDivFormField(...classes) {
 }
 
 
-function createDateField() {
-    const div = createDivFormField("field", "filterField");
+async function createDateField() {
+    const div = await createDivFormField("field", "filterField");
 
     const label = document.createElement("label");
     label.htmlFor = "filtro-data"
@@ -59,7 +59,7 @@ function createDateField() {
     return div;
 }
 
-function createOption(value, text) {
+async function createOption(value, text) {
     const option = document.createElement("option");
     option.value = value;
     option.innerText = text;
@@ -67,7 +67,7 @@ function createOption(value, text) {
     return option;
 }
 
-function createStatusField() {
+async function createStatusField() {
     const options = [
         ["todos", "Todos"], 
         ["pendentes", "Pendentes"], 
@@ -75,7 +75,7 @@ function createStatusField() {
         ["concluidos", "Concluídos"]
     ]
 
-    const div = createDivFormField("field", "filterField");
+    const div = await createDivFormField("field", "filterField");
 
     const label = document.createElement("label");
     label.htmlFor = "filtro-status"
@@ -84,8 +84,8 @@ function createStatusField() {
     const select = document.createElement("select");
     select.id = "filtro-status";
 
-    options.forEach(opt => {
-        const option = createOption(...opt);
+    options.forEach(async opt => {
+        const option = await createOption(...opt);
         select.appendChild(option);
     });
 
@@ -96,8 +96,8 @@ function createStatusField() {
 }
 
 
-function createSearchField() {
-    const div = createDivFormField("field", "filterField", "filterSearch");
+async function createSearchField() {
+    const div = await createDivFormField("field", "filterField", "filterSearch");
 
     const label = document.createElement("label");
     label.htmlFor = "filtro-busca";
@@ -115,84 +115,141 @@ function createSearchField() {
 }
 
 
-function createForm() {
+async function createForm() {
     const form = document.createElement("form");
     form.classList.add("filterBar");
     form.setAttribute("aria-label", "Filtros da agenda");
     
-    form.appendChild(createDateField());
-    form.appendChild(createStatusField());
-    form.appendChild(createSearchField());
+    form.appendChild(await createDateField());
+    form.appendChild(await createStatusField());
+    form.appendChild(await createSearchField());
 
     return form;
 }
 
-function createTableCard() {
-    const div = createDivFormField("card", "tableCard")
-    const tableHTML = `<div class="tableScroll">
-               <table>
-                  <thead>
-                        <tr>
-                            <th>Horário</th>
-                            <th>Tutor</th>
-                            <th>Pet</th>
-                            <th>Serviço</th>
-                            <th>Valor</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>09:00</td>
-                            <td>Mariana Souza</td>
-                            <td>Mel (Poodle)</td>
-                            <td>Banho &amp; Tosa</td>
-                            <td>R$ 90,00</td>
-                            <td><span class="badge done">Concluído</span></td>
-                            <td><button class="btnCancel" type="button">Editar</button></td>
-                        </tr>
+async function createTableHead() {
+    const columns = ["Horário", "Tutor", "Pet", "Serviço", "Valor", "Status", "Ações"];
+    const thead = document.createElement("thead");
+    const row = document.createElement("tr");
 
-                        <tr>
-                            <td>13:00</td>
-                            <td>Ana Beatriz</td>
-                            <td>Nina (Shih-tzu)</td>
-                            <td>Tosa Higiênica</td>
-                            <td>R$ 50,00</td>
-                            <td><span class="badge confirmed">Em andamento</span></td>
-                            <td><button class="btnCancel" type="button">Editar</button></td>
-                        </tr>
-                        <tr>
-                            <td>15:30</td>
-                            <td>Fernanda Costa</td>
-                            <td>Bela (Siamês)</td>
-                            <td>Tosa Felina</td>
-                            <td>R$ 100,00</td>
-                            <td><span class="badge pending">Pendente</span></td>
-                            <td><button class="btnCancel" type="button">Editar</button></td>
-                        </tr>
-                    </tbody>
-               </table>
-            </div>`
+    columns.forEach(column => {
+        const th = document.createElement("th");
+        th.innerText = column;
+        row.appendChild(th);
+    });
 
-    div.innerHTML = tableHTML;
+    thead.appendChild(row);
+    return thead;
+}
+
+async function createTableCell(text) {
+    const td = document.createElement("td");
+    td.innerText = text;
+    return td;
+}
+
+async function createStatusCell(status, badgeClass) {
+    const td = document.createElement("td");
+    const badge = document.createElement("span");
+    badge.classList.add("badge", badgeClass);
+    badge.innerText = status;
+    td.appendChild(badge);
+    return td;
+}
+
+async function createActionCell() {
+    const td = document.createElement("td");
+    const button = document.createElement("button");
+    button.classList.add("btnCancel");
+    button.type = "button";
+    button.innerText = "Editar";
+    td.appendChild(button);
+    return td;
+}
+
+async function createTableRow(appointment) {
+    const tr = document.createElement("tr");
+    tr.appendChild(await createTableCell(appointment.hora.slice(0, 5)));
+    tr.appendChild(await createTableCell(appointment.user.username));
+    tr.appendChild(await createTableCell(appointment.pet.nome));
+    tr.appendChild(await createTableCell(appointment.servico.titulo));
+    tr.appendChild(await createTableCell(appointment.servico.valor));
+    tr.appendChild(await createStatusCell(appointment.estagio, appointment.estagio));
+    tr.appendChild(await createActionCell());
+    return tr;
+}
+
+async function createTableBody() {
+    // const appointments = [
+    //     {
+    //         time: "09:00",
+    //         tutor: "Mariana Souza",
+    //         pet: "Mel (Poodle)",
+    //         service: "Banho & Tosa",
+    //         value: "R$ 90,00",
+    //         status: "Concluído",
+    //         badgeClass: "done"
+    //     },
+    //     {
+    //         time: "13:00",
+    //         tutor: "Ana Beatriz",
+    //         pet: "Nina (Shih-tzu)",
+    //         service: "Tosa Higiênica",
+    //         value: "R$ 50,00",
+    //         status: "Em andamento",
+    //         badgeClass: "confirmed"
+    //     },
+    //     {
+    //         time: "15:30",
+    //         tutor: "Fernanda Costa",
+    //         pet: "Bela (Siamês)",
+    //         service: "Tosa Felina",
+    //         value: "R$ 100,00",
+    //         status: "Pendente",
+    //         badgeClass: "pending"
+    //     }
+    // ];
+
+    const appointments = await listAgendamentos();
+    const tbody = document.createElement("tbody");
+
+    appointments.forEach(async appointment => {
+        tbody.appendChild(await createTableRow(appointment));
+    });
+
+    return tbody;
+}
+
+async function createTable() {
+    const table = document.createElement("table");
+    table.appendChild(await createTableHead());
+    table.appendChild(await createTableBody());
+    return table;
+}
+
+async function createTableCard() {
+    const div = await createDivFormField("card", "tableCard");
+    const tableScroll = document.createElement("div");
+    tableScroll.classList.add("tableScroll");
+    tableScroll.appendChild(await createTable());
+    div.appendChild(tableScroll);
 
     return div;
 }
 
-function createAgendaSection() {
+async function createAgendaSection() {
     const section = document.createElement("section");
     section.classList.add("ownerPage");
     section.setAttribute("data-dashboard-section", "agenda");
 
-    section.appendChild(createHeader());
-    section.appendChild(createForm());
-    section.appendChild(createTableCard());
+    section.appendChild(await createHeader());
+    section.appendChild(await createForm());
+    section.appendChild(await createTableCard());
 
     return section;
 }
 
-export function renderAgendaPage() {
+export async function renderAgendaPage() {
     const mainContent = document.querySelector("#dashboard-content");
-    mainContent.replaceChildren(createAgendaSection());
+    mainContent.replaceChildren(await createAgendaSection());
 }
