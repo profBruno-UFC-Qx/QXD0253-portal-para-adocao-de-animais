@@ -11,40 +11,40 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "nome": {
+    "name": {
       "type": "string",
       "required": true
     },
-    "especie": {
+    "specie": {
       "type": "enumeration",
       "required": true,
       "enum": [
-        "Cão",
-        "Gato"
+        "dog",
+        "cat"
       ]
     },
-    "raca": {
+    "breed": {
       "type": "string",
       "required": true
     },
-    "porte": {
+    "size": {
       "type": "enumeration",
       "required": true,
       "enum": [
-        "Pequeno (até 10kg)",
-        "Médio (10kg  25kg)",
-        "Grande (acima de 25kg)"
+        "small",
+        "medium",
+        "big"
       ]
     },
-    "pelagem": {
+    "coat": {
       "type": "string",
       "required": true
     },
-    "idade": {
+    "age": {
       "type": "integer",
       "required": false
     },
-    "observacoes": {
+    "notes": {
       "type": "text"
     },
     "user": {
@@ -53,6 +53,12 @@
       "target": "plugin::users-permissions.user",
       "required": true,
       "inversedBy": "pets"
+    },
+    "appointments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::appointment.appointment",
+      "mappedBy": "pet"
     }
   }
 }

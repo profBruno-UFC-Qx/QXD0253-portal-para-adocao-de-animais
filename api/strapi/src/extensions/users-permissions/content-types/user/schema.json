@@ -78,16 +78,16 @@
       "target": "api::pet.pet",
       "mappedBy": "user"
     },
-    "agendamentos": {
+    "reviews": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::agendamento.agendamento",
+      "target": "api::review.review",
       "mappedBy": "user"
     },
-    "avaliacoes": {
+    "appointments": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::avaliacao.avaliacao",
+      "target": "api::appointment.appointment",
       "mappedBy": "user"
     }
   }
