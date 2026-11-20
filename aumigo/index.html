@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuMigo Pet Shop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/servicos.css">
+    <link rel="stylesheet" href="css/horarios.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="icon" href="img/logo.webp">
+</head>
+<body>
+    <header class="siteHeader" id="siteHeader">
+        <a href="#/home" class="logo"><img src="img/logo.webp" alt="AuMigo Pet Shop"></a>
+        <nav class="menu">
+            <a href="#/home" data-route="home">Início</a>
+            <a href="#/services" data-route="services">Serviços</a>
+            <a href="#/availability" data-route="availability">Horários</a>
+            <a href="#/login" class="btnPrimary btnSmall">Entrar / Agendar</a>
+        </nav>
+    </header>
+
+    <main id="view"></main>
+
+    <footer class="siteFooter" id="siteFooter">
+        <a href="#/home" class="logo logoFooter"><img src="img/logo.webp" alt="AuMigo Pet Shop"></a>
+        <p>&copy; 2026 Projeto AuMigo - Todos os direitos reservados. Praticidade para você e seu pet.</p>
+    </footer>
+
+    <template id="home">
+        <section class="hero">
+            <div class="heroContent">
+                <h1>O cuidado que o seu pet merece, na palma da sua mão.</h1>
+                <p>Agende banhos, tosas e consultas de forma rápida, transparente e sem complicação. Seu melhor amigo tratado com todo o amor e profissionalismo.</p>
+                <div class="heroActions">
+                    <a href="#/services" class="btnPrimary">Explorar Serviços</a>
+                    <a href="#/login" class="btnOutline">Fazer Agendamento</a>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="sectionTitle">
+                <h2>Nossos Serviços em Destaque</h2>
+                <p>Conheça os cuidados mais procurados pelos tutores para cães e gatos</p>
+            </div>
+            <div class="serviceGrid" id="featuredServices"></div>
+        </section>
+    </template>
+
+    <template id="services">
+        <section class="pageBanner">
+            <h1>Catálogo de Serviços</h1>
+            <p>Valores transparentes e detalhados por porte para garantir o melhor atendimento ao seu cão ou gato.</p>
+        </section>
+        <section class="section">
+            <div class="serviceGrid" id="serviceCatalog"></div>
+        </section>
+    </template>
+
+    <template id="availability">
+        <section class="pageBanner">
+            <h1>Consulta de Horários</h1>
+            <p>Verifique a disponibilidade de horários livres para o serviço desejado sem compromisso.</p>
+        </section>
+        <section class="section narrow">
+            <div class="filterCard">
+                <div class="filterGrid">
+                    <div class="field">
+                        <label for="serviceSelect">Selecione o Serviço:</label>
+                        <select id="serviceSelect"></select>
+                    </div>
+                    <div class="field">
+                        <label for="dateInput">Escolha a Data:</label>
+                        <input type="date" id="dateInput">
+                    </div>
+                    <button type="button" id="btnSearch" class="btnPrimary">Consultar</button>
+                </div>
+            </div>
+            <div class="slotsCard">
+                <h3 id="slotsTitle">Horários Disponíveis</h3>
+                <div id="slotsArea"></div>
+            </div>
+        </section>
+    </template>
+
+    <template id="login">
+        <div class="authCard">
+            <a href="#/home" class="logo"><img src="img/logo.webp" alt="AuMigo Pet Shop"></a>
+            <h1>Entrar</h1>
+            <p class="subText">Acesse sua conta para agendar o cuidado do seu pet.</p>
+            <div class="alertError" id="loginError" hidden></div>
+            <form id="loginForm">
+                <div class="field">
+                    <label for="loginMail">E-mail</label>
+                    <input type="email" id="loginMail" placeholder="seu@email.com" required>
+                </div>
+                <div class="field">
+                    <label for="loginPass">Senha</label>
+                    <input type="password" id="loginPass" placeholder="Sua senha" required>
+                </div>
+                <a href="#/recover" class="authLink alignRight">Esqueci minha senha</a>
+                <button type="submit" class="btnPrimary btnFull">Entrar</button>
+            </form>
+            <p class="authFooter">Ainda não tem conta? <a href="#/register">Cadastre-se</a></p>
+        </div>
+    </template>
+
+    <template id="register">
+        <div class="authCard">
+            <a href="#/home" class="logo"><img src="img/logo.webp" alt="AuMigo Pet Shop"></a>
+            <h1>Criar Conta</h1>
+            <p class="subText">Cadastre-se para agendar e acompanhar os atendimentos do seu pet.</p>
+            <div class="alertError" id="registerError" hidden></div>
+            <form id="registerForm">
+                <div class="field">
+                    <label for="regName">Nome Completo</label>
+                    <input type="text" id="regName" placeholder="Seu nome completo" required>
+                </div>
+                <div class="field">
+                    <label for="regMail">E-mail</label>
+                    <input type="email" id="regMail" placeholder="seu@email.com" required>
+                </div>
+                <div class="field">
+                    <label for="regPhone">Telefone/WhatsApp</label>
+                    <input type="tel" id="regPhone" placeholder="(XX) 9XXXX-XXXX" required>
+                </div>
+                <div class="field">
+                    <label for="regPass">Senha</label>
+                    <input type="password" id="regPass" placeholder="Mín. 6 caracteres, 1 maiúscula, 1 número, 1 símbolo" required>
+                </div>
+                <div class="field">
+                    <label for="regConfirm">Confirme a Senha</label>
+                    <input type="password" id="regConfirm" placeholder="Repita a senha" required>
+                </div>
+                <button type="submit" class="btnPrimary btnFull">Criar Conta</button>
+            </form>
+            <p class="authFooter">Já tem conta? <a href="#/login">Entrar</a></p>
+        </div>
+    </template>
+
+    <template id="recover">
+        <div class="authCard">
+            <a href="#/home" class="logo"><img src="img/logo.webp" alt="AuMigo Pet Shop"></a>
+            <h1>Recuperar Senha</h1>
+            <p class="subText">Esqueceu sua senha? Digite seu e-mail abaixo e enviaremos instruções para redefinição.</p>
+            <div class="alertSuccess" id="recoverSuccess" hidden><strong>E-mail enviado!</strong> Verifique sua caixa de entrada para redefinir sua senha.</div>
+            <div class="alertError" id="recoverError" hidden></div>
+            <form id="recoverForm">
+                <div class="field">
+                    <label for="recoverMail">E-mail cadastrado</label>
+                    <input type="email" id="recoverMail" placeholder="seu@email.com" required>
+                </div>
+                <button type="submit" class="btnPrimary btnFull">Enviar Instruções</button>
+            </form>
+            <p class="authFooter">Lembrou da senha? <a href="#/login">Voltar para o login</a></p>
+        </div>
+    </template>
+
+    <script src="js/router.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/servicos.js"></script>
+    <script src="js/horarios.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
