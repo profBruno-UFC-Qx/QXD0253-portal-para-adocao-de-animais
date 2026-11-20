@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mainPage.css">
     <link rel="stylesheet" href="css/myPets.css">   
+    <link rel="stylesheet" href="css/schedules.css">
+    <link rel="stylesheet" href="css/myProfile.css">
     <link rel="stylesheet" href="css/petHistory.css">
     <link rel="stylesheet" href="css/newService.css">
     <link rel="stylesheet" href="css/rateService.css">
-    <link rel="stylesheet" href="css/myProfile.css">
-    <link rel="stylesheet" href="css/schedules.css">
 </head>
 <body>
     <div class="app">
@@ -28,35 +28,34 @@
                 <a href="#/schedules">Agendamentos</a>
                 <a href="#/myProfile">Meu Perfil</a>
             </nav>
-            <a href="#" class="logout">Sair</a>
+            <a href="#" class="logout">Sair</a> <!-- PRECISO LIGAR COM A PAGINA DE LOGIN-->
         </aside>
         <div class="main">
             <header class="topBar">
                 <p class="subText" id="topTitle"></p>
-                <div class="user" id="userName">User</div>
             </header>
             <div class="content" id="view"></div>
         </div>
     </div>
     <template id="mainPage">
         <h1>Painel de Controle</h1>
-                <p class="subText">Acompanhe aqui os seus agendamentos e os seus pets.</p>
+                <p class="subText" id="homeSubtitle"></p>
                 <section class="stats">
                     <div class="card">
                         <p class="label">Pets Cadastrados</p>
                         <div class="number" id="numPets"></div>
                     </div>
-                    <div class="card">
+                    <div class="card" data-needs-pet>
                         <p class="label">Agendamentos Ativos</p>
                         <div class="number" id="numSchedules"></div>
                     </div>
-                    <div class="card">
+                    <div class="card" data-needs-pet>
                         <p class="label">Atendimentos Realizados</p>
                         <div class="number" id="numCompleted"></div>
                     </div>
                 </section>
                 <section class="twoColumns">
-                    <div class="card">
+                    <div class="card" data-needs-pet>
                         <div class="cardFunctional">
                             <h2>Próximos Atendimentos</h2>
                             <a href="#/schedules" class="btnSeeAll">Ver todos</a>
@@ -72,7 +71,7 @@
                         <a href="#/myPets/petConfig" class="btnDashed">+ Adicionar Novo Pet</a>
                     </div>
                 </section>
-                <section class="addServiceBanner">
+                <section class="addServiceBanner" data-needs-pet>
                         <div>
                             <h2>Precisa agendar um novo cuidado?</h2>
                             <p> Escolha o melhor horário para o seu serviço.</p>
@@ -133,7 +132,7 @@
                                 <option value="doubleCoat">Pelagem dupla</option>
                             </select>
                         </div>
-                        <div class="field">
+                        <div class="field"> <!---VIAVEL REMOÇÃO-->
                             <label for="age">Idade *</label>
                             <input type="text" name="age" id="age" placeholder="Ex: 2 anos ou 4 meses" pattern="\d{1,2} (ano|anos|mês|meses)" title="Use o formato: 3 anos ou 8 meses" required>
                         </div>
@@ -279,16 +278,16 @@
                         <form action="" id="personalForm">
                             <div class="field">
                                 <label for="name">Nome Completo</label>
-                                <input type="text" id="name" name="name" placeholder="Seu Nome Completo">
+                                <input type="text" id="name" name="name" placeholder="Seu Nome Completo" required>
                             </div>
                             <div class="row">
                                 <div class="field">
                                     <label for="mail">E-mail</label>
-                                    <input type="email" id="mail" name="mail" placeholder="Seu E-mail">
+                                    <input type="email" id="mail" name="mail" placeholder="Seu E-mail" required>
                                 </div>
                                 <div class="field">
                                      <label for="contact">Telefone/WhatsApp</label>
-                                    <input type="tel" id="contact" name="contact" placeholder="(XX) 9XXXX-XXXX">
+                                    <input type="tel" id="contact" name="contact" placeholder="(XX) 9XXXX-XXXX" required>
                                 </div>
                             </div>
                             <button type="submit" class="btnSave btnRight">Salvar Alterações</button>
@@ -329,7 +328,7 @@
         </div>
     </dialog>
 
-    <script src="js/data.js"></script>
+    <script src="js/api.js"></script>
     <script src="js/mainPage.js"></script>
     <script src="js/myPets.js"></script>
     <script src="js/petHistory.js"></script>

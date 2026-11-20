@@ -480,174 +480,6 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiAgendamentoAgendamento extends Struct.CollectionTypeSchema {
-  collectionName: 'agendamentos';
-  info: {
-    displayName: 'Agendamentos';
-    pluralName: 'agendamentos';
-    singularName: 'agendamento';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    data: Schema.Attribute.Date & Schema.Attribute.Required;
-    estagio: Schema.Attribute.Enumeration<
-      ['pendente', 'andamento', 'concluido']
-    > &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'pendente'>;
-    hora: Schema.Attribute.Time & Schema.Attribute.Required;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::agendamento.agendamento'
-    > &
-      Schema.Attribute.Private;
-    pet: Schema.Attribute.Relation<'oneToOne', 'api::pet.pet'> &
-      Schema.Attribute.Required;
-    publishedAt: Schema.Attribute.DateTime;
-    servico: Schema.Attribute.Relation<'oneToOne', 'api::servico.servico'> &
-      Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    user: Schema.Attribute.Relation<
-      'manyToOne',
-      'plugin::users-permissions.user'
-    > &
-      Schema.Attribute.Required;
-  };
-}
-
-export interface ApiAvaliacaoAvaliacao extends Struct.CollectionTypeSchema {
-  collectionName: 'avaliacoes';
-  info: {
-    displayName: 'Avalia\u00E7\u00F5es';
-    pluralName: 'avaliacoes';
-    singularName: 'avaliacao';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    descricao: Schema.Attribute.Text;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::avaliacao.avaliacao'
-    > &
-      Schema.Attribute.Private;
-    nota: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMax<
-        {
-          max: 5;
-          min: 0;
-        },
-        number
-      > &
-      Schema.Attribute.DefaultTo<5>;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    user: Schema.Attribute.Relation<
-      'manyToOne',
-      'plugin::users-permissions.user'
-    > &
-      Schema.Attribute.Required;
-  };
-}
-
-export interface ApiPetPet extends Struct.CollectionTypeSchema {
-  collectionName: 'pets';
-  info: {
-    displayName: 'Pets';
-    pluralName: 'pets';
-    singularName: 'pet';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    especie: Schema.Attribute.Enumeration<['C\u00E3o', 'Gato']> &
-      Schema.Attribute.Required;
-    idade: Schema.Attribute.Integer;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::pet.pet'> &
-      Schema.Attribute.Private;
-    nome: Schema.Attribute.String & Schema.Attribute.Required;
-    observacoes: Schema.Attribute.Text;
-    pelagem: Schema.Attribute.String & Schema.Attribute.Required;
-    porte: Schema.Attribute.Enumeration<
-      [
-        'Pequeno (at\u00E9 10kg)',
-        'M\u00E9dio (10kg  25kg)',
-        'Grande (acima de 25kg)',
-      ]
-    > &
-      Schema.Attribute.Required;
-    publishedAt: Schema.Attribute.DateTime;
-    raca: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    user: Schema.Attribute.Relation<
-      'manyToOne',
-      'plugin::users-permissions.user'
-    > &
-      Schema.Attribute.Required;
-  };
-}
-
-export interface ApiServicoServico extends Struct.CollectionTypeSchema {
-  collectionName: 'servicos';
-  info: {
-    displayName: 'Servicos';
-    pluralName: 'servicos';
-    singularName: 'servico';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    descricao: Schema.Attribute.Text & Schema.Attribute.Required;
-    especies: Schema.Attribute.Enumeration<
-      ['C\u00E3o', 'Gato', 'C\u00E3o e Gato']
-    > &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'C\u00E3o e Gato'>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::servico.servico'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    tempo: Schema.Attribute.Integer & Schema.Attribute.Required;
-    titulo: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    valor: Schema.Attribute.Decimal & Schema.Attribute.Required;
-  };
-}
-
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -1130,14 +962,6 @@ export interface PluginUsersPermissionsUser
     timestamps: true;
   };
   attributes: {
-    agendamentos: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::agendamento.agendamento'
-    >;
-    avaliacoes: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::avaliacao.avaliacao'
-    >;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -1160,10 +984,6 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
-    pets: Schema.Attribute.Relation<'oneToMany', 'api::pet.pet'>;
-    phone: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1195,10 +1015,6 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::agendamento.agendamento': ApiAgendamentoAgendamento;
-      'api::avaliacao.avaliacao': ApiAvaliacaoAvaliacao;
-      'api::pet.pet': ApiPetPet;
-      'api::servico.servico': ApiServicoServico;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

@@ -78,6 +78,11 @@
     white-space: nowrap;
 }
 
+.stats.noPets,
+.twoColumns.noPets {
+    grid-template-columns: minmax(0, 1fr);
+}
+
 @media (min-width: 768px) {
     .stats { 
         grid-template-columns: 1fr 1fr 1fr; 
