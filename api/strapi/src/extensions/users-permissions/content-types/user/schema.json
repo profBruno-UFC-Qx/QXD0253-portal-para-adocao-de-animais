@@ -66,6 +66,29 @@
       "target": "plugin::users-permissions.role",
       "inversedBy": "users",
       "configurable": false
+    },
+    "phone": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "pets": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::pet.pet",
+      "mappedBy": "user"
+    },
+    "reviews": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::review.review",
+      "mappedBy": "user"
+    },
+    "appointments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::appointment.appointment",
+      "mappedBy": "user"
     }
   }
 }

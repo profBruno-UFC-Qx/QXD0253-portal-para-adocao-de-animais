@@ -5,11 +5,6 @@ async function initPetHistory(params) {
 
     const pet = pets.find(p => p.id == petId)
 
-    if(!pet) {
-        document.getElementById("petName").textContent = "Pet não encontrado"
-        return
-    }
-
     document.getElementById("petName").textContent = pet.name
     document.getElementById("petSize").textContent = sizeLabel[pet.size]
     document.getElementById("age").textContent = pet.age

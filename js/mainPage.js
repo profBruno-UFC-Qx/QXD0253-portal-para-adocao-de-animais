@@ -1,21 +1,21 @@
 async function initMainPage() {
-    const pets = await getPets();
-    const appointments = await getAppointments();
+    const pets = await getPets()
+    const appointments = await getAppointments()
 
-    const hasPets = pets.length > 0;
+    const hasPets = pets.length > 0
 
     document.querySelectorAll("[data-needs-pet]").forEach(el => {
-        el.hidden = !hasPets;
-    });
+        el.hidden = !hasPets
+    })
 
     document.querySelectorAll(".stats, .twoColumns").forEach(el => {
-        el.classList.toggle("noPets", !hasPets);
-    });
+        el.classList.toggle("noPets", !hasPets)
+    })
 
-    const subtitle = document.getElementById("homeSubtitle");
+    const subtitle = document.getElementById("homeSubtitle")
     subtitle.textContent = hasPets
             ? "Acompanhe aqui os seus agendamentos e os seus pets."
-            : "Acompanhe aqui os seus pets.";
+            : "Acompanhe aqui os seus pets."
 
     const active = appointments.filter(a => a.status === "confirmed" || a.status === "pending")
     const completed = appointments.filter(a => a.status === "done")
@@ -26,7 +26,7 @@ async function initMainPage() {
 
     const upcoming = active
         .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
-        .slice(0,3);
+        .slice(0,3)
 
     const scheduleList = document.getElementById("scheduleList")
     
@@ -50,7 +50,7 @@ async function initMainPage() {
 
     const petList = document.getElementById("petList")
     if (pets.length === 0) {
-        petList.innerHTML = `<p class="subText emptyState">Cadastre seu primeiro pet para começar.</p>`;
+        petList.innerHTML = `<p class="subText emptyState">Cadastre seu primeiro pet para começar.</p>`
     } else {
         petList.innerHTML = pets.map(p => {
             return `

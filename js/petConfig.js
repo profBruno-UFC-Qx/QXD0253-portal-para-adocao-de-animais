@@ -1,28 +1,28 @@
 async function initPetConfig(params) {
-    const petId = params.get("id");
-    const pets = await getPets();
-    const form = document.querySelector("#view form");
+    const petId = params.get("id")
+    const pets = await getPets()
+    const form = document.querySelector("#view form")
 
-    let currentPet = null;
+    let currentPet = null
 
     if (petId) {
-        currentPet = pets.find(p => String(p.id) === String(petId)) || null;
+        currentPet = pets.find(p => String(p.id) === String(petId)) || null
     }
 
     if(currentPet) {
-        const fields = ["name", "species", "breed", "size", "fur", "age", "notes"];
+        const fields = ["name", "species", "breed", "size", "fur", "age", "notes"]
         fields.forEach(field => {
-            const input = document.getElementById(field);
+            const input = document.getElementById(field)
             if (input) {
-                input.value = currentPet[field] || "";
+                input.value = currentPet[field]
             }
-        });
+        })
         } else {
-            form.reset();
+            form.reset()
     }
     
     form.onsubmit = async function (e) {
-        e.preventDefault();
+        e.preventDefault()
 
         const formData = {
             name: document.getElementById("name").value.trim(),
@@ -32,26 +32,26 @@ async function initPetConfig(params) {
             fur: document.getElementById("fur").value,
             age: document.getElementById("age").value.trim(),
             notes: document.getElementById("notes").value.trim()
-        };
+        }
 
         try {
             if (petId && currentPet) {
-                await updatePet(currentPet.id, formData);
+                await updatePet(currentPet.id, formData)
             } else {
-                await createPet(formData);
+                await createPet(formData)
             }
 
             if (typeof updateMenuPetVisibility === "function") {
-                await updateMenuPetVisibility();
+                await updateMenuPetVisibility()
             }
 
             showDialog(
                 petId && currentPet ? "Pet atualizado com sucesso!" : "Pet cadastrado com sucesso!",
-                () => { location.hash = "#/myPets"; }
-            );
+                () => { location.hash = "#/myPets" }
+            )
         } catch (err) {
-            console.error("Erro ao salvar pet:", err);
-            showDialog(err.message || "Não foi possível salvar o pet.");
+            console.error("Erro ao salvar pet:", err)
+            showDialog(err.message || "Não foi possível salvar o pet.")
         }
-    };
+    }
 }

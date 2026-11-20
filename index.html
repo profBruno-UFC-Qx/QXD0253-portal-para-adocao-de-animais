@@ -28,7 +28,7 @@
                 <a href="#/schedules">Agendamentos</a>
                 <a href="#/myProfile">Meu Perfil</a>
             </nav>
-            <a href="#" class="logout">Sair</a> <!-- PRECISO LIGAR COM A PAGINA DE LOGIN-->
+            <!---<a href="#/landing" class="logout">Sair</a> ADICIONAR NA VOLTA QUANDO HOUVER LANDING--> 
         </aside>
         <div class="main">
             <header class="topBar">
@@ -134,7 +134,7 @@
                         </div>
                         <div class="field"> <!---VIAVEL REMOÇÃO-->
                             <label for="age">Idade *</label>
-                            <input type="text" name="age" id="age" placeholder="Ex: 2 anos ou 4 meses" pattern="\d{1,2} (ano|anos|mês|meses)" title="Use o formato: 3 anos ou 8 meses" required>
+                            <input type="number" name="age" id="age" placeholder="Ex: 2" min="0" step="1" title="Informe a idade em anos (0 se menor que um ano)" required>
                         </div>
                     </div>
                     <div class="field">

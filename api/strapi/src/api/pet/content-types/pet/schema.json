@@ -1,0 +1,64 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pets",
+  "info": {
+    "singularName": "pet",
+    "pluralName": "pets",
+    "displayName": "Pets"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "specie": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "dog",
+        "cat"
+      ]
+    },
+    "breed": {
+      "type": "string",
+      "required": true
+    },
+    "size": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "small",
+        "medium",
+        "big"
+      ]
+    },
+    "coat": {
+      "type": "string",
+      "required": true
+    },
+    "age": {
+      "type": "integer",
+      "required": false
+    },
+    "notes": {
+      "type": "text"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "required": true,
+      "inversedBy": "pets"
+    },
+    "appointments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::appointment.appointment",
+      "mappedBy": "pet"
+    }
+  }
+}

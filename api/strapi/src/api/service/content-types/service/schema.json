@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "services",
+  "info": {
+    "singularName": "service",
+    "pluralName": "services",
+    "displayName": "Services"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "price": {
+      "type": "decimal",
+      "required": true
+    },
+    "species": {
+      "type": "enumeration",
+      "required": true,
+      "default": "dog&cat",
+      "enum": [
+        "dog",
+        "cat",
+        "dog&cat"
+      ]
+    },
+    "description": {
+      "type": "text"
+    },
+    "duration": {
+      "type": "integer",
+      "required": true
+    }
+  }
+}

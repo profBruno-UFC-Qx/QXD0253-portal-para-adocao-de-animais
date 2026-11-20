@@ -1,27 +1,27 @@
 async function initMyProfile() {
-    const user = await getUser();
+    const user = await getUser()
 
-    const personalForm = document.getElementById("personalForm");
-    const securityForm = document.getElementById("securityForm");
+    const personalForm = document.getElementById("personalForm")
+    const securityForm = document.getElementById("securityForm")
 
-    const nameInput = personalForm.querySelector("#name");
-    const mailInput = personalForm.querySelector("#mail");
-    const contactInput = personalForm.querySelector("#contact");
+    const nameInput = personalForm.querySelector("#name")
+    const mailInput = personalForm.querySelector("#mail")
+    const contactInput = personalForm.querySelector("#contact")
 
-    nameInput.value = user.name;
-    mailInput.value = user.email;
-    contactInput.value = user.contact;
+    nameInput.value = user.name
+    mailInput.value = user.email
+    contactInput.value = user.contact
 
     personalForm.onsubmit = async function (e) {
-        e.preventDefault();
+        e.preventDefault()
 
-        const newName = nameInput.value.trim();
-        const newMail = mailInput.value.trim();
-        const newContact = contactInput.value.trim();
+        const newName = nameInput.value.trim()
+        const newMail = mailInput.value.trim()
+        const newContact = contactInput.value.trim()
 
         if (!newName || !newMail || !newContact) {
-            showDialog("Um ou mais campos obrigatórios vazios");
-            return;
+            showDialog("Um ou mais campos obrigatórios vazios")
+            return
         }
 
         try {
@@ -29,45 +29,45 @@ async function initMyProfile() {
                 name: newName,
                 email: newMail,
                 contact: newContact
-            });
+            })
 
             if (updatedUser) {
-                Object.assign(user, updatedUser);
+                Object.assign(user, updatedUser)
             }
 
-            showDialog("Informações pessoais atualizadas com sucesso!");
+            showDialog("Informações pessoais atualizadas com sucesso!")
         } catch (err) {
-            console.error("Erro ao atualizar perfil:", err);
-            showDialog(err.message || "Não foi possível atualizar as informações pessoais.");
+            console.error("Erro ao atualizar perfil:", err)
+            showDialog(err.message || "Não foi possível atualizar as informações pessoais.")
         }
-    };
+    }
 
     securityForm.onsubmit = async function (e) {
-        e.preventDefault();
+        e.preventDefault()
 
-        const currentPass = securityForm.querySelector("#passWord").value;
-        const newPass = securityForm.querySelector("#newPassword").value;
-        const confirmPass = securityForm.querySelector("#confirmPassWord").value;
+        const currentPass = securityForm.querySelector("#passWord").value
+        const newPass = securityForm.querySelector("#newPassword").value
+        const confirmPass = securityForm.querySelector("#confirmPassWord").value
 
         if (!currentPass || !newPass || !confirmPass) {
-            showDialog("Por favor, preencha todos os campos de senha.");
-            return;
+            showDialog("Por favor, preencha todos os campos de senha.")
+            return
         }
 
         if (newPass === currentPass) {
-            showDialog("A nova senha precisa ser diferente da senha atual.");
-            return;
+            showDialog("A nova senha precisa ser diferente da senha atual.")
+            return
         }
 
-        const strongPassword = /^(?=.*\p{Lu})(?=.*\d)(?=.*[^\p{L}\d\s]).{6,}$/u;
+        const strongPassword = /^(?=.*\p{Lu})(?=.*\d)(?=.*[^\p{L}\d\s]).{6,}$/u
         if (!strongPassword.test(newPass)) {
-            showDialog("A nova senha precisa ter no mínimo 6 caracteres, uma letra maiúscula, um número e um símbolo.");
-            return;
+            showDialog("A nova senha precisa ter no mínimo 6 caracteres, uma letra maiúscula, um número e um símbolo.")
+            return
         }
 
         if (newPass !== confirmPass) {
-            showDialog("A nova senha e a confirmação não coincidem!");
-            return;
+            showDialog("A nova senha e a confirmação não coincidem!")
+            return
         }
 
         try {
@@ -75,13 +75,13 @@ async function initMyProfile() {
                 currentPassword: currentPass,
                 password: newPass,
                 passwordConfirmation: confirmPass
-            });
+            })
 
-            securityForm.reset();
-            showDialog("Senha alterada com sucesso!");
+            securityForm.reset()
+            showDialog("Senha alterada com sucesso!")
         } catch (err) {
-            console.error("Erro ao alterar senha:", err);
-            showDialog(err.message || "Não foi possível alterar a senha.");
+            console.error("Erro ao alterar senha:", err)
+            showDialog(err.message || "Não foi possível alterar a senha.")
         }
-    };
+    }
 }

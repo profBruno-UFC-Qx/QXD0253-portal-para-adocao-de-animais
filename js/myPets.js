@@ -1,5 +1,5 @@
 async function initMyPets() {
-    const pets = await getPets();
+    const pets = await getPets()
     const petCards = document.getElementById("petCards")
 
     if(pets.length === 0) {
