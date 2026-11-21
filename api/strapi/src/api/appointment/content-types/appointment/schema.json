@@ -15,7 +15,6 @@
       "type": "date",
       "required": true
     },
-<<<<<<< HEAD
     "hour": {
       "type": "time",
       "required": true
@@ -23,12 +22,6 @@
     "notes": {
       "type": "text"
     },
-=======
-    "time": {
-      "type": "time",
-      "required": true
-    },
->>>>>>> david
     "current_status": {
       "type": "enumeration",
       "required": true,
@@ -36,12 +29,7 @@
       "enum": [
         "pending",
         "confirmed",
-<<<<<<< HEAD
         "done"
-=======
-        "done",
-        "canceled"
->>>>>>> david
       ]
     },
     "service": {
@@ -63,15 +51,6 @@
       "target": "api::pet.pet",
       "required": true,
       "inversedBy": "appointments"
-<<<<<<< HEAD
-=======
-    },
-    "review": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::review.review",
-      "mappedBy": "appointment"
->>>>>>> david
     }
   }
 }

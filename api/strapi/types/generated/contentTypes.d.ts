@@ -495,41 +495,24 @@ export interface ApiAppointmentAppointment extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     current_status: Schema.Attribute.Enumeration<
-<<<<<<< HEAD
       ['pending', 'confirmed', 'done']
-=======
-      ['pending', 'confirmed', 'done', 'canceled']
->>>>>>> david
     > &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'pending'>;
     date: Schema.Attribute.Date & Schema.Attribute.Required;
-<<<<<<< HEAD
     hour: Schema.Attribute.Time & Schema.Attribute.Required;
-=======
->>>>>>> david
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::appointment.appointment'
     > &
       Schema.Attribute.Private;
-<<<<<<< HEAD
     notes: Schema.Attribute.Text;
     pet: Schema.Attribute.Relation<'manyToOne', 'api::pet.pet'> &
       Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     service: Schema.Attribute.Relation<'oneToOne', 'api::service.service'> &
       Schema.Attribute.Required;
-=======
-    pet: Schema.Attribute.Relation<'manyToOne', 'api::pet.pet'> &
-      Schema.Attribute.Required;
-    publishedAt: Schema.Attribute.DateTime;
-    review: Schema.Attribute.Relation<'oneToOne', 'api::review.review'>;
-    service: Schema.Attribute.Relation<'oneToOne', 'api::service.service'> &
-      Schema.Attribute.Required;
-    time: Schema.Attribute.Time & Schema.Attribute.Required;
->>>>>>> david
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -552,27 +535,16 @@ export interface ApiPetPet extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-<<<<<<< HEAD
     age: Schema.Attribute.Integer;
-=======
-    age: Schema.Attribute.Integer & Schema.Attribute.Required;
->>>>>>> david
     appointments: Schema.Attribute.Relation<
       'oneToMany',
       'api::appointment.appointment'
     >;
     breed: Schema.Attribute.String & Schema.Attribute.Required;
-<<<<<<< HEAD
     coat: Schema.Attribute.String & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-=======
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    fur: Schema.Attribute.String & Schema.Attribute.Required;
->>>>>>> david
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::pet.pet'> &
       Schema.Attribute.Private;
@@ -581,11 +553,7 @@ export interface ApiPetPet extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     size: Schema.Attribute.Enumeration<['small', 'medium', 'big']> &
       Schema.Attribute.Required;
-<<<<<<< HEAD
     specie: Schema.Attribute.Enumeration<['dog', 'cat']> &
-=======
-    species: Schema.Attribute.Enumeration<['dog', 'cat']> &
->>>>>>> david
       Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -606,7 +574,6 @@ export interface ApiReviewReview extends Struct.CollectionTypeSchema {
     singularName: 'review';
   };
   options: {
-<<<<<<< HEAD
     draftAndPublish: true;
   };
   attributes: {
@@ -614,19 +581,6 @@ export interface ApiReviewReview extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
-=======
-    draftAndPublish: false;
-  };
-  attributes: {
-    appointment: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::appointment.appointment'
-    >;
-    comment: Schema.Attribute.Text;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
->>>>>>> david
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -634,11 +588,7 @@ export interface ApiReviewReview extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-<<<<<<< HEAD
     stars: Schema.Attribute.Integer &
-=======
-    rating: Schema.Attribute.Integer &
->>>>>>> david
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<
         {
