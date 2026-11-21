@@ -1,5 +1,6 @@
 async function initNewService() {
     const pets = await getPets()
+    const user = await getUser()
     const availableServices = await getAvailableServices()
 
     const petSelect = document.getElementById("pet")
@@ -67,12 +68,12 @@ async function initNewService() {
 
         try {
             await createAppointment({
-                service: service.name,
-                petId: petSelect.value,
+                service: service.id,
+                user: user.id,
+                pet: petSelect.value,
                 date: date.value,
-                time: selectedTime,
-                price: service.price,
-                status: "pending"
+                time: `${selectedTime}:00.000`,
+                current_status: "pending",  
             })
 
             showDialog("Agendamento realizado com sucesso!", () => { location.hash = "#/schedules" })

@@ -4,31 +4,31 @@ async function initMyProfile() {
     const personalForm = document.getElementById("personalForm")
     const securityForm = document.getElementById("securityForm")
 
-    const nameInput = personalForm.querySelector("#name")
-    const mailInput = personalForm.querySelector("#mail")
-    const contactInput = personalForm.querySelector("#contact")
+    const usernameInput = personalForm.querySelector("#username")
+    const emailInput = personalForm.querySelector("#email")
+    const phoneInput = personalForm.querySelector("#phone")
 
-    nameInput.value = user.name
-    mailInput.value = user.email
-    contactInput.value = user.contact
+    usernameInput.value = user.username
+    emailInput.value = user.email
+    phoneInput.value = user.phone
 
     personalForm.onsubmit = async function (e) {
         e.preventDefault()
 
-        const newName = nameInput.value.trim()
-        const newMail = mailInput.value.trim()
-        const newContact = contactInput.value.trim()
+        const newName = usernameInput.value.trim()
+        const newMail = emailInput.value.trim()
+        const newPhone = phoneInput.value.trim()
 
-        if (!newName || !newMail || !newContact) {
+        if (!newName || !newMail || !newPhone) {
             showDialog("Um ou mais campos obrigatórios vazios")
             return
         }
 
         try {
-            const updatedUser = await updateUser(user.id, {
-                name: newName,
+            const updatedUser = await updateUser(user.numericId ?? user.id, {
+                username: newName,
                 email: newMail,
-                contact: newContact
+                phone: newPhone
             })
 
             if (updatedUser) {
@@ -38,7 +38,7 @@ async function initMyProfile() {
             showDialog("Informações pessoais atualizadas com sucesso!")
         } catch (err) {
             console.error("Erro ao atualizar perfil:", err)
-            showDialog(err.message || "Não foi possível atualizar as informações pessoais.")
+            showDialog(translateError(err, "Não foi possível atualizar as informações pessoais."))
         }
     }
 
@@ -81,7 +81,7 @@ async function initMyProfile() {
             showDialog("Senha alterada com sucesso!")
         } catch (err) {
             console.error("Erro ao alterar senha:", err)
-            showDialog(err.message || "Não foi possível alterar a senha.")
+            showDialog(translateError(err, "Não foi possível alterar a senha."))
         }
     }
 }

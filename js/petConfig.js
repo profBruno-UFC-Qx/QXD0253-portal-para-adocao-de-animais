@@ -1,6 +1,7 @@
 async function initPetConfig(params) {
     const petId = params.get("id")
     const pets = await getPets()
+    const user = await getUser()
     const form = document.querySelector("#view form")
 
     let currentPet = null
@@ -14,7 +15,7 @@ async function initPetConfig(params) {
         fields.forEach(field => {
             const input = document.getElementById(field)
             if (input) {
-                input.value = currentPet[field]
+                input.value = currentPet[field] ?? ""
             }
         })
         } else {
@@ -31,19 +32,17 @@ async function initPetConfig(params) {
             size: document.getElementById("size").value,
             fur: document.getElementById("fur").value,
             age: document.getElementById("age").value.trim(),
-            notes: document.getElementById("notes").value.trim()
+            notes: document.getElementById("notes").value.trim(),
         }
 
         try {
             if (petId && currentPet) {
                 await updatePet(currentPet.id, formData)
             } else {
-                await createPet(formData)
+                await createPet({...formData, user : user.id})
             }
 
-            if (typeof updateMenuPetVisibility === "function") {
-                await updateMenuPetVisibility()
-            }
+            await updateMenuPetVisibility()
 
             showDialog(
                 petId && currentPet ? "Pet atualizado com sucesso!" : "Pet cadastrado com sucesso!",

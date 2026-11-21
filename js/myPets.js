@@ -8,17 +8,17 @@ async function initMyPets() {
         petCards.innerHTML = pets.map(p => `
             <div class="card petCard">
                 <div class="petTop">
-                    <div class="avatar avatarLg">${p.name.charAt(0)}</div>
+                    <div class="avatar avatarLg">${(p.name || "?").charAt(0)}</div>
                     <div>
-                        <h2>${p.name}</h2>
-                        <p class="subText"> ${speciesLabel[p.species]} • ${p.breed}</p>
+                        <h2>${p.name || "Sem nome"}</h2>
+                        <p class="subText"> ${speciesLabel[p.species] || "?"} • ${p.breed || "?"}</p>
                     </div>
                 </div>
 
                 <div class="petData">
-                    <div><small>Porte:</small><strong>${sizeLabel[p.size]}</strong></div>
-                    <div><small>Idade:</small><strong>${p.age}</strong></div>
-                    <div><small>Tipo de Pelagem:</small><strong>${furLabel[p.fur]}</strong></div>
+                    <div><small>Porte:</small><strong>${sizeLabel[p.size] || "?"}</strong></div>
+                    <div><small>Idade:</small><strong>${p.age ?? "?"} Anos</strong></div>
+                    <div><small>Tipo de Pelagem:</small><strong>${furLabel[p.fur] || "?"}</strong></div>
                 </div>
 
                 ${p.notes ? `

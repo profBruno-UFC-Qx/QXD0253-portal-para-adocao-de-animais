@@ -7,7 +7,7 @@ async function initMainPage() {
     document.querySelectorAll("[data-needs-pet]").forEach(el => {
         el.hidden = !hasPets
     })
-
+    
     document.querySelectorAll(".stats, .twoColumns").forEach(el => {
         el.classList.toggle("noPets", !hasPets)
     })
@@ -17,8 +17,8 @@ async function initMainPage() {
             ? "Acompanhe aqui os seus agendamentos e os seus pets."
             : "Acompanhe aqui os seus pets."
 
-    const active = appointments.filter(a => a.status === "confirmed" || a.status === "pending")
-    const completed = appointments.filter(a => a.status === "done")
+    const active = appointments.filter(a => a.current_status === "confirmed" || a.current_status === "pending")
+    const completed = appointments.filter(a => a.current_status === "done")
 
     document.getElementById("numPets").textContent = pets.length
     document.getElementById("numSchedules").textContent = active.length
@@ -34,15 +34,15 @@ async function initMainPage() {
         scheduleList.innerHTML = `<p class="subText"> Nenhum atendimento agendado.</p>`
     } else {
         scheduleList.innerHTML = upcoming.map(a => {
-            const pet = pets.find(p => p.id === a.petId) || { name: "Pet não encontrado", breed: ""}
+            const pet = a.pet || { name: "Pet não encontrado", breed: "" }
             return `
                 <div class="item">
                     <div>
-                        <strong>${a.service}</strong>
+                        <strong>${a.service?.name ?? "—"}</strong>
                         <small>${pet.name} (${pet.breed})</small>
-                        <small>${formatDate(a.date)}, ${a.time}</small>
+                        <small>${formatDate(a.date)}, ${formatTime(a.time)}</small>
                     </div>
-                    <span class="badge ${a.status}">${statusLabel[a.status]}</span>
+                    <span class="badge ${a.current_status}">${statusLabel[a.current_status]}</span>
                 </div>
             `
         }).join("")

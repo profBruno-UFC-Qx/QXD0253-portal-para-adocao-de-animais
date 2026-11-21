@@ -1,9 +1,20 @@
 async function initRateService(params) {
-    const appointments = await getAppointments()
     const appointmentId = params.get("id")
+    const user = await getUser()
+    const appointments = await getAppointments()
     const appointment = appointments.find(a => String(a.id) === String(appointmentId))
 
-    document.getElementById("reviewService").textContent = appointment.service
+    if (appointment.review) {
+        showDialog("Este atendimento já foi avaliado.", () => { location.hash = "#/schedules" })
+        return
+    }
+
+    if (!appointment) {
+        location.hash = "#/schedules"
+        return
+    }
+
+    document.getElementById("reviewService").textContent = appointment.service?.name ?? "—"
     document.getElementById("reviewDate").textContent = formatDate(appointment.date)
 
     const form = document.getElementById("reviewForm")
@@ -27,8 +38,15 @@ async function initRateService(params) {
 
         const comment = document.getElementById("comment").value.trim()
 
+        const ratingData = {
+            rating: selectedRating,
+            user: user.id,
+            appointment: appointment.id,
+            comment
+        }
+
         try {
-            await rateAppointment(appointmentId, selectedRating, comment)
+            await rateAppointment(ratingData)
             showDialog("Avaliação enviada. Obrigado!", () => { location.hash = "#/schedules" })
         } catch (err) {
             console.error("Erro ao enviar avaliação:", err)

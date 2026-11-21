@@ -1,14 +1,15 @@
 const API_URL = "http://localhost:1337"
+const TOKEN_KEY = "jwt"
 
 function getToken() {
-    return localStorage.getItem("token")
+    return localStorage.getItem(TOKEN_KEY)
 }
 
 function setToken(token) {
     if (token) {
-        localStorage.setItem("jwt", token)
+        localStorage.setItem(TOKEN_KEY, token)
     } else {
-        localStorage.removeItem("jwt")
+        localStorage.removeItem(TOKEN_KEY)
     }
 }
 
@@ -19,7 +20,6 @@ async function apiFetch(endpoint, options = {}) {
         ...(options.headers || {})
     }
 
-    console.log(token)
     if (token) {
         headers.Authorization = `Bearer ${token}`
     }
@@ -31,12 +31,19 @@ async function apiFetch(endpoint, options = {}) {
 
     if (response.status === 401) {
         setToken(null)
+        // location.hash = "#/login"
         throw new Error("Não autorizado. Faça login novamente.")
     }
 
     if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData?.error?.message || `Erro HTTP ${response.status}`)
+        console.error("Detalhes do erro:", errorData?.error)
+
+        const detalhes = errorData?.error?.details?.errors
+            ?.map(d => `${(d.path || []).join(".")}: ${d.message}`)
+            .join(" | ")
+
+        throw new Error(detalhes || errorData?.error?.message || `Erro HTTP ${response.status}`)
     }
 
     if (response.status === 204) {
@@ -51,6 +58,7 @@ function normalizeEntry(entry) {
     const base = entry.attributes ? { id: entry.id, ...entry.attributes } : entry
     return {
         ...base,
+        numericId: base.id,
         id: base.documentId ?? base.id
     }
 }
@@ -68,9 +76,20 @@ async function fetchNormalized(endpoint) {
     return normalizeEntry(data?.data ?? data)
 }
 
+function uniqueByDocument(list) {
+    const unique = new Map()
+    for (const e of list ?? []) {
+        const key = e.documentId ?? e.id
+        if (!unique.has(key) || e.publishedAt) unique.set(key, e)
+    }
+    return [...unique.values()].map(normalizeEntry)
+}
 const getUser = () => fetchNormalized("/api/users/me")
-const getPets = () => fetchNormalized("/api/pets")
-const getAppointments = () => fetchNormalized("/api/appointments")
+const getPets = async () =>
+    uniqueByDocument((await apiFetch("/api/users/me?populate=pets"))?.pets)
+const getAppointments = async () =>
+    uniqueByDocument(
+        (await apiFetch("/api/users/me?populate[appointments][populate][0]=service" + "&populate[appointments][populate][1]=pet" + "&populate[appointments][populate][2]=review"))?.appointments)
 const getAvailableServices = () => fetchNormalized("/api/services")
 
 function sendData(endpoint, method, payload, { wrapData = true, normalize = true } = {}) {
@@ -84,8 +103,8 @@ const createPet = (petData) => sendData("/api/pets", "POST", petData)
 const updatePet = (id, petData) => sendData(`/api/pets/${id}`, "PUT", petData)
 
 const createAppointment = (appointmentData) => sendData("/api/appointments", "POST", appointmentData)
-const cancelAppointment = (id) => sendData(`/api/appointments/${id}`, "PUT", { status: "canceled" })
-const rateAppointment = (id, rating, comment) => sendData(`/api/appointments/${id}`, "PUT", { rating, comment })
+const cancelAppointment = (id) => sendData(`/api/appointments/${id}`, "PUT", { current_status: "canceled" })
+const rateAppointment = (ratingData) => sendData(`/api/reviews/`, "POST", ratingData)
 
 const updateUser = (id, userData) => sendData(`/api/users/${id}`, "PUT", userData, { wrapData: false })
 const changePassword = (payload) => sendData("/api/auth/change-password", "POST", payload, { wrapData: false, normalize: false })

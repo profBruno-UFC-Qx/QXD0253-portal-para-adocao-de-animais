@@ -106,7 +106,12 @@ async function navigate() {
 
     window.scrollTo(0, 0)
     if (route.init) {
-        route.init(params)
+        try {
+            await route.init(params)
+        } catch (err) {
+            console.error("Erro ao carregar a página:", err)
+            showDialog(err.message || "Erro ao carregar a página.")
+        }
     }
 }
 
