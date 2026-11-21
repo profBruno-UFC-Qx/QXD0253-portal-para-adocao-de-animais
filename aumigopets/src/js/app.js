@@ -54,37 +54,78 @@ const routes = {
         menu: "/myProfile",
         init: initMyProfile
     }
-};
+}
 
-function navigate() {
-    const [path, text] = (location.hash.slice(1) || "/mainPage").split("?");
-    const route = routes[path] || routes["/mainPage"];
-    const params = new URLSearchParams(text);
+const needsPet = ["/schedules", "/newService", "/rateService"]
 
-    const model = document.getElementById(route.template);
-    if(!model) {
-        console.error("Page not found:", route.template);
-        return;
+async function updateMenuPetVisibility() {
+    let hasPets = false
+    try {
+        hasPets = (await getPets()).length > 0
+    } catch (err) {
+        console.error("Erro ao verificar pets:", err)
     }
-    document.getElementById("view").replaceChildren(model.content.cloneNode(true));
-    document.getElementById("topTitle").textContent = route.titulo;
+
+    const schedulesLink = document.querySelector('.menu a[href="#/schedules"]')
+    if (schedulesLink) {
+        schedulesLink.hidden = !hasPets
+    }
+
+    return hasPets
+}
+
+async function navigate() {
+    // if (!getToken()) {
+    //     location.hash = "#/login"
+    //     return
+    // }
+
+    const [path, text] = (location.hash.slice(1) || "/mainPage").split("?")
+    const route = routes[path] || routes["/mainPage"]
+    const params = new URLSearchParams(text)
+
+    const hasPets = await updateMenuPetVisibility()
+
+    if (!hasPets && needsPet.includes(path)) {
+        location.hash = "#/myPets"
+        return
+    }
+
+    const model = document.getElementById(route.template)
+    if (!model) {
+        console.error("Page not found:", route.template)
+        return
+    }
+
+    document.getElementById("view").replaceChildren(model.content.cloneNode(true))
+    document.getElementById("topTitle").textContent = route.titulo
 
     document.querySelectorAll(".menu a").forEach(link => {
-        link.classList.toggle("active", link.getAttribute("href") === "#" + route.menu);
-    });
+        link.classList.toggle("active", link.getAttribute("href") === "#" + route.menu)
+    })
 
-    window.scrollTo(0, 0);
-    if(route.init) {
-        route.init(params)
+    window.scrollTo(0, 0)
+    if (route.init) {
+        try {
+            await route.init(params)
+        } catch (err) {
+            console.error("Erro ao carregar a página:", err)
+            showDialog(err.message || "Erro ao carregar a página.")
+        }
     }
 }
 
-window.addEventListener("hashchange", navigate);
-navigate();
+// document.addEventListener("click", (e) => {
+//     const logoutBtn = e.target.closest(".logout")
+//     if (!logoutBtn) return
 
-getUser().then(user => {
-    document.getElementById("userName").textContent = user.name
-})
+//     e.preventDefault()
+//     setToken(null)
+//     location.hash = "#/login"
+// })
+
+window.addEventListener("hashchange", navigate)
+navigate()
 
 function showDialog(message, onClose) {
     const dialog = document.getElementById("appDialog")

@@ -1,3 +1,0 @@
-# Garante que apenas o professor pode aprovar merges na main quando a
-# proteção de branch exigir "Require review from Code Owners".
-* @brunomateus

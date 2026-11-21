@@ -1,15 +1,24 @@
 async function initRateService(params) {
-    const appointments = await getAppointments()
     const appointmentId = params.get("id")
-    const appointment = appointments.find(a => a.id == appointmentId)
+    const user = await getUser()
+    const appointments = await getAppointments()
+    const appointment = appointments.find(a => String(a.id) === String(appointmentId))
 
-    if (appointment) {
-        document.getElementById("reviewService").textContent = appointment.service
-        document.getElementById("reviewDate").textContent = formatDate(appointment.date)
+    if (appointment.review) {
+        showDialog("Este atendimento já foi avaliado.", () => { location.hash = "#/schedules" })
+        return
     }
 
-    const stars = document.querySelectorAll(".stars .star")
+    if (!appointment) {
+        location.hash = "#/schedules"
+        return
+    }
+
+    document.getElementById("reviewService").textContent = appointment.service?.name ?? "—"
+    document.getElementById("reviewDate").textContent = formatDate(appointment.date)
+
     const form = document.getElementById("reviewForm")
+    const stars = document.querySelectorAll(".stars .star")
     let selectedRating = 0
 
     stars.forEach((star, index) => {
@@ -19,7 +28,7 @@ async function initRateService(params) {
         })
     })
 
-    form.onsubmit = function (e) {
+    form.onsubmit = async function (e) {
         e.preventDefault()
 
         if (selectedRating === 0) {
@@ -27,11 +36,21 @@ async function initRateService(params) {
             return
         }
 
-        if (appointment) {
-            appointment.rating = selectedRating
-            appointment.comment = document.getElementById("comment").value.trim()
+        const comment = document.getElementById("comment").value.trim()
+
+        const ratingData = {
+            rating: selectedRating,
+            user: user.id,
+            appointment: appointment.id,
+            comment
         }
 
-        showDialog("Avaliação enviada. Obrigado!", () => { location.hash = "#/schedules" })
+        try {
+            await rateAppointment(ratingData)
+            showDialog("Avaliação enviada. Obrigado!", () => { location.hash = "#/schedules" })
+        } catch (err) {
+            console.error("Erro ao enviar avaliação:", err)
+            showDialog(err.message || "Não foi possível enviar a avaliação.")
+        }
     }
 }

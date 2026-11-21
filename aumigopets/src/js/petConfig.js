@@ -1,30 +1,27 @@
 async function initPetConfig(params) {
     const petId = params.get("id")
     const pets = await getPets()
-    
+    const user = await getUser()
     const form = document.querySelector("#view form")
-    
-    if(!form) {
-        return
-    }
 
     let currentPet = null
 
-    if(petId) {
-        currentPet = pets.find(p => p.id == petId)
-        if(currentPet) {
-            document.getElementById("name").value = currentPet.name || ""
-            document.getElementById("species").value = currentPet.species || ""
-            document.getElementById("breed").value = currentPet.breed || ""
-            document.getElementById("size").value = currentPet.size || ""
-            document.getElementById("fur").value = currentPet.fur || ""
-            document.getElementById("age").value = currentPet.age || ""
-            document.getElementById("notes").value = currentPet.notes || ""
-        }
-    } else {
-        form.reset()
+    if (petId) {
+        currentPet = pets.find(p => String(p.id) === String(petId)) || null
     }
 
+    if(currentPet) {
+        const fields = ["name", "species", "breed", "size", "fur", "age", "notes"]
+        fields.forEach(field => {
+            const input = document.getElementById(field)
+            if (input) {
+                input.value = currentPet[field] ?? ""
+            }
+        })
+        } else {
+            form.reset()
+    }
+    
     form.onsubmit = async function (e) {
         e.preventDefault()
 
@@ -35,19 +32,25 @@ async function initPetConfig(params) {
             size: document.getElementById("size").value,
             fur: document.getElementById("fur").value,
             age: document.getElementById("age").value.trim(),
-            notes: document.getElementById("notes").value.trim()
+            notes: document.getElementById("notes").value.trim(),
         }
 
-        if(petId && currentPet) {
-            Object.assign(currentPet, formData)
-        } else {
-            const newId = pets.length > 0 ? Math.max(...pets.map(p => p.id)) + 1 : 1
-            pets.push({
-                id: newId,
-                ...formData
-            })
+        try {
+            if (petId && currentPet) {
+                await updatePet(currentPet.id, formData)
+            } else {
+                await createPet({...formData, user : user.id})
+            }
+
+            await updateMenuPetVisibility()
+
+            showDialog(
+                petId && currentPet ? "Pet atualizado com sucesso!" : "Pet cadastrado com sucesso!",
+                () => { location.hash = "#/myPets" }
+            )
+        } catch (err) {
+            console.error("Erro ao salvar pet:", err)
+            showDialog(err.message || "Não foi possível salvar o pet.")
         }
-        showDialog(petId && currentPet ? "Pet atualizado com sucesso!" : "Pet cadastrado com sucesso!", () => { location.hash = "#/myPets" })
     }
-
 }

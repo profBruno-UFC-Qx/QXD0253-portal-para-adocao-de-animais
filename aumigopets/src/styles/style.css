@@ -2,18 +2,10 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    
 }
 
-h1, h2 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 30px;
-    color: var(--navy);
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
+[hidden] { 
+    display: none !important;
 }
 
 :root {
@@ -27,48 +19,76 @@ body {
     --line: #f0dde6;
 }
 
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+}
+
+h1, h2 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--navy);
+}
+h1 { 
+    font-size: 24px; 
+}
+h2 { 
+    font-size: 20px; 
+}
+
 .app {
     display: grid;
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: 1fr;
     min-height: 100vh;
+}
+
+.main { 
+    min-width: 0; 
 }
 
 .topBar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
+    padding: 14px 16px;
     background: #fff;
     border-bottom: 1px solid var(--line);
 }
 
 .sideBar {
     background: #fff;
-    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
     display: flex;
-    flex-direction: column;
-    padding: 20px 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    padding: 10px 16px;
     position: sticky;
     top: 0;
-    height: 100vh;
+    z-index: 10;
 }
 
 .logo {
     display: block;
-    width: 160px;
-    margin: 0 auto 32px;
+    width: 90px;
 }
 
-.menu a{
+.menu {
+    order: 3;
+    width: 100%;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+}
+
+.menu a {
     color: #5b6270;
     display: block;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
-    padding: 20px;
-    border-radius: 16px;
+    padding: 10px 14px;
+    border-radius: 12px;
     text-decoration: none;
-    margin-bottom: 10px;
-
+    white-space: nowrap;
 }
 
 .menu a.active {
@@ -82,43 +102,52 @@ body {
 }
 
 .logout {
+    order: 2;
+    margin-left: auto;
     color: red;
-    margin-top: auto;
     text-decoration: none;
-    border-top: 1px solid var(--line);
-    padding-top: 10px;
+    font-size: 14px;
 }
 
 .content {
-    padding: 30px 40px;
+    padding: 20px 16px;
     max-width: 1080px;
 }
 
-.subText { color: 
-    #5b6270; 
+.subText { 
+    color: #5b6270; 
 }
 
 .pageHeader {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
     margin-bottom: 10px;
 }
 
-.card, .info, .formCard, .bookingCard, .suggestCard, .historyCard {
+.card,
+.info,
+.formCard,
+.bookingCard,
+.suggestCard,
+.historyCard {
     background: #fff;
     border-radius: 16px;
-    padding: 24px;
+    padding: 18px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.formCard, .bookingCard, .suggestCard, .historyCard { 
-    margin-top: 24px; 
+.formCard,
+.bookingCard,
+.suggestCard,
+.historyCard {
+    margin-top: 24px;
 }
 
 .row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     column-gap: 24px;
 }
 
@@ -144,26 +173,31 @@ body {
     font-size: 16px;
 }
 
-.field textarea { 
-    min-height: 100px; 
-    resize: vertical; 
+.field textarea {
+    min-height: 100px;
+    resize: vertical;
 }
 
-.field input:focus, .field select:focus, .field textarea:focus {
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
     outline: none;
     border-color: var(--pink);
 }
 
-.requiredNote { 
-    font-size: 12px; margin-bottom: 10px; 
+.requiredNote {
+    font-size: 12px;
+    margin-bottom: 10px;
 }
 
-.requiredNote .asterisk {
-    color: var(--pink);
+.requiredNote 
+.asterisk { 
+    color: var(--pink); 
 }
 
 .formActions {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
     gap: 16px;
     margin-top: 24px;
@@ -182,35 +216,38 @@ body {
     cursor: pointer;
 }
 
-.btnSave, .btnPrimary { 
-    background: var(--pink); 
-    color: #fff; 
+.btnSave, .btnPrimary {
+    background: var(--pink);
+    color: #fff;
 }
 
-.btnSave:hover, .btnPrimary:hover {
-    background: var(--pink-dark);
+.btnSave:hover,
+.btnPrimary:hover { 
+    background: var(--pink-dark); 
 }
 
-.btnCancel { 
-    background: #fff; 
+.btnCancel {
+    background: #fff;
     color: var(--navy);
-    border-color: var(--line); 
+    border-color: var(--line);
 }
 
-.btnRate { 
-    border-color: var(--sky); 
-    color: var(--navy); 
+.btnRate {
+    border-color: var(--sky);
+    color: var(--navy);
 }
 
-.btnRight { 
-    display: block; 
-    margin-left: auto; }
-.actionsCenter { 
-    justify-content: center; 
+.btnRight {
+    display: block;
+    margin-left: auto;
+}
+
+.actionsCenter { justify-content: center; 
 }
 
 .item {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 16px;
     padding: 16px;
@@ -220,7 +257,7 @@ body {
 }
 
 .item.card {
-    padding: 24px;
+    padding: 18px;
     border-radius: 16px;
     background: #fff;
 }
@@ -231,9 +268,14 @@ body {
     margin-top: 2px;
 }
 
-.item > .badge { margin-left: auto; }
+.item > .badge { 
+    margin-left: auto; 
+}
 
-.item .btnCancel, .item .btnPrimary {
+.item 
+.btnCancel, 
+.item 
+.btnPrimary {
     padding: 8px 18px;
     font-size: 14px;
 }
@@ -258,50 +300,138 @@ body {
     font-weight: 600;
     white-space: nowrap;
 }
+
 .badge.confirmed { 
     background: var(--sky-soft); 
     color: var(--navy); 
 }
 
-.badge.pending { 
+.badge.pending   { 
     background: var(--pink-soft); 
     color: var(--pink-dark); 
 }
 
-.badge.done { 
+.badge.done      { 
     background: #eef1f5; 
-    color: #5b6270; }
+    color: #5b6270; 
+}
+
+.badge.canceled  { 
+    background: #fdecea; 
+    color: #b3261e; 
+}
 
 .customDialog {
     margin: auto;
     padding: 28px;
+    width: calc(100% - 32px);
     max-width: 360px;
     border: none;
     border-radius: 16px;
     text-align: center;
     box-shadow: 0 10px 40px rgba(6, 61, 137, 0.25);
 }
-.customDialog p { 
-    margin-bottom: 20px; 
-    color: var(--navy); 
+
+.customDialog p {
+    margin-bottom: 20px;
+    color: var(--navy);
 }
 
 .customDialog::backdrop { 
     background: rgba(6, 61, 137, 0.35); 
 }
 
-.emptyState { 
-    text-align: center; 
-    padding: 20px; 
-}
-
-.badge.canceled { 
-    background: #fdecea; 
-    color: #b3261e; 
-}
-
 .dialogActions {
     display: flex;
     justify-content: center;
     gap: 12px;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 20px;
+}
+
+@media (min-width: 768px) {
+    h1 { 
+        font-size: 30px; 
+    }
+    h2 { 
+        font-size: 30px; 
+    }
+
+    .app { 
+        display: grid;
+        grid-template-columns: 260px 1fr; 
+    }
+
+    .topBar { 
+        padding: 20px 40px; 
+    }
+
+    .sideBar {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        gap: 0;
+        height: 100vh;
+        padding: 20px;
+        border-bottom: none;
+        border-right: 1px solid var(--line);
+    }
+
+    .logo {
+        width: 160px;
+        margin: 0 auto 32px;
+    }
+
+    .menu {
+        order: 0;
+        width: auto;
+        display: block;
+        overflow: visible;
+    }
+
+    .menu a {
+        padding: 20px;
+        margin-bottom: 10px;
+        font-size: 16px;
+        border-radius: 16px;
+    }
+
+    .logout {
+        order: 0;
+        margin: auto 0 0;
+        padding-top: 10px;
+        border-top: 1px solid var(--line);
+        font-size: 16px;
+    }
+
+    .content { 
+        padding: 30px 40px; 
+    }
+
+    .pageHeader {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .card,
+    .info,
+    .formCard,
+    .bookingCard,
+    .suggestCard,
+    .historyCard { 
+        padding: 24px; 
+    }
+
+    .item.card { 
+        padding: 24px; 
+    }
+
+    .row { 
+        grid-template-columns: 1fr 1fr; 
+    }
 }
