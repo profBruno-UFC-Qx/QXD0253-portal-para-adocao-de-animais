@@ -1,3 +1,5 @@
+import { listServicos } from "./api.js";
+
 function createHeader() {
     const header = document.createElement("header");
     header.classList.add("pageHeader", "dashboardPageHeader");
@@ -59,57 +61,38 @@ function createServiceCard(service) {
     return article;
 }
 
-function createServicesGrid() {
-    const services = [
-        {
-            name: "Banho Completo",
-            audience: "Cães e gatos",
-            price: "R$ 80,00",
-            description: "Banho, escovação, secagem, limpeza de ouvidos e corte de unhas.",
-            duration: "45 minutos"
-        },
-        {
-            name: "Tosa Higiênica",
-            audience: "Cães",
-            price: "R$ 45,00",
-            description: "Aparagem nas regiões íntimas, coxins das patas e barriga.",
-            duration: "30 minutos"
-        },
-        {
-            name: "Banho & Tosa Raça",
-            audience: "Cães",
-            price: "R$ 110,00",
-            description: "Banho e corte específico para o padrão da raça.",
-            duration: "1h 30min"
-        },
-        {
-            name: "Tosa Felina",
-            audience: "Gatos",
-            price: "R$ 100,00",
-            description: "Tosa segura para gatos em ambiente adequado.",
-            duration: "1 hora"
-        }
-    ];
+async function createServicesGrid() {
+    const services = await listServicos();
     const section = document.createElement("section");
     section.classList.add("servicesGrid");
+    
 
     services.forEach(service => {
-        section.appendChild(createServiceCard(service));
+        section.appendChild(createServiceCard({
+            name: service.nome,
+            audience: service.publico,
+            price: Number(service.valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
+            description: service.descricao,
+            duration: service.duracao
+        }));
     });
 
     return section;
 }
 
-function createServicesSection() {
+async function createServicesSection() {
     const section = document.createElement("section");
+
     section.classList.add("ownerPage");
     section.setAttribute("data-dashboard-section", "servicos");
     section.appendChild(createHeader());
-    section.appendChild(createServicesGrid());
+    section.appendChild(await createServicesGrid());
+
     return section;
 }
 
-export function renderServicesPage() {
+export async function renderServicesPage() {
     const mainContent = document.querySelector("#dashboard-content");
-    mainContent.replaceChildren(createServicesSection());
+
+    mainContent.replaceChildren(await createServicesSection());
 }

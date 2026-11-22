@@ -15,7 +15,7 @@
       "type": "string",
       "required": true
     },
-    "specie": {
+    "species": {
       "type": "enumeration",
       "required": true,
       "enum": [
@@ -36,13 +36,13 @@
         "big"
       ]
     },
-    "coat": {
+    "fur": {
       "type": "string",
       "required": true
     },
     "age": {
       "type": "integer",
-      "required": false
+      "required": true
     },
     "notes": {
       "type": "text"

@@ -84,10 +84,9 @@ async function createStatusField() {
     const select = document.createElement("select");
     select.id = "filtro-status";
 
-    options.forEach(async opt => {
-        const option = await createOption(...opt);
-        select.appendChild(option);
-    });
+    for (const opt of options) {
+        select.appendChild(await createOption(...opt));
+    }
 
     div.appendChild(label);
     div.appendChild(select);
@@ -169,53 +168,38 @@ async function createActionCell() {
 
 async function createTableRow(appointment) {
     const tr = document.createElement("tr");
-    tr.appendChild(await createTableCell(appointment.hora.slice(0, 5)));
+
+    tr.appendChild(await createTableCell(appointment.hour.slice(0, 5)));
     tr.appendChild(await createTableCell(appointment.user.username));
-    tr.appendChild(await createTableCell(appointment.pet.nome));
-    tr.appendChild(await createTableCell(appointment.servico.titulo));
-    tr.appendChild(await createTableCell(appointment.servico.valor));
-    tr.appendChild(await createStatusCell(appointment.estagio, appointment.estagio));
+    tr.appendChild(await createTableCell(appointment.pet.name));
+    tr.appendChild(await createTableCell(appointment.service.name));
+
+    tr.appendChild(await createTableCell(
+        Number(appointment.service.price).toLocaleString("pt-BR", { 
+            style: "currency", 
+            currency: "BRL" 
+        }))
+    );
+
+    const status = {
+        pendente: ["Pendente", "pending"],
+        andamento: ["Em andamento", "confirmed"],
+        concluido: ["Concluído", "done"]
+    }[appointment.estagio] || [appointment.estagio, "pending"];
+
+    tr.appendChild(await createStatusCell(...status));
     tr.appendChild(await createActionCell());
+
     return tr;
 }
 
 async function createTableBody() {
-    // const appointments = [
-    //     {
-    //         time: "09:00",
-    //         tutor: "Mariana Souza",
-    //         pet: "Mel (Poodle)",
-    //         service: "Banho & Tosa",
-    //         value: "R$ 90,00",
-    //         status: "Concluído",
-    //         badgeClass: "done"
-    //     },
-    //     {
-    //         time: "13:00",
-    //         tutor: "Ana Beatriz",
-    //         pet: "Nina (Shih-tzu)",
-    //         service: "Tosa Higiênica",
-    //         value: "R$ 50,00",
-    //         status: "Em andamento",
-    //         badgeClass: "confirmed"
-    //     },
-    //     {
-    //         time: "15:30",
-    //         tutor: "Fernanda Costa",
-    //         pet: "Bela (Siamês)",
-    //         service: "Tosa Felina",
-    //         value: "R$ 100,00",
-    //         status: "Pendente",
-    //         badgeClass: "pending"
-    //     }
-    // ];
-
     const appointments = await listAgendamentos();
     const tbody = document.createElement("tbody");
 
-    appointments.forEach(async appointment => {
+    for (const appointment of appointments) {
         tbody.appendChild(await createTableRow(appointment));
-    });
+    }
 
     return tbody;
 }

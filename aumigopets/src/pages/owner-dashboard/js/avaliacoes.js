@@ -1,3 +1,5 @@
+import { listAvaliacoes } from "./api.js";
+
 function createHeader() {
     const header = document.createElement("header");
     header.classList.add("pageHeader", "dashboardPageHeader");
@@ -21,19 +23,19 @@ function createReviewCard(review) {
     article.classList.add("card", "reviewCard");
 
     const h1 = document.createElement("h1");
-    h1.innerText = review.name;
+    h1.innerText = review.tutor;
 
     const stars = document.createElement("p");
     stars.classList.add("stars");
-    stars.setAttribute("aria-label", review.rating + " estrelas");
-    stars.innerText = review.stars;
+    stars.setAttribute("aria-label", review.nota + " estrelas");
+    stars.innerText = "★".repeat(Number(review.nota)) + "☆".repeat(5 - Number(review.nota));
 
     const quote = document.createElement("blockquote");
-    quote.innerText = review.comment;
+    quote.innerText = review.comentario;
 
     const description = document.createElement("p");
     description.classList.add("subText");
-    description.innerText = review.details;
+    description.innerText = review.pet + " - " + review.servico;
 
     article.appendChild(h1);
     article.appendChild(stars);
@@ -42,30 +44,8 @@ function createReviewCard(review) {
     return article;
 }
 
-function createReviewsGrid() {
-    const reviews = [
-        {
-            name: "Mariana Souza",
-            rating: "5",
-            stars: "★★★★★",
-            comment: "“O atendimento foi impecável. A Mel voltou cheirosa e super calma.”",
-            details: "Mel (Poodle) - Banho & Tosa"
-        },
-        {
-            name: "Carlos Alberto",
-            rating: "5",
-            stars: "★★★★★",
-            comment: "“Excelente estrutura e equipe preparada para lidar com meu cachorro.”",
-            details: "Thor (Pitbull) - Banho Completo"
-        },
-        {
-            name: "Ana Beatriz",
-            rating: "4",
-            stars: "★★★★☆",
-            comment: "“Muito bom o serviço e pontualidade. O perfume poderia ser mais suave.”",
-            details: "Nina (Shih-tzu) - Tosa Higiênica"
-        }
-    ];
+async function createReviewsGrid() {
+    const reviews = await listAvaliacoes();
     const section = document.createElement("section");
     section.classList.add("reviewsGrid");
 
@@ -76,16 +56,16 @@ function createReviewsGrid() {
     return section;
 }
 
-function createReviewsSection() {
+async function createReviewsSection() {
     const section = document.createElement("section");
     section.classList.add("ownerPage");
     section.setAttribute("data-dashboard-section", "avaliacoes");
     section.appendChild(createHeader());
-    section.appendChild(createReviewsGrid());
+    section.appendChild(await createReviewsGrid());
     return section;
 }
 
-export function renderReviewsPage() {
+export async function renderReviewsPage() {
     const mainContent = document.querySelector("#dashboard-content");
-    mainContent.replaceChildren(createReviewsSection());
+    mainContent.replaceChildren(await createReviewsSection());
 }

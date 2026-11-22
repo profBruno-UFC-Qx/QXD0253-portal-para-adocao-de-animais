@@ -1,4 +1,5 @@
-import { listAgendamentos } from "./api.js";
+import { listAgendamentos, listClientes, listPets, listServicos } from "./api.js";
+import { renderAppointmentForm } from "./appointmentForm.js"
 
 const columnsName = ["pendingColumn", "progressColumn", "completedColumn"];
 let agendamentos;
@@ -42,7 +43,7 @@ async function createPipelineCard(agendamento) {
     return pipelineCard;
 }
 
-async function createPipelineColumnHeader(columnName) {
+async function createPipelineColumnHeader(columnName, count) {
     const itemHeader = document.createElement("div");
     itemHeader.classList.add("itemHeader");
 
@@ -64,7 +65,7 @@ async function createPipelineColumnHeader(columnName) {
     const span = document.createElement('span');
     span.classList.add('badge');
     span.classList.add(badge);
-    span.innerText = '2';
+    span.innerText = count;
 
     itemHeader.appendChild(title);
     itemHeader.appendChild(span);
@@ -77,24 +78,27 @@ async function createPipelineColumn(columnName) {
     article.classList.add("pipelineColumn");
     article.classList.add(columnName);
 
-    const itemHeader = await createPipelineColumnHeader(columnName);
+    let stage = "";
+    if (columnName === "pendingColumn") {
+        stage = "pendente";
+    } else if (columnName === "progressColumn") {
+        stage = "andamento";
+    } else {
+        stage = "concluido";
+    }
+
+    const columnAppointments = agendamentos.filter(agendamento => {
+        if (stage === "concluido") {
+            return agendamento.estagio === "concluido" || agendamento.estagio === "concluído";
+        }
+        return agendamento.estagio === stage;
+    });
+    const itemHeader = await createPipelineColumnHeader(columnName, columnAppointments.length);
 
     article.appendChild(itemHeader);
 
-    console.log(agendamentos)
-
-    for (const agendamento of agendamentos) {
-        if (columnName === "pendingColumn" && agendamento.estagio === "pendente") {
-            article.appendChild(
-                await createPipelineCard(
-                    agendamento
-                ));
-        } else if (columnName === "progressColumn" && agendamento.estagio === "andamento") {
-            article.appendChild(
-                await createPipelineCard(
-                    agendamento
-                ));
-        }
+    for (const agendamento of columnAppointments) {
+        article.appendChild(await createPipelineCard(agendamento));
     }
 
     return article;
@@ -132,18 +136,26 @@ async function createMetricCard(name, value, isCompMetric) {
 }
 
 async function createPipelineCards() {
-    const cardsList = ["Agendamentos", "Faturamento Previsto", "Taxa de Conclusão"];
+    const total = agendamentos.length;
+    const completed = agendamentos.filter(agendamento => {
+        return agendamento.estagio === "concluido" || agendamento.estagio === "concluído";
+    }).length;
+    const expectedRevenue = agendamentos
+        .filter(agendamento => agendamento.estagio === "pendente" || agendamento.estagio === "andamento")
+        .reduce((totalValue, agendamento) => totalValue + Number(agendamento.servico.valor), 0);
+    const completionRate = total ? Math.round(completed / total * 100) : 0;
+    const cardsList = [
+        ["Agendamentos", total.toString(), false],
+        ["Faturamento Previsto", expectedRevenue.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }), false],
+        ["Taxa de Conclusão", completionRate + "%", true]
+    ];
 
     const section = document.createElement("section");
     section.classList.add("pipelineCards");
     section.setAttribute("aria-label", "Resumo do pipeline")
 
-    for (const card of cardsList) {
-        if (card === "Taxa de Conclusão") {
-            section.appendChild(await createMetricCard(card, "87%", true));
-            continue;
-        }
-        section.appendChild(await createMetricCard(card, "R$ 500,00", false));
+    for (const [name, value, isCompMetric] of cardsList) {
+        section.appendChild(await createMetricCard(name, value, isCompMetric));
     }
 
     return section;
@@ -203,4 +215,19 @@ export async function renderMainPipelinePage() {
     agendamentos = await listAgendamentos();
 
     mainContent.replaceChildren(await createPipeline());
+
+    const novoAgendamento = document.querySelector(".btnPrimary");
+    novoAgendamento.addEventListener('click', async event => {
+        event.preventDefault();
+
+        const tutors = await listClientes();
+        const services = await listServicos();
+
+        console.log(services)
+
+        mainContent.replaceChildren(await renderAppointmentForm({
+            tutors,
+            services
+        }));
+    })
 }

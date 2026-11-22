@@ -1,3 +1,5 @@
+import { getRelatorios } from "./api.js";
+
 function createHeader() {
     const header = document.createElement("header");
     header.classList.add("pageHeader", "dashboardPageHeader");
@@ -40,11 +42,11 @@ function createMetricCard(metric) {
     return article;
 }
 
-function createMetricGrid() {
+async function createMetricGrid(report) {
     const metrics = [
-        { name: "Faturamento do mês", value: "R$ 14.850,00" },
-        { name: "Margem líquida", value: "62%", className: "positive" },
-        { name: "Ticket médio", value: "R$ 88,00" }
+        { name: "Faturamento do mês", value: report.faturamentoMes },
+        { name: "Margem líquida", value: report.margemLiquida, className: "positive" },
+        { name: "Ticket médio", value: report.ticketMedio }
     ];
     const section = document.createElement("section");
     section.classList.add("metricGrid");
@@ -56,22 +58,17 @@ function createMetricGrid() {
     return section;
 }
 
-function createReportBars() {
-    const values = [
-        ["40%", "Sem 1"],
-        ["65%", "Sem 2"],
-        ["85%", "Sem 3"],
-        ["100%", "Sem 4"]
-    ];
+async function createReportBars(report) {
+    const maxValue = Math.max(...report.faturamentoSemanal.map(week => Number(week.valor)));
     const div = document.createElement("div");
     div.classList.add("reportBars");
     div.setAttribute("aria-label", "Gráfico de faturamento semanal");
 
-    values.forEach(value => {
+    report.faturamentoSemanal.forEach(week => {
         const bar = document.createElement("div");
-        bar.style.height = value[0];
+        bar.style.height = (Number(week.valor) / maxValue * 100) + "%";
         const label = document.createElement("span");
-        label.innerText = value[1];
+        label.innerText = week.semana;
         bar.appendChild(label);
         div.appendChild(bar);
     });
@@ -79,32 +76,27 @@ function createReportBars() {
     return div;
 }
 
-function createWeeklyReportCard() {
+async function createWeeklyReportCard(report) {
     const article = document.createElement("article");
     article.classList.add("card", "reportCard");
 
     const h1 = document.createElement("h1");
     h1.innerText = "Faturamento semanal";
     article.appendChild(h1);
-    article.appendChild(createReportBars());
+    article.appendChild(await createReportBars(report));
     return article;
 }
 
-function createRanking() {
-    const services = [
-        ["Banho Completo", "142"],
-        ["Banho & Tosa", "89"],
-        ["Tosa Higiênica", "64"]
-    ];
+async function createRanking(report) {
     const div = document.createElement("div");
     div.classList.add("ranking");
 
-    services.forEach(service => {
+    report.servicosMaisRealizados.forEach(service => {
         const p = document.createElement("p");
         const span = document.createElement("span");
-        span.innerText = service[0];
+        span.innerText = service.nome;
         const strong = document.createElement("strong");
-        strong.innerText = service[1];
+        strong.innerText = service.quantidade;
         p.appendChild(span);
         p.appendChild(strong);
         div.appendChild(p);
@@ -113,36 +105,37 @@ function createRanking() {
     return div;
 }
 
-function createRankingCard() {
+async function createRankingCard(report) {
     const article = document.createElement("article");
     article.classList.add("card", "reportCard");
 
     const h1 = document.createElement("h1");
     h1.innerText = "Serviços mais realizados";
     article.appendChild(h1);
-    article.appendChild(createRanking());
+    article.appendChild(await createRanking(report));
     return article;
 }
 
-function createReportGrid() {
+async function createReportGrid(report) {
     const section = document.createElement("section");
     section.classList.add("reportGrid");
-    section.appendChild(createWeeklyReportCard());
-    section.appendChild(createRankingCard());
+    section.appendChild(await createWeeklyReportCard(report));
+    section.appendChild(await createRankingCard(report));
     return section;
 }
 
-function createReportsSection() {
+async function createReportsSection() {
+    const report = await getRelatorios();
     const section = document.createElement("section");
     section.classList.add("ownerPage");
     section.setAttribute("data-dashboard-section", "relatorios");
     section.appendChild(createHeader());
-    section.appendChild(createMetricGrid());
-    section.appendChild(createReportGrid());
+    section.appendChild(await createMetricGrid(report));
+    section.appendChild(await createReportGrid(report));
     return section;
 }
 
-export function renderReportsPage() {
+export async function renderReportsPage() {
     const mainContent = document.querySelector("#dashboard-content");
-    mainContent.replaceChildren(createReportsSection());
+    mainContent.replaceChildren(await createReportsSection());
 }

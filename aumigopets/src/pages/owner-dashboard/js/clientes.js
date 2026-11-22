@@ -1,3 +1,5 @@
+import { listClientes } from "./api.js";
+
 function createHeader() {
     const header = document.createElement("header");
     header.classList.add("pageHeader", "dashboardPageHeader");
@@ -14,11 +16,7 @@ function createHeader() {
     div.appendChild(p);
     header.appendChild(div);
 
-    const button = document.createElement("button");
-    button.classList.add("btnPrimary");
-    button.type = "button";
-    button.innerText = "+ Novo Tutor";
-    header.appendChild(button);
+   
     return header;
 }
 
@@ -93,40 +91,26 @@ function createTableRow(tutor) {
     return row;
 }
 
-function createTableBody() {
-    const tutors = [
-        {
-            name: "Mariana Souza",
-            email: "mariana@exemplo.com",
-            phone: "(11) 98765-1111",
-            pet: "Mel (Poodle)",
-            visits: "8 visitas"
-        },
-        {
-            name: "Carlos Alberto",
-            email: "carlos@exemplo.com",
-            phone: "(11) 97654-2222",
-            pet: "Thor (Pitbull)",
-            visits: "5 visitas"
-        },
-        {
-            name: "Fernanda Costa",
-            email: "fernanda@exemplo.com",
-            phone: "(11) 94321-5555",
-            pet: "Bela (Siamês)",
-            visits: "6 visitas"
-        }
-    ];
+async function createTableBody() {
+    const tutors = await listClientes();
     const tbody = document.createElement("tbody");
 
     tutors.forEach(tutor => {
-        tbody.appendChild(createTableRow(tutor));
+        if (tutor.username !== "maria") {
+            tbody.appendChild(createTableRow({
+                name: tutor.username,
+                email: tutor.email,
+                phone: tutor.phone,
+                pet: tutor.pet,
+                visits: tutor.appointments.length + " visitas"
+            }));
+        }
     });
 
     return tbody;
 }
 
-function createTableCard() {
+async function createTableCard() {
     const card = document.createElement("div");
     card.classList.add("card", "tableCard");
 
@@ -134,23 +118,23 @@ function createTableCard() {
     tableScroll.classList.add("tableScroll");
     const table = document.createElement("table");
     table.appendChild(createTableHead());
-    table.appendChild(createTableBody());
+    table.appendChild(await createTableBody());
     tableScroll.appendChild(table);
     card.appendChild(tableScroll);
     return card;
 }
 
-function createClientsSection() {
+async function createClientsSection() {
     const section = document.createElement("section");
     section.classList.add("ownerPage");
     section.setAttribute("data-dashboard-section", "clientes");
     section.appendChild(createHeader());
     section.appendChild(createSearchField());
-    section.appendChild(createTableCard());
+    section.appendChild(await createTableCard());
     return section;
 }
 
-export function renderClientsPage() {
+export async function renderClientsPage() {
     const mainContent = document.querySelector("#dashboard-content");
-    mainContent.replaceChildren(createClientsSection());
+    mainContent.replaceChildren(await createClientsSection());
 }

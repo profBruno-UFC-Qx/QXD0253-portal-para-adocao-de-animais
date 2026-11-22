@@ -1,3 +1,5 @@
+import { listTransacoes } from "./api.js";
+
 function createHeader() {
     const header = document.createElement("header");
     header.classList.add("pageHeader", "dashboardPageHeader");
@@ -40,11 +42,17 @@ function createMetricCard(metric) {
     return article;
 }
 
-function createMetricGrid() {
+async function createMetricGrid(transactions) {
+    const incomes = transactions
+        .filter(transaction => transaction.tipo === "entrada")
+        .reduce((total, transaction) => total + Number(transaction.valor), 0);
+    const expenses = transactions
+        .filter(transaction => transaction.tipo === "saida")
+        .reduce((total, transaction) => total + Number(transaction.valor), 0);
     const metrics = [
-        { name: "Receitas", value: "R$ 4.250,00", className: "positive" },
-        { name: "Despesas", value: "R$ 1.580,00", className: "negative" },
-        { name: "Lucro Líquido", value: "R$ 2.670,00" }
+        { name: "Receitas", value: incomes.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }), className: "positive" },
+        { name: "Despesas", value: expenses.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }), className: "negative" },
+        { name: "Lucro Líquido", value: (incomes - expenses).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) }
     ];
     const section = document.createElement("section");
     section.classList.add("metricGrid");
@@ -101,46 +109,26 @@ function createTableRow(transaction) {
     return row;
 }
 
-function createTableBody() {
-    const transactions = [
-        {
-            date: "03/11/2026",
-            description: "Banho & Tosa - Thor",
-            category: "Serviços",
-            type: "Entrada",
-            badgeClass: "done",
-            value: "+ R$ 120,00",
-            valueClass: "amountPositive"
-        },
-        {
-            date: "03/11/2026",
-            description: "Compra de insumos",
-            category: "Insumos",
-            type: "Saída",
-            badgeClass: "canceled",
-            value: "- R$ 350,00",
-            valueClass: "amountNegative"
-        },
-        {
-            date: "02/11/2026",
-            description: "Banho Completo - Mel",
-            category: "Serviços",
-            type: "Entrada",
-            badgeClass: "done",
-            value: "+ R$ 90,00",
-            valueClass: "amountPositive"
-        }
-    ];
+async function createTableBody(transactions) {
     const tbody = document.createElement("tbody");
 
     transactions.forEach(transaction => {
-        tbody.appendChild(createTableRow(transaction));
+        const isIncome = transaction.tipo === "entrada";
+        tbody.appendChild(createTableRow({
+            date: transaction.data,
+            description: transaction.descricao,
+            category: transaction.categoria,
+            type: isIncome ? "Entrada" : "Saída",
+            badgeClass: isIncome ? "done" : "canceled",
+            value: Number(transaction.valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
+            valueClass: isIncome ? "amountPositive" : "amountNegative"
+        }));
     });
 
     return tbody;
 }
 
-function createTransactionsCard() {
+async function createTransactionsCard(transactions) {
     const card = document.createElement("div");
     card.classList.add("card", "tableCard");
 
@@ -152,7 +140,7 @@ function createTransactionsCard() {
     tableScroll.classList.add("tableScroll");
     const table = document.createElement("table");
     table.appendChild(createTableHead());
-    table.appendChild(createTableBody());
+    table.appendChild(await createTableBody(transactions));
     tableScroll.appendChild(table);
 
     card.appendChild(title);
@@ -160,17 +148,18 @@ function createTransactionsCard() {
     return card;
 }
 
-function createFinancialSection() {
+async function createFinancialSection() {
+    const transactions = await listTransacoes();
     const section = document.createElement("section");
     section.classList.add("ownerPage");
     section.setAttribute("data-dashboard-section", "financeiro");
     section.appendChild(createHeader());
-    section.appendChild(createMetricGrid());
-    section.appendChild(createTransactionsCard());
+    section.appendChild(await createMetricGrid(transactions));
+    section.appendChild(await createTransactionsCard(transactions));
     return section;
 }
 
-export function renderFinancialPage() {
+export async function renderFinancialPage() {
     const mainContent = document.querySelector("#dashboard-content");
-    mainContent.replaceChildren(createFinancialSection());
+    mainContent.replaceChildren(await createFinancialSection());
 }
