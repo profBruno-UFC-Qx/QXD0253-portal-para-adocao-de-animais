@@ -1,0 +1,73 @@
+
+.pageBanner {
+    padding: 40px 20px;
+    background: linear-gradient(135deg, var(--pink-soft), var(--sky-soft));
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+}
+
+.pageBanner h1 {
+    margin-bottom: 8px;
+}
+
+.pageBanner p {
+    max-width: 640px;
+    margin: 0 auto;
+    color: #5b6270;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+
+#serviceCatalog .serviceCard {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#serviceCatalog .serviceCard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(6, 61, 137, 0.1);
+}
+
+.serviceTag {
+    align-self: flex-start;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--sky-soft);
+    color: var(--navy);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.serviceSizes {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.serviceSizes li {
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    font-size: 12px;
+    color: #2b2d42;
+    font-weight: 500;
+}
+
+.serviceCardFooter {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+@media (min-width: 768px) {
+    .pageBanner {
+        padding: 52px 24px;
+    }
+}
