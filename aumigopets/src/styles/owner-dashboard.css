@@ -1,1 +1,403 @@
-@charset "UTF-8";
+body {
+    overflow-y: auto;
+}
+
+.app {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sideBar {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.sideBar .menu {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.sideBar .logout {
+    flex-shrink: 0;
+}
+
+.dashboardMain {
+    min-width: 0;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    scroll-behavior: smooth;
+}
+
+.ownerPage {
+    min-height: 100%;
+}
+
+.ownerPage + .ownerPage {
+    margin-top: 24px;
+}
+
+.dashboardPageHeader h1 {
+    color: var(--pink);
+}
+
+.pipelineColumn,
+.filterBar,
+.pipelineMetric,
+.metricCard,
+.serviceCard,
+.reportCard,
+.reviewCard {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(6, 61, 137, 0.06);
+    border: 1px solid rgba(240, 221, 230, 0.6);
+}
+
+.pipelineCards,
+.pipelineItems,
+.servicesGrid,
+.metricGrid,
+.reportGrid,
+.reviewsGrid {
+    display: grid;
+    gap: 16px;
+}
+
+.pipelineCards {
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 16px;
+}
+
+.pipelineMetric {
+    padding: 16px 24px;
+}
+
+.pipelineMetric h1 {
+    color: #5b6270;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.pipelineMetric p {
+    color: var(--pink);
+    font-size: 32px;
+    font-weight: 700;
+    margin-top: 4px;
+    line-height: 1.2;
+}
+
+.completionMetric p {
+    color: #15803d; 
+}
+
+.pipelineItems {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+}
+
+.pipelineColumn {
+    padding: 16px;
+}
+
+.itemHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+}
+
+.itemHeader h1 {
+    font-size: 17px;
+}
+
+.pipelineCard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 12px;
+    border-left: 6px solid #c2410c; 
+    border-radius: 10px;
+    background: var(--bg);
+    color: #5b6270;
+    font-size: 14px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pipelineCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(6, 61, 137, 0.08);
+}
+
+.progressColumn .pipelineCard {
+    border-left-color: var(--pink);
+}
+
+.completedColumn .pipelineCard {
+    border-left-color: #15803d;
+}
+
+.pipelineCard h1 {
+    font-size: 15px;
+    color: var(--navy);
+}
+
+.itemInfo {
+    grid-column: 1 / -1;
+}
+
+.itemTime {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    grid-column: 1 / -1;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.filterBar {
+    display: grid;
+    grid-template-columns: 150px 180px 1fr;
+    gap: 16px;
+    align-items: end;
+    margin-bottom: 16px;
+    padding: 16px 20px;
+}
+
+.filterField {
+    margin-bottom: 0;
+}
+
+.searchField {
+    max-width: 560px;
+}
+
+.tableCard {
+    margin-top: 0;
+}
+
+.tableTitle {
+    margin-bottom: 16px;
+    font-size: 17px;
+}
+
+.tableScroll {
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+}
+
+.tableScroll table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+.tableScroll th {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    color: #5b6270;
+    font-weight: 600;
+    background: var(--bg);
+    white-space: nowrap;
+}
+
+.tableScroll td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    color: #2b2d42;
+}
+
+.tableScroll tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.tableScroll tbody tr:hover {
+    background-color: rgba(253, 234, 241, 0.35);
+}
+
+.tableScroll tr:last-child td {
+    border-bottom: none;
+}
+
+.tableScroll td small {
+    display: block;
+    color: #5b6270;
+    margin-top: 2px;
+}
+
+.servicesGrid {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.serviceCard {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    padding: 20px;
+}
+
+.serviceCard h1 {
+    font-size: 17px;
+}
+
+.serviceCard .subText {
+    grid-column: 1 / -1;
+}
+
+.servicePrice {
+    color: var(--pink);
+    font-size: 20px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.metricGrid {
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 16px;
+}
+
+.metricCard {
+    padding: 20px 24px;
+}
+
+.metricCard h1 {
+    margin-top: 6px;
+    font-size: 24px;
+}
+
+.metricCard span {
+    color: #5b6270;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.metricCard.positive h1,
+.amountPositive {
+    color: #15803d;
+}
+
+.metricCard.negative h1,
+.amountNegative {
+    color: #b3261e;
+}
+
+.reportGrid {
+    grid-template-columns: 2fr 1fr;
+}
+
+.reportCard {
+    padding: 24px;
+}
+
+.reportCard h1 {
+    font-size: 17px;
+}
+
+.reportBars {
+    height: 220px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 0 8px;
+    border-bottom: 2px solid var(--line);
+}
+
+.reportBars div {
+    width: 15%;
+    min-height: 24px; 
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    border-radius: 8px 8px 0 0;
+    background: var(--pink-soft);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.reportBars div:hover {
+    opacity: 0.85;
+}
+
+.reportBars div:last-child {
+    background: var(--pink);
+}
+
+.reportBars div:last-child span {
+    color: #fff; 
+}
+
+.reportBars div span {
+    padding-bottom: 8px;
+    color: var(--navy);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.ranking p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+}
+
+.ranking p:last-child {
+    border-bottom: none;
+}
+
+.reviewsGrid {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.reviewCard {
+    padding: 20px;
+}
+
+.reviewCard h1 {
+    font-size: 17px;
+}
+
+.reviewCard blockquote {
+    margin: 14px 0;
+    color: #5b6270;
+    font-style: italic;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.stars {
+    color: #ffb03a;
+    letter-spacing: 2px;
+    font-size: 16px;
+}
+
+.errorDialog {
+    width: min(360px, calc(100vw - 32px));
+}
+
+.errorDialog h1 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.errorIcon {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: var(--pink-soft);
+    color: var(--pink);
+    font-size: 24px;
+    font-weight: 700;
+}

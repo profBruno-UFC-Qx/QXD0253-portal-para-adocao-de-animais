@@ -7,18 +7,18 @@
     "displayName": "Reviews"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
-    "stars": {
+    "rating": {
       "type": "integer",
       "required": true,
       "default": 5,
       "min": 0,
       "max": 5
     },
-    "description": {
+    "comment": {
       "type": "text",
       "required": false
     },
@@ -28,6 +28,12 @@
       "target": "plugin::users-permissions.user",
       "required": true,
       "inversedBy": "reviews"
+    },
+    "appointment": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::appointment.appointment",
+      "inversedBy": "review"
     }
   }
 }
