@@ -1,0 +1,76 @@
+.petCards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 24px;
+    max-width: 1080px;
+}
+
+.petTop {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.petTop h2 { 
+    font-size: 22px; 
+}
+
+.avatarLg {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+}
+
+.petData {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    background: var(--bg);
+}
+
+.petData small {
+    display: block;
+    color: #5b6270;
+    font-size: 13px;
+}
+
+.petData strong { 
+    color: #2b2d42; 
+}
+
+.petNotes {
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    border-left: 4px solid var(--pink);
+    border-radius: 8px;
+    background: var(--pink-soft);
+    font-size: 14px;
+}
+
+.petNotes strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.petActions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.petActions a {
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    .petCards { 
+        grid-template-columns: 1fr 1fr; 
+    }
+}

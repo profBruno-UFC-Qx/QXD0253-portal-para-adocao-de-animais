@@ -1,0 +1,45 @@
+.scheduleCards {
+    display: grid;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.scheduleCards .item { 
+    margin-bottom: 0; 
+}
+
+.scheduleInfo h2 {
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+
+.scheduleInfo p {
+    color: #5b6270;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.scheduleInfo strong { 
+    color: #2b2d42; 
+}
+
+.when {
+    color: var(--pink) !important;
+    font-weight: 600;
+}
+
+.scheduleAction {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .scheduleAction {
+        width: auto;
+        margin-left: auto;
+        flex-wrap: nowrap;
+    }
+}

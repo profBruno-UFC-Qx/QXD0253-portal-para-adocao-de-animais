@@ -7,14 +7,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/style.css">
-    <link rel="stylesheet" href="../styles/mainPage.css">
-    <link rel="stylesheet" href="../styles/myPets.css">   
-    <link rel="stylesheet" href="../styles/petHistory.css">
-    <link rel="stylesheet" href="../styles/newService.css">
-    <link rel="stylesheet" href="../styles/rateService.css">
-    <link rel="stylesheet" href="../styles/myProfile.css">
-    <link rel="stylesheet" href="../styles/schedules.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mainPage.css">
+    <link rel="stylesheet" href="css/myPets.css">   
+    <link rel="stylesheet" href="css/schedules.css">
+    <link rel="stylesheet" href="css/myProfile.css">
+    <link rel="stylesheet" href="css/petHistory.css">
+    <link rel="stylesheet" href="css/newService.css">
+    <link rel="stylesheet" href="css/rateService.css">
 </head>
 <body>
     <div class="app">
@@ -28,35 +28,34 @@
                 <a href="#/schedules">Agendamentos</a>
                 <a href="#/myProfile">Meu Perfil</a>
             </nav>
-            <a href="#" class="logout">Sair</a>
+            <!---<a href="#/login" class="logout">Sair</a> ADICIONAR NA VOLTA QUANDO HOUVER LANDING--> 
         </aside>
         <div class="main">
             <header class="topBar">
                 <p class="subText" id="topTitle"></p>
-                <div class="user" id="userName">User</div>
             </header>
             <div class="content" id="view"></div>
         </div>
     </div>
     <template id="mainPage">
         <h1>Painel de Controle</h1>
-                <p class="subText">Acompanhe aqui os seus agendamentos e os seus pets.</p>
+                <p class="subText" id="homeSubtitle"></p>
                 <section class="stats">
                     <div class="card">
                         <p class="label">Pets Cadastrados</p>
                         <div class="number" id="numPets"></div>
                     </div>
-                    <div class="card">
+                    <div class="card" data-needs-pet>
                         <p class="label">Agendamentos Ativos</p>
                         <div class="number" id="numSchedules"></div>
                     </div>
-                    <div class="card">
+                    <div class="card" data-needs-pet>
                         <p class="label">Atendimentos Realizados</p>
                         <div class="number" id="numCompleted"></div>
                     </div>
                 </section>
                 <section class="twoColumns">
-                    <div class="card">
+                    <div class="card" data-needs-pet>
                         <div class="cardFunctional">
                             <h2>Próximos Atendimentos</h2>
                             <a href="#/schedules" class="btnSeeAll">Ver todos</a>
@@ -72,7 +71,7 @@
                         <a href="#/myPets/petConfig" class="btnDashed">+ Adicionar Novo Pet</a>
                     </div>
                 </section>
-                <section class="addServiceBanner">
+                <section class="addServiceBanner" data-needs-pet>
                         <div>
                             <h2>Precisa agendar um novo cuidado?</h2>
                             <p> Escolha o melhor horário para o seu serviço.</p>
@@ -133,9 +132,9 @@
                                 <option value="doubleCoat">Pelagem dupla</option>
                             </select>
                         </div>
-                        <div class="field">
+                        <div class="field"> <!---VIAVEL REMOÇÃO-->
                             <label for="age">Idade *</label>
-                            <input type="text" name="age" id="age" placeholder="Ex: 2 anos ou 4 meses" pattern="\d{1,2} (ano|anos|mês|meses)" title="Use o formato: 3 anos ou 8 meses" required>
+                            <input type="number" name="age" id="age" placeholder="Ex: 2" min="0" step="1" title="Informe a idade em anos (0 se menor que um ano)" required>
                         </div>
                     </div>
                     <div class="field">
@@ -154,7 +153,7 @@
         <div class="pageHeader">
                     <div>
                         <h1>Histórico de atendimentos</h1>
-                        <p class="subText petInfo"> <strong id="petName"></strong> • <strong id="petSize"></strong> • <strong id="age"></strong> • <strong id="numServices"></strong></p>
+                        <p class="subText petInfo"> <strong id="petName"></strong> • <strong id="petSize"></strong> • <strong id="age"></strong> <strong>Anos</strong> • <strong id="numServices"></strong></p>
                     </div>
                     <a href="#/myPets" class="btnPrimary">Voltar para Meus Pets</a>
                 </div>
@@ -278,17 +277,17 @@
                         <h2>Informações Pessoais</h2>
                         <form action="" id="personalForm">
                             <div class="field">
-                                <label for="name">Nome Completo</label>
-                                <input type="text" id="name" name="name" placeholder="Seu Nome Completo">
+                                <label for="username">Nome Completo</label>
+                                <input type="text" id="username" name="username" placeholder="Seu Nome Completo" required>
                             </div>
                             <div class="row">
                                 <div class="field">
-                                    <label for="mail">E-mail</label>
-                                    <input type="email" id="mail" name="mail" placeholder="Seu E-mail">
+                                    <label for="email">E-mail</label>
+                                    <input type="email" id="email" name="email" placeholder="Seu E-mail" required>
                                 </div>
                                 <div class="field">
-                                     <label for="contact">Telefone/WhatsApp</label>
-                                    <input type="tel" id="contact" name="contact" placeholder="(XX) 9XXXX-XXXX">
+                                     <label for="phone">Telefone/WhatsApp</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="(XX) 9XXXX-XXXX" pattern="\([0-9]{2}\) 9[0-9]{4}-[0-9]{4}" maxlength="15"title="Digite o telefone no formato: (XX) 9XXXX-XXXX" required>
                                 </div>
                             </div>
                             <button type="submit" class="btnSave btnRight">Salvar Alterações</button>
@@ -312,7 +311,7 @@
                                     <input type="password" id="confirmPassWord" name="confirmPassWord" placeholder="Confirme a nova senha" required>
                                 </div>
                             </div>
-                        <button type="submit" class="btnSave">Atualizar Senha</button>
+                        <button type="submit" class="btnSave btnRight">Atualizar Senha</button>
                         </form>
                     </div>
                 </section>
@@ -321,7 +320,6 @@
         <p id="appDialogMessage"></p>
         <button type="button" id="appDialogBtn" class="btnSave">OK</button>
     </dialog>
-    
     <dialog id="confirmDialog" class="customDialog">
         <p id="confirmDialogMessage"></p>
         <div class="dialogActions">
@@ -330,15 +328,16 @@
         </div>
     </dialog>
 
-    <script src="../js/data.js"></script>
-    <script src="../js/mainPage.js"></script>
-    <script src="../js/myPets.js"></script>
-    <script src="../js/petHistory.js"></script>
-    <script src="../js/petConfig.js"></script>
-    <script src="../js/newService.js"></script>
-    <script src="../js/rateService.js"></script>
-    <script src="../js/myProfile.js"></script>
-    <script src="../js/schedules.js"></script>
-    <script src="../js/app.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/mainPage.js"></script>
+    <script src="js/myPets.js"></script>
+    <script src="js/petHistory.js"></script>
+    <script src="js/petConfig.js"></script>
+    <script src="js/newService.js"></script>
+    <script src="js/rateService.js"></script>
+    <script src="js/myProfile.js"></script>
+    <script src="js/schedules.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
