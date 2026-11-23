@@ -488,7 +488,7 @@ export interface ApiAppointmentAppointment extends Struct.CollectionTypeSchema {
     singularName: 'appointment';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
@@ -532,7 +532,7 @@ export interface ApiPetPet extends Struct.CollectionTypeSchema {
     singularName: 'pet';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     age: Schema.Attribute.Integer & Schema.Attribute.Required;
@@ -621,7 +621,7 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
     singularName: 'service';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;

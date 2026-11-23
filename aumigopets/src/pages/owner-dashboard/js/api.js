@@ -19,17 +19,55 @@ Retorna os indicadores e dados usados nos relatórios.
 
 const URL_BASE = 'http://127.0.0.1:1337/api';
 
-async function fetchData(endpoint, params, auth) {
-    let auth_token = "";
-    if (auth) {
-        auth_token = localStorage.getItem("auth_token");
-        if (!auth_token) {
-            window.location.href = "/";
-            return;
-        }
+async function auth() {
+    let auth_token = localStorage.getItem("auth_token");
+    if (!auth_token) {
+        window.location.href = "/";
+        return;
     }
+    return auth_token;
+
+}
+
+async function submitData(endpoint, params, data, is_auth) {
+    let auth_token = "";
+    if (is_auth) {
+        auth_token = await auth();
+    }
+    
+    const headers = {
+        "Content-Type": "application/json",
+        
+    };
+
+    if (is_auth) {
+        headers["Authorization"] = "Bearer " + auth_token;
+    }
+
+    console.log(headers)
+
+    const response = await fetch(URL_BASE + endpoint, {
+        method: "POST",
+        headers: { ...headers },
+        body: data
+    });
+
+    if (!response.ok) {
+        console.log("Erro: " + response.status);
+        return false;
+    }
+
+    return true;
+}
+
+async function fetchData(endpoint, params, is_auth) {
+    let auth_token = "";
+    if (is_auth) {
+        auth_token = await auth();
+    }
+
     const headers = {}
-    if (auth) {
+    if (is_auth) {
         headers["Authorization"] = "Bearer " + auth_token
     }
 
@@ -60,6 +98,7 @@ export async function listAgendamentos() {
 
     const endpoint = "/appointments";
     const params = `?populate=user&populate=service&populate=pet&filters[date][$eq]=${today}`;
+    console.log(params)
 
     const appointments = await fetchData(endpoint, params, true);
 
@@ -149,4 +188,14 @@ export async function listPets() {
     const data = await fetchData(endpoint, params, true);
 
     return data.data;
+}
+
+export async function postAppointment(payload) {
+    
+    const data = await submitData("/appointments", "", payload, true);
+    if (!data) {
+        console.log("Não foi possível criar um agendamento.")
+    }
+
+    console.log("Sucesso")
 }

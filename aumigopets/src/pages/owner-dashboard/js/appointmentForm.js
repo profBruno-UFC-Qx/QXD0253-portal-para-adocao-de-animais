@@ -1,4 +1,5 @@
 import { listUserPets } from "./api.js";
+import { postAppointment } from "./api.js";
 
 function createSelectField({ id, labelText, placeholderText, items = [] }) {
   const div = document.createElement("div");
@@ -24,7 +25,7 @@ function createSelectField({ id, labelText, placeholderText, items = [] }) {
     const option = document.createElement("option");
     option.value = String(item.id);
 
-    if (labelText !== "Serviço") {
+    if (labelText === "Tutor") {
       option.innerText = item.username;
     } else {
       option.innerText = item.name;
@@ -93,7 +94,6 @@ export async function renderAppointmentForm({ tutors = [], services = [], onSubm
   // Referências para usar no submit depois
   let petField, serviceField, dateField, timeField;
 
-  // 3. Quando selecionar um tutor, monta e exibe os demais campos
   tutorField.select.addEventListener("change", async (e) => {
     const selectedValue = e.target.value;
 
@@ -154,22 +154,27 @@ export async function renderAppointmentForm({ tutors = [], services = [], onSubm
     );
   });
 
-  // 4. Submit registrado uma única vez fora do change
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!form.reportValidity() || !petField) return;
 
-    const payload = {
-      tutor: tutorField.select.value,
-      pet: petField.select.value,
-      servico: serviceField.select.value,
-      data: dateField.input.value,
-      horario: timeField.input.value,
-    };
+    // O input type="time" retorna "HH:mm" (5 caracteres) ou "HH:mm:ss" (8 caracteres)
+    const rawTime = timeField.input.value;
+    const formattedTime = rawTime.length === 5 
+      ? `${rawTime}:00.000` 
+      : `${rawTime}.000`;
 
-    if (onSubmit) {
-      await onSubmit(payload);
-    }
+    const payload = JSON.stringify({
+      data: {
+        user: tutorField.select.value,
+        pet: petField.select.value,
+        service: serviceField.select.value,
+        date: dateField.input.value,
+        time: formattedTime,
+      }
+    });
+
+    const submit = await postAppointment(payload);
 
     card.remove();
   });

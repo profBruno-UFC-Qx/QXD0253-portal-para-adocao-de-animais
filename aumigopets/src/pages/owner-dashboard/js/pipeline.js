@@ -1,4 +1,4 @@
-import { listAgendamentos, listClientes, listPets, listServicos } from "./api.js";
+import { listAgendamentos, listClientes, listServicos } from "./api.js";
 import { renderAppointmentForm } from "./appointmentForm.js"
 
 const columnsName = ["pendingColumn", "progressColumn", "completedColumn"];
@@ -9,17 +9,17 @@ async function createItemInfo(agendamento) {
     itemInfo.classList.add("itemInfo");
 
     const pet = agendamento.pet;
-    let descricao = agendamento.descricao;
+    let descricao = agendamento.pet.notes;
     if (!descricao) {
-        descricao = "-"
+        descricao = "Nenhuma obs informada"
     }
 
     const htmlContent =  `
-    <p><span>${pet.nome} (${pet.raca})</span> - ${agendamento.servico.titulo}</p>
+    <p><span>${pet.name} (${pet.breed})</span> - ${agendamento.service.name}</p>
     <p>${descricao}</p>
     <hr>
     <div class="itemTime">
-    <p>${agendamento.hora.slice(0, 5)}</p>
+    <p>${agendamento.time.slice(0, 5)}</p>
     <p>ID #${agendamento.id}</p>
     </div>`
     itemInfo.innerHTML = htmlContent;
@@ -33,7 +33,7 @@ async function createPipelineCard(agendamento) {
     const customerName = document.createElement('h1');
     const serviceValue = document.createElement('p');
     customerName.innerText = agendamento.user.username;
-    serviceValue.innerText = "R$ " + agendamento.servico.valor.toString().replace(".", ",");
+    serviceValue.innerText = "R$ " + agendamento.service.price.toString().replace(".", ",");
 
     pipelineCard.appendChild(customerName);
     pipelineCard.appendChild(serviceValue);
@@ -80,18 +80,18 @@ async function createPipelineColumn(columnName) {
 
     let stage = "";
     if (columnName === "pendingColumn") {
-        stage = "pendente";
+        stage = "pending";
     } else if (columnName === "progressColumn") {
-        stage = "andamento";
+        stage = "confirmed";
     } else {
-        stage = "concluido";
+        stage = "done";
     }
 
     const columnAppointments = agendamentos.filter(agendamento => {
-        if (stage === "concluido") {
-            return agendamento.estagio === "concluido" || agendamento.estagio === "concluído";
+        if (stage === "done") {
+            return agendamento.current_status === "done" || agendamento.current_status === "done";
         }
-        return agendamento.estagio === stage;
+        return agendamento.current_status === stage;
     });
     const itemHeader = await createPipelineColumnHeader(columnName, columnAppointments.length);
 

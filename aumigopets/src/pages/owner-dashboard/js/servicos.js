@@ -69,11 +69,11 @@ async function createServicesGrid() {
 
     services.forEach(service => {
         section.appendChild(createServiceCard({
-            name: service.nome,
-            audience: service.publico,
-            price: Number(service.valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
-            description: service.descricao,
-            duration: service.duracao
+            name: service.name,
+            audience: service.species,
+            price: Number(service.price).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
+            description: service.description,
+            duration: service.duration
         }));
     });
 
