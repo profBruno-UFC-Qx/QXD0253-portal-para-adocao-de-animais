@@ -1,4 +1,5 @@
-import { listServicos } from "./api.js";
+import { listServices } from "./api.js";
+import { renderServiceForm } from "./serviceForm.js";
 
 function createHeader() {
     const header = document.createElement("header");
@@ -62,18 +63,18 @@ function createServiceCard(service) {
 }
 
 async function createServicesGrid() {
-    const services = await listServicos();
+    const services = await listServices();
     const section = document.createElement("section");
     section.classList.add("servicesGrid");
     
 
     services.forEach(service => {
         section.appendChild(createServiceCard({
-            name: service.nome,
-            audience: service.publico,
-            price: Number(service.valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
-            description: service.descricao,
-            duration: service.duracao
+            name: service.name,
+            audience: service.species,
+            price: Number(service.price).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
+            description: service.description,
+            duration: service.duration
         }));
     });
 
@@ -95,4 +96,12 @@ export async function renderServicesPage() {
     const mainContent = document.querySelector("#dashboard-content");
 
     mainContent.replaceChildren(await createServicesSection());
+
+    const newServiceButton = mainContent.querySelector(".btnPrimary");
+    newServiceButton.addEventListener("click", async event => {
+        event.preventDefault();
+        mainContent.replaceChildren(await renderServiceForm({
+            onSubmit: renderServicesPage
+        }));
+    });
 }

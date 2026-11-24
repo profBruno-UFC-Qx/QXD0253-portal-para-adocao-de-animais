@@ -1,239 +1,208 @@
-import { listAgendamentos } from './api.js'
+import { listAppointments, updateAppointmentStatus } from "./api.js";
+import { showErrorModal } from "./errorModal.js";
 
-async function createHeaderContent() {
-    const div = document.createElement("div")
+let agendamentos = [];
 
-    const h1 = document.createElement("h1");
-    h1.innerText = "Gestão de Agendamentos";
-
-    const p = document.createElement("p");
-    p.classList.add("subText")
-    p.innerText = "Controle completo da agenda por data, status e tutor."
-
-    div.appendChild(h1);
-    div.appendChild(p);
-
-    return div;
-}
-
-async function createHeader() {
+function createHeader() {
     const header = document.createElement("header");
     header.classList.add("pageHeader", "dashboardPageHeader");
 
-    header.appendChild(await createHeaderContent());
-
-    const button = document.createElement("button");
-    button.classList.add("btnPrimary")
-    button.type = "button";
-    button.innerText = "Agendar Serviço";
-
-    header.appendChild(button);
+    header.innerHTML = `
+        <div>
+            <h1>Gestão de Agendamentos</h1>
+            <p class="subText">Controle completo da agenda por data, status e tutor.</p>
+        </div>
+    `;
 
     return header;
 }
 
-
-// field filterField (filterSearch) <- apenas no filtro de busca
-async function createDivFormField(...classes) {
-    const div = document.createElement("div");
-    div.classList.add(...classes);
-
-    return div;
-}
-
-
-async function createDateField() {
-    const div = await createDivFormField("field", "filterField");
-
-    const label = document.createElement("label");
-    label.htmlFor = "filtro-data"
-    label.innerText = "Data"
-
-    const input = document.createElement("input");
-    input.id = "filtro-data"
-    input.type = "date"
-
-    div.appendChild(label);
-    div.appendChild(input);
-
-    return div;
-}
-
-async function createOption(value, text) {
-    const option = document.createElement("option");
-    option.value = value;
-    option.innerText = text;
-
-    return option;
-}
-
-async function createStatusField() {
-    const options = [
-        ["todos", "Todos"], 
-        ["pendentes", "Pendentes"], 
-        ["andamento", "Em Andamento"], 
-        ["concluidos", "Concluídos"]
-    ]
-
-    const div = await createDivFormField("field", "filterField");
-
-    const label = document.createElement("label");
-    label.htmlFor = "filtro-status"
-    label.innerText = "Status"
-
-    const select = document.createElement("select");
-    select.id = "filtro-status";
-
-    for (const opt of options) {
-        select.appendChild(await createOption(...opt));
-    }
-
-    div.appendChild(label);
-    div.appendChild(select);
-
-    return div;
-}
-
-
-async function createSearchField() {
-    const div = await createDivFormField("field", "filterField", "filterSearch");
-
-    const label = document.createElement("label");
-    label.htmlFor = "filtro-busca";
-    label.innerText = "Buscar";
-
-    const input = document.createElement("input");
-    input.id = "filtro-busca";
-    input.type = "search";
-    input.placeholder = "Tutor ou pet";
-
-    div.appendChild(label);
-    div.appendChild(input);
-
-    return div;
-}
-
-
-async function createForm() {
+function createFilterForm() {
     const form = document.createElement("form");
     form.classList.add("filterBar");
     form.setAttribute("aria-label", "Filtros da agenda");
-    
-    form.appendChild(await createDateField());
-    form.appendChild(await createStatusField());
-    form.appendChild(await createSearchField());
+
+    form.innerHTML = `
+        <div class="field filterField">
+            <label for="filtro-data">Data</label>
+            <input id="filtro-data" type="date">
+        </div>
+        <div class="field filterField">
+            <label for="filtro-status">Status</label>
+            <select id="filtro-status">
+                <option value="all">Todos</option>
+                <option value="pending">Pendentes</option>
+                <option value="confirmed">Em Andamento</option>
+                <option value="done">Concluídos</option>
+                <option value="canceled">Cancelados</option>
+            </select>
+        </div>
+        <div class="field filterField filterSearch">
+            <label for="filtro-busca">Buscar</label>
+            <input id="filtro-busca" type="search" placeholder="Tutor ou pet">
+        </div>
+    `;
 
     return form;
 }
 
-async function createTableHead() {
-    const columns = ["Horário", "Tutor", "Pet", "Serviço", "Valor", "Status", "Ações"];
-    const thead = document.createElement("thead");
-    const row = document.createElement("tr");
+function createTableRow(agendamento, onStatusChange) {
+    const tr = document.createElement("tr");
 
-    columns.forEach(column => {
-        const th = document.createElement("th");
-        th.innerText = column;
-        row.appendChild(th);
+    const valorFormatado = Number(agendamento.service.price).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
     });
 
-    thead.appendChild(row);
-    return thead;
-}
+    let statusTexto = "";
+    let badgeClasse = "";
 
-async function createTableCell(text) {
-    const td = document.createElement("td");
-    td.innerText = text;
-    return td;
-}
+    if (agendamento.current_status === "pending") {
+        statusTexto = "Pendente";
+        badgeClasse = "pending";
+    } else if (agendamento.current_status === "confirmed") {
+        statusTexto = "Em andamento";
+        badgeClasse = "confirmed";
+    } else if (agendamento.current_status === "done") {
+        statusTexto = "Concluído";
+        badgeClasse = "done";
+    } else {
+        statusTexto = "Cancelado";
+        badgeClasse = "canceled";
+    }
 
-async function createStatusCell(status, badgeClass) {
-    const td = document.createElement("td");
-    const badge = document.createElement("span");
-    badge.classList.add("badge", badgeClass);
-    badge.innerText = status;
-    td.appendChild(badge);
-    return td;
-}
+    tr.innerHTML = `
+        <td>${agendamento.time.slice(0, 5)}</td>
+        <td>${agendamento.user.username}</td>
+        <td>${agendamento.pet.name}</td>
+        <td>${agendamento.service.name}</td>
+        <td>${valorFormatado}</td>
+        <td><span class="badge ${badgeClasse}">${statusTexto}</span></td>
+        <td></td>
+    `;
 
-async function createActionCell() {
-    const td = document.createElement("td");
     const button = document.createElement("button");
     button.classList.add("btnCancel");
     button.type = "button";
-    button.innerText = "Editar";
-    td.appendChild(button);
-    return td;
-}
+    button.innerText = "→";
+    button.setAttribute("aria-label", "Avançar status do agendamento");
+    button.title = "Avançar status";
+    button.style.color = "#15803d";
+    button.style.fontSize = "20px";
 
-async function createTableRow(appointment) {
-    const tr = document.createElement("tr");
+    if (agendamento.current_status !== "pending" && agendamento.current_status !== "confirmed") {
+        button.disabled = true;
+    }
 
-    tr.appendChild(await createTableCell(appointment.hour.slice(0, 5)));
-    tr.appendChild(await createTableCell(appointment.user.username));
-    tr.appendChild(await createTableCell(appointment.pet.name));
-    tr.appendChild(await createTableCell(appointment.service.name));
+    button.addEventListener("click", async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        button.disabled = true;
 
-    tr.appendChild(await createTableCell(
-        Number(appointment.service.price).toLocaleString("pt-BR", { 
-            style: "currency", 
-            currency: "BRL" 
-        }))
-    );
+        try {
+            const updated = await updateAppointmentStatus(
+                agendamento.documentId,
+                agendamento.current_status
+            );
 
-    const status = {
-        pendente: ["Pendente", "pending"],
-        andamento: ["Em andamento", "confirmed"],
-        concluido: ["Concluído", "done"]
-    }[appointment.estagio] || [appointment.estagio, "pending"];
+            if (!updated) return;
 
-    tr.appendChild(await createStatusCell(...status));
-    tr.appendChild(await createActionCell());
+            if (agendamento.current_status === "pending") {
+                agendamento.current_status = "confirmed";
+            } else {
+                agendamento.current_status = "done";
+            }
 
+            onStatusChange();
+        } catch (error) {
+            console.log(error)
+            showErrorModal("Não foi possível avançar o status do agendamento.");
+            button.disabled = false;
+        }
+    });
+
+    tr.lastElementChild.appendChild(button);
     return tr;
 }
 
-async function createTableBody() {
-    const appointments = await listAgendamentos();
+function createTableBody(lista, onStatusChange) {
     const tbody = document.createElement("tbody");
 
-    for (const appointment of appointments) {
-        tbody.appendChild(await createTableRow(appointment));
+    for (const agendamento of lista) {
+        tbody.appendChild(createTableRow(agendamento, onStatusChange));
     }
 
     return tbody;
 }
 
-async function createTable() {
-    const table = document.createElement("table");
-    table.appendChild(await createTableHead());
-    table.appendChild(await createTableBody());
-    return table;
-}
+function createTableCard(lista, onStatusChange) {
+    const card = document.createElement("div");
+    card.classList.add("card", "tableCard");
 
-async function createTableCard() {
-    const div = await createDivFormField("card", "tableCard");
     const tableScroll = document.createElement("div");
     tableScroll.classList.add("tableScroll");
-    tableScroll.appendChild(await createTable());
-    div.appendChild(tableScroll);
 
-    return div;
-}
+    const table = document.createElement("table");
+    table.innerHTML = `
+        <thead>
+            <tr>
+                <th>Horário</th>
+                <th>Tutor</th>
+                <th>Pet</th>
+                <th>Serviço</th>
+                <th>Valor</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+    `;
 
-async function createAgendaSection() {
-    const section = document.createElement("section");
-    section.classList.add("ownerPage");
-    section.setAttribute("data-dashboard-section", "agenda");
+    table.appendChild(createTableBody(lista, onStatusChange));
+    tableScroll.appendChild(table);
+    card.appendChild(tableScroll);
 
-    section.appendChild(await createHeader());
-    section.appendChild(await createForm());
-    section.appendChild(await createTableCard());
-
-    return section;
+    return card;
 }
 
 export async function renderAgendaPage() {
     const mainContent = document.querySelector("#dashboard-content");
-    mainContent.replaceChildren(await createAgendaSection());
+    agendamentos = await listAppointments();
+
+    const section = document.createElement("section");
+    section.classList.add("ownerPage");
+    section.setAttribute("data-dashboard-section", "agenda");
+
+    const filterForm = createFilterForm();
+    const dateInput = filterForm.querySelector("#filtro-data");
+    const statusSelect = filterForm.querySelector("#filtro-status");
+    const searchInput = filterForm.querySelector("#filtro-busca");
+
+    function filterAppointments() {
+        const date = dateInput.value;
+        const status = statusSelect.value;
+        const search = searchInput.value.trim().toLowerCase();
+
+        const filtrados = agendamentos.filter(agendamento => {
+            const matchDate = !date || agendamento.date === date;
+            const matchStatus = status === "all" || agendamento.current_status === status;
+            const tutorEPet = (agendamento.user.username + " " + agendamento.pet.name).toLowerCase();
+            const matchSearch = tutorEPet.includes(search);
+
+            return matchDate && matchStatus && matchSearch;
+        });
+
+        const tbodyAtual = section.querySelector("tbody");
+        tbodyAtual.replaceWith(createTableBody(filtrados, filterAppointments));
+    }
+
+    section.appendChild(createHeader());
+    section.appendChild(filterForm);
+    section.appendChild(createTableCard(agendamentos, filterAppointments));
+
+    mainContent.replaceChildren(section);
+
+    filterForm.addEventListener("submit", (event) => event.preventDefault());
+    dateInput.addEventListener("change", filterAppointments);
+    statusSelect.addEventListener("change", filterAppointments);
+    searchInput.addEventListener("input", filterAppointments);
 }

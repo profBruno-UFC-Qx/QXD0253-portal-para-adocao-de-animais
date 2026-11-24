@@ -1,4 +1,12 @@
-import { listTransacoes } from "./api.js";
+import { listTransactions } from "./api.js";
+import { renderTransactionForm } from "./transactionForm.js";
+
+function formatDate(rawDate) {
+    if (!rawDate) {
+        return "-";
+    }
+    return rawDate.slice(0, 10).split("-").reverse().join("/");
+}
 
 function createHeader() {
     const header = document.createElement("header");
@@ -42,13 +50,13 @@ function createMetricCard(metric) {
     return article;
 }
 
-async function createMetricGrid(transactions) {
+function createMetricGrid(transactions) {
     const incomes = transactions
-        .filter(transaction => transaction.tipo === "entrada")
-        .reduce((total, transaction) => total + Number(transaction.valor), 0);
+        .filter(transaction => transaction.type === "in")
+        .reduce((total, transaction) => total + Number(transaction.value), 0);
     const expenses = transactions
-        .filter(transaction => transaction.tipo === "saida")
-        .reduce((total, transaction) => total + Number(transaction.valor), 0);
+        .filter(transaction => transaction.type === "out")
+        .reduce((total, transaction) => total + Number(transaction.value), 0);
     const metrics = [
         { name: "Receitas", value: incomes.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }), className: "positive" },
         { name: "Despesas", value: expenses.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }), className: "negative" },
@@ -57,9 +65,9 @@ async function createMetricGrid(transactions) {
     const section = document.createElement("section");
     section.classList.add("metricGrid");
 
-    metrics.forEach(metric => {
+    for (const metric of metrics) {
         section.appendChild(createMetricCard(metric));
-    });
+    }
 
     return section;
 }
@@ -69,11 +77,11 @@ function createTableHead() {
     const thead = document.createElement("thead");
     const row = document.createElement("tr");
 
-    columns.forEach(column => {
+    for (const column of columns) {
         const th = document.createElement("th");
         th.innerText = column;
         row.appendChild(th);
-    });
+    }
 
     thead.appendChild(row);
     return thead;
@@ -98,37 +106,42 @@ function createTransactionValueCell(transaction) {
 function createTableRow(transaction) {
     const row = document.createElement("tr");
 
-    [transaction.date, transaction.description, transaction.category].forEach(value => {
+    for (const value of [transaction.date, transaction.description, transaction.category]) {
         const td = document.createElement("td");
         td.innerText = value;
         row.appendChild(td);
-    });
+    }
 
     row.appendChild(createTransactionTypeCell(transaction));
     row.appendChild(createTransactionValueCell(transaction));
     return row;
 }
 
-async function createTableBody(transactions) {
+function createTableBody(transactions) {
     const tbody = document.createElement("tbody");
 
-    transactions.forEach(transaction => {
-        const isIncome = transaction.tipo === "entrada";
+    for (const transaction of transactions) {
+        const isIncome = transaction.type === "in";
+        let category = transaction.category;
+        if (!category) {
+            category = transaction.user ? "Atendimento" : "Geral";
+        }
+
         tbody.appendChild(createTableRow({
-            date: transaction.data,
-            description: transaction.descricao,
-            category: transaction.categoria,
+            date: formatDate(transaction.date || transaction.createdAt),
+            description: transaction.name || "-",
+            category: category,
             type: isIncome ? "Entrada" : "Saída",
             badgeClass: isIncome ? "done" : "canceled",
-            value: Number(transaction.valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
+            value: Number(transaction.value).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
             valueClass: isIncome ? "amountPositive" : "amountNegative"
         }));
-    });
+    }
 
     return tbody;
 }
 
-async function createTransactionsCard(transactions) {
+function createTransactionsCard(transactions) {
     const card = document.createElement("div");
     card.classList.add("card", "tableCard");
 
@@ -140,7 +153,7 @@ async function createTransactionsCard(transactions) {
     tableScroll.classList.add("tableScroll");
     const table = document.createElement("table");
     table.appendChild(createTableHead());
-    table.appendChild(await createTableBody(transactions));
+    table.appendChild(createTableBody(transactions));
     tableScroll.appendChild(table);
 
     card.appendChild(title);
@@ -149,17 +162,25 @@ async function createTransactionsCard(transactions) {
 }
 
 async function createFinancialSection() {
-    const transactions = await listTransacoes();
+    const transactions = (await listTransactions()) || [];
     const section = document.createElement("section");
     section.classList.add("ownerPage");
     section.setAttribute("data-dashboard-section", "financeiro");
     section.appendChild(createHeader());
-    section.appendChild(await createMetricGrid(transactions));
-    section.appendChild(await createTransactionsCard(transactions));
+    section.appendChild(createMetricGrid(transactions));
+    section.appendChild(createTransactionsCard(transactions));
     return section;
 }
 
 export async function renderFinancialPage() {
     const mainContent = document.querySelector("#dashboard-content");
     mainContent.replaceChildren(await createFinancialSection());
+
+    const newTransactionButton = mainContent.querySelector(".btnPrimary");
+    newTransactionButton.addEventListener("click", async event => {
+        event.preventDefault();
+        mainContent.replaceChildren(await renderTransactionForm({
+            onSubmit: renderFinancialPage
+        }));
+    });
 }

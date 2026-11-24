@@ -89,6 +89,12 @@
       "relation": "oneToMany",
       "target": "api::appointment.appointment",
       "mappedBy": "user"
+    },
+    "transactions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::transaction.transaction",
+      "mappedBy": "user"
     }
   }
 }

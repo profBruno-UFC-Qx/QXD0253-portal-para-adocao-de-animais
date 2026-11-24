@@ -1,4 +1,4 @@
-import { listAvaliacoes } from "./api.js";
+import { listReviews } from "./api.js";
 
 function createHeader() {
     const header = document.createElement("header");
@@ -45,7 +45,7 @@ function createReviewCard(review) {
 }
 
 async function createReviewsGrid() {
-    const reviews = await listAvaliacoes();
+    const reviews = await listReviews();
     const section = document.createElement("section");
     section.classList.add("reviewsGrid");
 

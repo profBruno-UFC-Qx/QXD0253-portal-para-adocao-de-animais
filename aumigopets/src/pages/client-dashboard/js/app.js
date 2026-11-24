@@ -58,12 +58,19 @@ const routes = {
 
 const needsPet = ["/schedules", "/newService", "/rateService"]
 
+<<<<<<< HEAD:aumigopets/src/pages/client-dashboard/js/app.js
 async function updateMenuPetVisibility() {
     let hasPets = false
     try {
         hasPets = (await getPets()).length > 0
     } catch (err) {
         console.error("Erro ao verificar pets:", err)
+=======
+    const model = document.getElementById(route.template);
+    if(!model) {
+        showDialog("Não foi possível carregar esta página.");
+        return;
+>>>>>>> eduardo:aumigopets/src/js/app.js
     }
 
     const schedulesLink = document.querySelector('.menu a[href="#/schedules"]')
