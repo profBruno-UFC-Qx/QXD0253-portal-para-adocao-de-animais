@@ -63,7 +63,7 @@ function navigate() {
 
     const model = document.getElementById(route.template);
     if(!model) {
-        console.error("Page not found:", route.template);
+        showDialog("Não foi possível carregar esta página.");
         return;
     }
     document.getElementById("view").replaceChildren(model.content.cloneNode(true));

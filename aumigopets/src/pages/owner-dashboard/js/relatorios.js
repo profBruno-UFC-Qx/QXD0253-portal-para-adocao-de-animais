@@ -1,4 +1,4 @@
-import { getRelatorios } from "./api.js";
+import { getReports } from "./api.js";
 
 function createHeader() {
     const header = document.createElement("header");
@@ -10,7 +10,7 @@ function createHeader() {
 
     const p = document.createElement("p");
     p.classList.add("subText");
-    p.innerText = "Desempenho, ticket médio e serviços mais rentáveis.";
+    p.innerText = "Desempenho, ticket médio e serviços mais realizados.";
 
     div.appendChild(h1);
     div.appendChild(p);
@@ -21,7 +21,56 @@ function createHeader() {
     button.type = "button";
     button.innerText = "Exportar Relatório";
     header.appendChild(button);
+
     return header;
+}
+
+function formatMargin(margin) {
+    if (margin === null) {
+        return "N/D";
+    }
+
+    return `${Number(margin).toLocaleString("pt-BR", { maximumFractionDigits: 2 })}%`;
+}
+
+function exportReport(report) {
+    const rows = [
+        ["Indicador", "Valor"],
+        ["Faturamento do mês", report.faturamentoMes],
+        ["Despesas do mês", report.despesasMes],
+        ["Margem líquida", formatMargin(report.margemLiquida)],
+        ["Ticket médio", report.ticketMedio],
+        [],
+        ["Faturamento semanal", "Valor"]
+    ];
+
+    report.faturamentoSemanal.forEach(week => {
+        rows.push([week.semana, Number(week.valor).toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        })]);
+    });
+
+    rows.push([], ["Serviços mais realizados", "Quantidade"]);
+    report.servicosMaisRealizados.forEach(service => {
+        rows.push([service.nome, service.quantidade]);
+    });
+
+    const csv = "\uFEFF" + rows
+        .map(row => row.map(value => {
+            const text = value === undefined || value === null ? "" : value;
+            return `"${String(text).replace(/"/g, '""')}"`;
+        }).join(";"))
+        .join("\n");
+    const file = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const fileUrl = URL.createObjectURL(file);
+    const link = document.createElement("a");
+    link.href = fileUrl;
+    link.download = "relatorio-financeiro.csv";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(fileUrl), 0);
 }
 
 function createMetricCard(metric) {
@@ -45,9 +94,12 @@ function createMetricCard(metric) {
 async function createMetricGrid(report) {
     const metrics = [
         { name: "Faturamento do mês", value: report.faturamentoMes },
-        { name: "Margem líquida", value: report.margemLiquida, className: "positive" },
+        { name: "Margem líquida", value: formatMargin(report.margemLiquida) },
         { name: "Ticket médio", value: report.ticketMedio }
     ];
+    if (report.margemLiquida !== null) {
+        metrics[1].className = report.margemLiquida >= 0 ? "positive" : "negative";
+    }
     const section = document.createElement("section");
     section.classList.add("metricGrid");
 
@@ -66,7 +118,11 @@ async function createReportBars(report) {
 
     report.faturamentoSemanal.forEach(week => {
         const bar = document.createElement("div");
-        bar.style.height = (Number(week.valor) / maxValue * 100) + "%";
+        bar.style.height = (Number(week.valor) / (maxValue || 1) * 100) + "%";
+        bar.title = `${week.semana}: ${Number(week.valor).toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        })}`;
         const label = document.createElement("span");
         label.innerText = week.semana;
         bar.appendChild(label);
@@ -90,6 +146,14 @@ async function createWeeklyReportCard(report) {
 async function createRanking(report) {
     const div = document.createElement("div");
     div.classList.add("ranking");
+
+    if (!report.servicosMaisRealizados.length) {
+        const emptyState = document.createElement("p");
+        emptyState.classList.add("emptyState");
+        emptyState.innerText = "Nenhum serviço concluído neste período.";
+        div.appendChild(emptyState);
+        return div;
+    }
 
     report.servicosMaisRealizados.forEach(service => {
         const p = document.createElement("p");
@@ -125,11 +189,13 @@ async function createReportGrid(report) {
 }
 
 async function createReportsSection() {
-    const report = await getRelatorios();
+    const report = await getReports();
     const section = document.createElement("section");
     section.classList.add("ownerPage");
     section.setAttribute("data-dashboard-section", "relatorios");
-    section.appendChild(createHeader());
+    const header = createHeader();
+    header.querySelector(".btnPrimary").addEventListener("click", () => exportReport(report));
+    section.appendChild(header);
     section.appendChild(await createMetricGrid(report));
     section.appendChild(await createReportGrid(report));
     return section;

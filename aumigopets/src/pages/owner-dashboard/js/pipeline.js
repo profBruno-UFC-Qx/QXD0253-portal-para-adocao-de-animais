@@ -1,4 +1,4 @@
-import { listAgendamentos, listClientes, listServicos } from "./api.js";
+import { listClients, listServices, listTodayAppointments } from "./api.js";
 import { renderAppointmentForm } from "./appointmentForm.js"
 
 const columnsName = ["pendingColumn", "progressColumn", "completedColumn"];
@@ -212,7 +212,7 @@ async function createPipeline() {
 export async function renderMainPipelinePage() {
     const mainContent = document.querySelector("#dashboard-content");
 
-    agendamentos = await listAgendamentos();
+    agendamentos = await listTodayAppointments();
 
     mainContent.replaceChildren(await createPipeline());
 
@@ -220,14 +220,13 @@ export async function renderMainPipelinePage() {
     novoAgendamento.addEventListener('click', async event => {
         event.preventDefault();
 
-        const tutors = await listClientes();
-        const services = await listServicos();
-
-        console.log(services)
+        const tutors = await listClients();
+        const services = await listServices();
 
         mainContent.replaceChildren(await renderAppointmentForm({
             tutors,
-            services
+            services,
+            onSubmit: renderMainPipelinePage
         }));
     })
 }

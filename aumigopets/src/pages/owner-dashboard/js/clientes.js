@@ -1,4 +1,5 @@
-import { listClientes } from "./api.js";
+import { listClients } from "./api.js";
+import { renderClientProfile } from "./perfilCliente.js";
 
 function createHeader() {
     const header = document.createElement("header");
@@ -67,17 +68,20 @@ function createTutorCell(tutor) {
     return td;
 }
 
-function createActionCell() {
+function createActionCell(userId) {
     const td = document.createElement("td");
     const button = document.createElement("button");
     button.classList.add("btnCancel");
     button.type = "button";
     button.innerText = "Ver perfil";
+    button.addEventListener("click", async () => {
+        await renderClientProfile(userId, renderClientsPage);
+    });
     td.appendChild(button);
     return td;
 }
 
-function createTableRow(tutor) {
+function createTableRow(tutor, userId) {
     const row = document.createElement("tr");
     row.appendChild(createTutorCell(tutor));
 
@@ -87,12 +91,12 @@ function createTableRow(tutor) {
         row.appendChild(td);
     });
 
-    row.appendChild(createActionCell());
+    row.appendChild(createActionCell(userId));
     return row;
 }
 
 async function createTableBody() {
-    const tutors = await listClientes();
+    const tutors = await listClients();
     const tbody = document.createElement("tbody");
 
     tutors.forEach(tutor => {
@@ -101,9 +105,9 @@ async function createTableBody() {
                 name: tutor.username,
                 email: tutor.email,
                 phone: tutor.phone,
-                pet: tutor.pet,
-                visits: tutor.appointments.length + " visitas"
-            }));
+                pet: Array.isArray(tutor.pets) ? tutor.pets.length : 0,
+                visits: (Array.isArray(tutor.appointments) ? tutor.appointments.length : 0) + " visitas"
+            }, tutor.id));
         }
     });
 

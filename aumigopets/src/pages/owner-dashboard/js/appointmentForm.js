@@ -1,5 +1,5 @@
-import { listUserPets } from "./api.js";
-import { postAppointment } from "./api.js";
+import { listUserPets, postAppointment } from "./api.js";
+import { showErrorModal } from "./errorModal.js";
 
 function createSelectField({ id, labelText, placeholderText, items = [] }) {
   const div = document.createElement("div");
@@ -94,14 +94,15 @@ export async function renderAppointmentForm({ tutors = [], services = [], onSubm
   // Referências para usar no submit depois
   let petField, serviceField, dateField, timeField;
 
-  tutorField.select.addEventListener("change", async (e) => {
-    const selectedValue = e.target.value;
+  tutorField.select.addEventListener("change", async () => {
+    const selectedValue = tutorField.select.value;
 
     extraFieldsContainer.innerHTML = "";
+    petField = undefined;
     if (!selectedValue) return;
 
     const selectedUser = await listUserPets(selectedValue);
-    console.log(selectedUser);
+    if (tutorField.select.value !== selectedValue) return;
 
     petField = createSelectField({
       id: "agendamento-pet",
@@ -128,6 +129,7 @@ export async function renderAppointmentForm({ tutors = [], services = [], onSubm
       labelText: "Horário",
       type: "time",
     });
+    dateField.input.min = new Date().toLocaleDateString("en-CA");
 
     const actions = document.createElement("div");
     actions.classList.add("formActions");
@@ -158,10 +160,9 @@ export async function renderAppointmentForm({ tutors = [], services = [], onSubm
     event.preventDefault();
     if (!form.reportValidity() || !petField) return;
 
-    // O input type="time" retorna "HH:mm" (5 caracteres) ou "HH:mm:ss" (8 caracteres)
     const rawTime = timeField.input.value;
-    const formattedTime = rawTime.length === 5 
-      ? `${rawTime}:00.000` 
+    const formattedTime = rawTime.length === 5
+      ? `${rawTime}:00.000`
       : `${rawTime}.000`;
 
     const payload = JSON.stringify({
@@ -174,9 +175,24 @@ export async function renderAppointmentForm({ tutors = [], services = [], onSubm
       }
     });
 
-    const submit = await postAppointment(payload);
+    const saveBtn = form.querySelector(".btnSave");
+    saveBtn.disabled = true;
+    let submitted;
+    try {
+      submitted = await postAppointment(payload);
+    } catch {
+      showErrorModal("Erro de comunicação ao criar o agendamento. Tente novamente.");
+      return;
+    } finally {
+      saveBtn.disabled = false;
+    }
+
+    if (!submitted) {
+      return;
+    }
 
     card.remove();
+    if (onSubmit) await onSubmit();
   });
 
   return card;
