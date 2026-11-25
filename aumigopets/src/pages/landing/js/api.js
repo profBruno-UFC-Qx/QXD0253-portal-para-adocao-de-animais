@@ -1,9 +1,18 @@
 const API_URL = 'http://localhost:1337';
 const STRAPI_JWT_KEY = 'aumigo_jwt';
-const STRAPI_USER_KEY = 'aumigo_user';
+const STRAPI_USER_KEY = 'aumigo_current_user';
 
 function getJwt() {
     return localStorage.getItem(STRAPI_JWT_KEY);
+}
+
+function getStoredUser() {
+    try {
+        const raw = localStorage.getItem(STRAPI_USER_KEY);
+        return raw ? JSON.parse(raw) : null;
+    } catch {
+        return null;
+    }
 }
 
 function setAuthSession(jwt, user) {
@@ -24,16 +33,28 @@ async function apiRequest(endpoint, { method = 'GET', body = null, auth = false 
         if (token) headers.Authorization = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${API_URL}${endpoint}`, {
+    const fetchOptions = {
         method,
-        headers,
-        body: body ? JSON.stringify(body) : null
-    });
+        headers
+    };
+
+    if (body !== null && body !== undefined) {
+        fetchOptions.body = typeof body === 'string' ? body : JSON.stringify(body);
+    }
+
+    const response = await fetch(`${API_URL}${endpoint}`, fetchOptions);
+
+    if (response.status === 204) {
+        return null;
+    }
 
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-        const msg = data?.error?.message || 'Erro ao comunicar com o servidor.';
+        if (data?.error?.details?.errors) {
+            console.error('Detalhes de validação do Strapi:', data.error.details.errors);
+        }
+        const msg = data?.error?.message || `Erro HTTP ${response.status}`;
         throw new Error(msg);
     }
 

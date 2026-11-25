@@ -1,10 +1,12 @@
+const AVAILABILITY_API_URL = window.API_URL || 'http://localhost:1337';
+
 const AVAILABILITY_SERVICES = [
     { id: 'banho-tosa', name: 'Banho & Tosa Completa' },
     { id: 'consulta-veterinaria', name: 'Consulta Veterinária' },
     { id: 'cuidados-felinos', name: 'Banho e Cuidados para Gatos' }
 ];
 
-const DEFAULT_SLOTS = ['08:30', '09:30', '10:30', '14:00', '15:00', '16:00', ];
+const DEFAULT_SLOTS = ['08:30', '09:30', '10:30', '14:00', '15:00', '16:00'];
 
 function formatDateInputValue(dateObj) {
     const year = dateObj.getFullYear();
@@ -25,11 +27,11 @@ function getMockSlots(serviceId, dateStr) {
     const dayObj = new Date(`${dateStr}T12:00:00`);
     const dayOfWeek = dayObj.getDay();
 
-    
     if (dayOfWeek === 0) return [];
 
-    
-    const seed = `${serviceId}-${dateStr}`.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+    const seed = `${serviceId}-${dateStr}`
+        .split('')
+        .reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
 
     return DEFAULT_SLOTS.map((time, index) => ({
         time,
@@ -37,16 +39,29 @@ function getMockSlots(serviceId, dateStr) {
     }));
 }
 
-function renderSlots(serviceId, dateStr) {
+function populateServiceSelect(selectEl, servicesList, queryService) {
+    selectEl.innerHTML = servicesList
+        .map((service) => `<option value="${service.id}">${service.name}</option>`)
+        .join('');
+
+    if (queryService && servicesList.some((s) => String(s.id) === String(queryService))) {
+        selectEl.value = queryService;
+    }
+}
+
+function renderSlots(servicesList, serviceId, dateStr) {
     const titleEl = document.getElementById('slotsTitle');
     const areaEl = document.getElementById('slotsArea');
     if (!titleEl || !areaEl) return;
 
-    const service = AVAILABILITY_SERVICES.find((item) => item.id === serviceId) || AVAILABILITY_SERVICES[0];
+    const service =
+        servicesList.find((item) => String(item.id) === String(serviceId)) ||
+        servicesList[0];
 
     if (!dateStr) {
         titleEl.textContent = 'Horários Disponíveis';
-        areaEl.innerHTML = '<p class="slotsMessage">Selecione um serviço e uma data para consultar os horários livres.</p>';
+        areaEl.innerHTML =
+            '<p class="slotsMessage">Selecione um serviço e uma data para consultar os horários livres.</p>';
         return;
     }
 
@@ -54,7 +69,8 @@ function renderSlots(serviceId, dateStr) {
     const slots = getMockSlots(service.id, dateStr);
 
     if (slots.length === 0) {
-        areaEl.innerHTML = '<p class="slotsMessage">Não há atendimentos disponíveis nessa data. Tente escolher outro dia.</p>';
+        areaEl.innerHTML =
+            '<p class="slotsMessage">Não há atendimentos disponíveis nessa data. Tente escolher outro dia.</p>';
         return;
     }
 
@@ -84,28 +100,50 @@ function initAvailability(params) {
 
     if (!selectEl || !dateEl || !searchBtn) return;
 
-    selectEl.innerHTML = AVAILABILITY_SERVICES.map(
-        (service) => `<option value="${service.id}">${service.name}</option>`
-    ).join('');
+    let currentServices = [...AVAILABILITY_SERVICES];
+    const queryService =
+        params && typeof params.get === 'function' ? params.get('service') : null;
 
-    const queryService = params && typeof params.get === 'function' ? params.get('service') : null;
-    if (queryService && AVAILABILITY_SERVICES.some((s) => s.id === queryService)) {
-        selectEl.value = queryService;
-    }
+    populateServiceSelect(selectEl, currentServices, queryService);
 
+    const todayStr = formatDateInputValue(new Date());
+    dateEl.min = todayStr;
     if (!dateEl.value) {
-        const todayStr = formatDateInputValue(new Date());
-        dateEl.min = todayStr;
         dateEl.value = todayStr;
     }
 
     const runSearch = () => {
-        renderSlots(selectEl.value, dateEl.value);
+        renderSlots(currentServices, selectEl.value, dateEl.value);
     };
 
-    searchBtn.addEventListener('click', runSearch);
-    selectEl.addEventListener('change', runSearch);
-    dateEl.addEventListener('change', runSearch);
+    searchBtn.onclick = runSearch;
+    selectEl.onchange = runSearch;
+    dateEl.onchange = runSearch;
 
     runSearch();
+
+    fetch(`${AVAILABILITY_API_URL}/api/services`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    })
+        .then((res) => (res.ok ? res.json() : null))
+        .then((body) => {
+            const list = Array.isArray(body?.data) ? body.data : [];
+            if (list.length === 0) return;
+
+            currentServices = list.map((item) => {
+                const base = item?.attributes ? { id: item.id, ...item.attributes } : item;
+                return {
+                    id: String(base?.documentId ?? base?.id ?? base?.name),
+                    name: base?.name ?? 'Serviço'
+                };
+            });
+
+            const previousValue = selectEl.value;
+            populateServiceSelect(selectEl, currentServices, queryService || previousValue);
+            runSearch();
+        })
+        .catch(() => {});
 }
+
+window.initAvailability = initAvailability;

@@ -10,15 +10,18 @@
 
     const AUTH_ROUTES = new Set(['login', 'register', 'recover']);
 
-    function normalizeRoute(value) {
-        if (!value) return 'home';
-        const clean = String(value)
-            .replace(/^#\/?/, '')
-            .split('?')[0]
-            .trim()
-            .toLowerCase();
+    function extractRouteAndQuery(value) {
+        if (!value) return { route: 'home', query: '' };
+        const raw = String(value).replace(/^#\/?/, '').trim();
+        const [pathPart, queryPart] = raw.split('?');
+        const cleanRoute = (pathPart || '').trim().toLowerCase();
+        const route = Object.prototype.hasOwnProperty.call(ROUTES, cleanRoute) ? cleanRoute : 'home';
+        const query = queryPart ? `?${queryPart}` : '';
+        return { route, query };
+    }
 
-        return Object.prototype.hasOwnProperty.call(ROUTES, clean) ? clean : 'home';
+    function normalizeRoute(value) {
+        return extractRouteAndQuery(value).route;
     }
 
     function getCurrentRoute() {
@@ -30,7 +33,9 @@
         navLinks.forEach((link) => {
             const linkRoute = normalizeRoute(link.getAttribute('href'));
             const isActive =
-                linkRoute === route || (route === 'register' && linkRoute === 'login') || (route === 'recover' && linkRoute === 'login');
+                linkRoute === route ||
+                (route === 'register' && linkRoute === 'login') ||
+                (route === 'recover' && linkRoute === 'login');
             link.classList.toggle('active', isActive);
         });
     }
@@ -66,13 +71,13 @@
     }
 
     function navigate(routeName) {
-        const target = normalizeRoute(routeName);
-        const targetHash = `#/${target}`;
+        const { route, query } = extractRouteAndQuery(routeName);
+        const targetHash = `#/${route}${query}`;
 
         if (window.location.hash !== targetHash) {
             window.location.hash = targetHash;
         } else {
-            render(target);
+            render(route);
         }
     }
 
@@ -81,9 +86,8 @@
         if (!link) return;
 
         const href = link.getAttribute('href');
-        const route = normalizeRoute(href);
         event.preventDefault();
-        navigate(route);
+        navigate(href);
     });
 
     window.addEventListener('hashchange', () => {
@@ -97,17 +101,20 @@
         render(getCurrentRoute());
     });
 
+    document.addEventListener('aumigo:routechange', (event) => {
+        if (event.detail && event.detail.route === 'availability') {
+            const queryString = window.location.hash.split('?')[1] || '';
+            const params = new URLSearchParams(queryString);
+            if (typeof initAvailability === 'function') {
+                initAvailability(params);
+            }
+        }
+    });
+
     window.AuMigoRouter = {
         navigate,
         render,
         getCurrentRoute,
         isAuthRoute: (route) => AUTH_ROUTES.has(normalizeRoute(route))
     };
-    document.addEventListener('aumigo:routechange', (event) => {
-    if (event.detail && event.detail.route === 'availability') {
-        const queryString = window.location.hash.split('?')[1] || '';
-        const params = new URLSearchParams(queryString);
-        initAvailability(params);
-    }
-});
 })();

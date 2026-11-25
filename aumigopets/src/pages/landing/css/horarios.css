@@ -1,15 +1,17 @@
-
 .section.narrow {
     max-width: 820px;
 }
 
-
-.filterCard {
+.filterCard,
+.slotsCard {
     background: #fff;
     border: 1px solid var(--line);
     border-radius: 16px;
     padding: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.filterCard {
     margin-bottom: 24px;
 }
 
@@ -24,13 +26,9 @@
     margin-bottom: 0;
 }
 
-
-.slotsCard {
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+.filterGrid select,
+.filterGrid input[type="date"] {
+    height: 46px;
 }
 
 .slotsCard h3 {
@@ -41,7 +39,6 @@
     padding-bottom: 12px;
     border-bottom: 1px solid var(--line);
 }
-
 
 .slotsGrid {
     display: grid;
