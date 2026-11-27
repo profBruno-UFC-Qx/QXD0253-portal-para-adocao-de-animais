@@ -31,7 +31,7 @@ async function apiFetch(endpoint, options = {}) {
 
     if (response.status === 401) {
         setToken(null)
-        // location.hash = "#/login" COLOCAR AQUI QUANDO TIVER LOGIN
+        location.hash = "/#/login" 
         throw new Error("Não autorizado. Faça login novamente.")
     }
 
@@ -85,11 +85,14 @@ function uniqueByDocument(list) {
     return [...unique.values()].map(normalizeEntry)
 }
 const getUser = () => fetchNormalized("/api/users/me")
+
 const getPets = async () =>
     uniqueByDocument((await apiFetch("/api/users/me?populate=pets"))?.pets)
+
 const getAppointments = async () =>
     uniqueByDocument(
         (await apiFetch("/api/users/me?populate[appointments][populate][0]=service" + "&populate[appointments][populate][1]=pet" + "&populate[appointments][populate][2]=review"))?.appointments)
+
 const getAvailableServices = () => fetchNormalized("/api/services")
 
 function sendData(endpoint, method, payload, { wrapData = true, normalize = true } = {}) {
