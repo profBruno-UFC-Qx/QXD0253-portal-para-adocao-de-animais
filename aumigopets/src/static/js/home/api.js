@@ -1,6 +1,6 @@
 const API_URL = 'http://localhost:1337';
-const STRAPI_JWT_KEY = 'aumigo_jwt';
-const STRAPI_USER_KEY = 'aumigo_current_user';
+const STRAPI_JWT_KEY = 'JWT_AUTH_TOKEN';
+const STRAPI_USER_KEY = 'current_user';
 
 function getJwt() {
     return localStorage.getItem(STRAPI_JWT_KEY);

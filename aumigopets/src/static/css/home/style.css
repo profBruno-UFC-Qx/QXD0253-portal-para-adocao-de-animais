@@ -33,19 +33,33 @@ h2 {
     font-size: 20px;
 }
 
-.subText {
-    color: #5b6270;
+.app {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 100vh;
 }
 
-.siteHeader {
+.main {
+    min-width: 0;
+}
+
+.topBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+}
+
+.sideBar {
+    background: #fff;
+    border-bottom: 1px solid var(--line);
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px 24px;
-    padding: 14px 20px;
-    background: #fff;
-    border-bottom: 1px solid var(--line);
+    gap: 8px 12px;
+    padding: 10px 16px;
     position: sticky;
     top: 0;
     z-index: 10;
@@ -53,8 +67,7 @@ h2 {
 
 .logo {
     display: block;
-    width: 110px;
-    margin: 0;
+    width: 90px;
 }
 
 .logo img {
@@ -64,10 +77,11 @@ h2 {
 }
 
 .menu {
+    order: 3;
+    width: 100%;
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
+    gap: 4px;
+    overflow-x: auto;
 }
 
 .menu a {
@@ -97,8 +111,21 @@ h2 {
     color: #fff;
 }
 
-#view {
-    min-height: 70vh;
+.logout {
+    order: 2;
+    margin-left: auto;
+    color: red;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.content {
+    padding: 20px 16px;
+    max-width: 1080px;
+}
+
+.subText {
+    color: #5b6270;
 }
 
 .pageHeader {
@@ -109,11 +136,23 @@ h2 {
     margin-bottom: 10px;
 }
 
-.card {
+.card,
+.info,
+.formCard,
+.bookingCard,
+.suggestCard,
+.historyCard {
     background: #fff;
     border-radius: 16px;
     padding: 18px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.formCard,
+.bookingCard,
+.suggestCard,
+.historyCard {
+    margin-top: 24px;
 }
 
 .row {
@@ -126,7 +165,8 @@ h2 {
     margin-bottom: 20px;
 }
 
-.field label {
+.field label,
+.fieldTitle {
     display: block;
     font-size: 14px;
     font-weight: 600;
@@ -158,6 +198,15 @@ h2 {
     border-color: var(--pink);
 }
 
+.requiredNote {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.requiredNote .asterisk {
+    color: var(--pink);
+}
+
 .formActions {
     display: flex;
     flex-wrap: wrap;
@@ -168,7 +217,7 @@ h2 {
     border-top: 1px solid var(--line);
 }
 
-/* Botões */
+.btnSave,
 .btnCancel,
 .btnPrimary {
     padding: 12px 28px;
@@ -181,11 +230,13 @@ h2 {
     cursor: pointer;
 }
 
+.btnSave,
 .btnPrimary {
     background: var(--pink);
     color: #fff;
 }
 
+.btnSave:hover,
 .btnPrimary:hover {
     background: var(--pink-dark);
 }
@@ -194,6 +245,20 @@ h2 {
     background: #fff;
     color: var(--navy);
     border-color: var(--line);
+}
+
+.btnRate {
+    border-color: var(--sky);
+    color: var(--navy);
+}
+
+.btnRight {
+    display: block;
+    margin-left: auto;
+}
+
+.actionsCenter {
+    justify-content: center;
 }
 
 .btnSmall {
@@ -219,6 +284,55 @@ h2 {
     background: var(--pink-soft);
 }
 
+.btnFull {
+    width: 100%;
+    text-align: center;
+}
+
+.item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    margin-bottom: 14px;
+    border-radius: 12px;
+    background: var(--bg);
+}
+
+.item.card {
+    padding: 18px;
+    border-radius: 16px;
+    background: #fff;
+}
+
+.item small {
+    display: block;
+    color: #5b6270;
+    margin-top: 2px;
+}
+
+.item > .badge {
+    margin-left: auto;
+}
+
+.item .btnCancel,
+.item .btnPrimary {
+    padding: 8px 18px;
+    font-size: 14px;
+}
+
+.avatar {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--pink);
+    color: #fff;
+    font-weight: 600;
+    display: grid;
+    place-items: center;
+}
 
 .badge {
     display: inline-block;
@@ -232,6 +346,47 @@ h2 {
 .badge.confirmed {
     background: var(--sky-soft);
     color: var(--navy);
+}
+
+.badge.pending {
+    background: var(--pink-soft);
+    color: var(--pink-dark);
+}
+
+.badge.done {
+    background: #eef1f5;
+    color: #5b6270;
+}
+
+.badge.canceled {
+    background: #fdecea;
+    color: #b3261e;
+}
+
+.customDialog {
+    margin: auto;
+    padding: 28px;
+    width: calc(100% - 32px);
+    max-width: 360px;
+    border: none;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(6, 61, 137, 0.25);
+}
+
+.customDialog p {
+    margin-bottom: 20px;
+    color: var(--navy);
+}
+
+.customDialog::backdrop {
+    background: rgba(6, 61, 137, 0.35);
+}
+
+.dialogActions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
 }
 
 .emptyState {
@@ -259,12 +414,36 @@ h2 {
     border: 1px solid #b8def8;
 }
 
-/* Rodapé */
-.siteFooter {
+.siteHeader {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 12px 24px;
+    padding: 14px 20px;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.siteHeader .logo {
+    width: 110px;
+    margin: 0;
+}
+
+.siteHeader .menu {
+    order: 0;
+    width: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    overflow: visible;
+}
+
+.siteFooter {
     padding: 24px 20px;
     background: #fff;
     border-top: 1px solid var(--line);
@@ -272,18 +451,65 @@ h2 {
     color: #5b6270;
     font-size: 14px;
 }
-.siteFooter .logo {
+
+.siteFooter .logoFooter {
     width: 110px;
-    margin: 0 auto;
+    margin: 0 auto 12px;
 }
 
 @media (min-width: 768px) {
-    h1 {
+    h1, h2 {
         font-size: 30px;
     }
 
-    h2 {
-        font-size: 22px;
+    .app {
+        grid-template-columns: 260px 1fr;
+    }
+
+    .topBar {
+        padding: 20px 40px;
+    }
+
+    .sideBar {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        gap: 0;
+        height: 100vh;
+        padding: 20px;
+        border-bottom: none;
+        border-right: 1px solid var(--line);
+    }
+
+    .logo {
+        width: 160px;
+        margin: 0 auto 32px;
+    }
+
+    .menu {
+        order: 0;
+        width: auto;
+        display: block;
+        overflow: visible;
+    }
+
+    .menu a {
+        padding: 20px;
+        margin-bottom: 10px;
+        font-size: 16px;
+        border-radius: 16px;
+    }
+
+    .logout {
+        order: 0;
+        margin: auto 0 0;
+        padding-top: 10px;
+        border-top: 1px solid var(--line);
+        font-size: 16px;
+    }
+
+    .content {
+        padding: 30px 40px;
     }
 
     .pageHeader {
@@ -292,7 +518,12 @@ h2 {
         justify-content: space-between;
     }
 
-    .card {
+    .card,
+    .info,
+    .formCard,
+    .bookingCard,
+    .suggestCard,
+    .historyCard {
         padding: 24px;
     }
 

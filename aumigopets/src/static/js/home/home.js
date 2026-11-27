@@ -7,7 +7,7 @@ const FEATURED_SERVICES = [
         name: 'Banho & Tosa Completa',
         description: 'Banho com produtos específicos para pelagem, secagem cuidadosa e tosa higiênica ou na régua.',
         priceFrom: 'A partir de R$ 55,00',
-        image: 'img/felizes-animal-estimacao-caes-tocando-capim_1359-228.avif',
+        image: '/images/image2.avif',
         alt: 'Cães felizes ao ar livre'
     },
     {
@@ -16,7 +16,7 @@ const FEATURED_SERVICES = [
         name: 'Consulta Veterinária',
         description: 'Avaliação clínica preventiva, orientações de vacinação e acompanhamento da saúde do seu pet.',
         priceFrom: 'A partir de R$ 110,00',
-        image: 'img/Convivencia-de-caes-e-gatos.jpg',
+        image: '/images/image1.jpg',
         alt: 'Cão e gato convivendo com tranquilidade'
     },
     {
@@ -25,7 +25,7 @@ const FEATURED_SERVICES = [
         name: 'Cuidados Especiais para Gatos',
         description: 'Atendimento tranquilo e adaptado ao temperamento dos gatos, com escovação e higiene.',
         priceFrom: 'A partir de R$ 65,00',
-        image: 'img/photo-1548767797-d8c844163c4c.avif',
+        image: '/images/image3.avif',
         alt: 'Gato em ambiente acolhedor'
     }
 ];
@@ -65,7 +65,7 @@ function mapApiServiceToCard(item) {
             formatFeaturedPrice(base?.price) ||
             matched?.priceFrom ||
             'Consulte o valor',
-        image: matched?.image || 'img/Convivencia-de-caes-e-gatos.jpg',
+        image: matched?.image || '/images/image1.jpg',
         alt: matched?.alt || `${name} no AuMigo Pet Shop`
     };
 }

@@ -1,5 +1,5 @@
 const API_URL = "http://localhost:1337"
-const TOKEN_KEY = "jwt"
+const TOKEN_KEY = "JWT_AUTH_TOKEN"
 
 function getToken() {
     return localStorage.getItem(TOKEN_KEY)

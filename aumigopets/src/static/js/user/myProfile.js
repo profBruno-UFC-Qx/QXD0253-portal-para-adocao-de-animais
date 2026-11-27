@@ -59,11 +59,6 @@ async function initMyProfile() {
             return
         }
 
-        const strongPassword = /^(?=.*\p{Lu})(?=.*\d)(?=.*[^\p{L}\d\s]).{6,}$/u
-        if (!strongPassword.test(newPass)) {
-            showDialog("A nova senha precisa ter no mínimo 6 caracteres, uma letra maiúscula, um número e um símbolo.")
-            return
-        }
 
         if (newPass !== confirmPass) {
             showDialog("A nova senha e a confirmação não coincidem!")

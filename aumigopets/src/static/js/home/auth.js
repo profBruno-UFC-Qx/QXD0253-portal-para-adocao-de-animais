@@ -1,6 +1,6 @@
 const AUTH_API_URL = window.API_URL || 'http://localhost:1337';
-const AUTH_JWT_KEY = 'aumigo_jwt';
-const AUTH_USER_KEY = 'aumigo_current_user_v1';
+const AUTH_JWT_KEY = 'JWT_AUTH_TOKEN';
+const AUTH_USER_KEY = 'current_user';
 
 const apiErrors = {
     'Invalid identifier or password': 'E-mail ou senha inválidos.',
@@ -49,11 +49,19 @@ async function fetchCurrentUser(jwt) {
 function resolveTargetRoute(user) {
     const roleType = String(user?.role?.type || user?.role?.name || '').toLowerCase();
 
-    if (roleType === 'admin' || roleType === 'administrator') {
-        return 'services'; // para mudar ainda
+    console.log(user);
+    console.log(roleType);
+
+    if (roleType === 'owner') {
+        window.location.href = "/admin";
+        return;
+    } else if (roleType == "authenticated") {
+        window.location.href = "/dashboard";
+        return;
     }
 
-    return 'home';
+    window.location.href = "/";
+    return;
 }
 
 function goToRoute(routeName) {
@@ -78,10 +86,7 @@ function hideAlert(el) {
 
 function isStrongPassword(password) {
     return (
-        password.length >= 6 &&
-        /[A-Z]/.test(password) &&
-        /[0-9]/.test(password) &&
-        /[^A-Za-z0-9]/.test(password)
+        password.length >= 6 
     );
 }
 
@@ -206,10 +211,9 @@ function initRegister() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    username: email,
+                    username: name,
                     email,
                     password,
-                    name,
                     phone
                 })
             });

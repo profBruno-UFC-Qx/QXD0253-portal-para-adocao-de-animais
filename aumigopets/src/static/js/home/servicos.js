@@ -1,6 +1,6 @@
 const SERVICES_API_URL = window.API_URL || 'http://localhost:1337';
-const SERVICES_JWT_KEY = 'aumigo_jwt';
-const SERVICES_USER_KEY = 'aumigo_current_user_v1';
+const SERVICES_JWT_KEY = 'AUTH_JWT_KEY';
+const SERVICES_USER_KEY = 'current_user';
 
 const speciesLabel = {
     dog: 'Cão',
@@ -8,14 +8,14 @@ const speciesLabel = {
     'dog&cat': 'Cães e Gatos'
 };
 
-const apiErrors = {
+const apiErrorsService = {
     'Forbidden': 'Você não tem permissão para realizar esta ação.',
     'Not Found': 'Serviço não encontrado.'
 };
 
 function translateError(err, fallback) {
     const msg = err?.message || '';
-    return apiErrors[msg] || fallback;
+    return apiErrorsService[msg] || fallback;
 }
 
 function formatMoney(value) {
@@ -111,6 +111,8 @@ async function serviceApiFetch(endpoint, options = {}) {
 
 function mapServiceItem(item) {
     const normalized = normalizeServiceEntry(item);
+    const featured = findMatchingFeatured(normalized.name);
+
     return {
         id: normalized.id,
         numericId: normalized.numericId,
@@ -119,7 +121,11 @@ function mapServiceItem(item) {
         audience: speciesLabel[normalized.species] ?? normalized.species ?? 'Cães e Gatos',
         price: formatMoney(normalized.price),
         description: normalized.description ?? '',
-        duration: formatDuration(normalized.duration)
+        duration: formatDuration(normalized.duration),
+        image:
+            featured?.image ||
+            (normalized.species === 'cat' ? '/images/image3.avif' : '/images/image1.jpg'),
+        alt: featured?.alt || `${normalized.name || 'Serviço'} no AuMigo Pet Shop`
     };
 }
 
@@ -325,6 +331,7 @@ function createServicesHeader(currentUser, onToggleForm) {
 function createServiceStatusCard(message, { isError = false, onRetry = null } = {}) {
     const box = document.createElement('div');
     box.classList.add('card', isError ? 'alertError' : 'emptyState');
+    box.classList.add('serviceCatalogStatus');
 
     const text = document.createElement('p');
     text.textContent = message;
@@ -344,36 +351,55 @@ function createServiceStatusCard(message, { isError = false, onRetry = null } = 
 
 function createServiceCatalogCard(service) {
     const article = document.createElement('article');
-    article.classList.add('card', 'serviceCard');
+    article.classList.add('serviceCard');
+    article.dataset.serviceId = service.id;
     if (service.documentId) {
         article.dataset.documentId = service.documentId;
     }
 
-    const top = document.createElement('div');
+    const image = document.createElement('img');
+    image.src = service.image;
+    image.alt = service.alt;
+    image.loading = 'lazy';
 
-    const title = document.createElement('h2');
+    const body = document.createElement('div');
+    body.classList.add('serviceCardBody');
+
+    const tag = document.createElement('span');
+    tag.classList.add('serviceTag');
+    tag.textContent = service.audience;
+
+    const title = document.createElement('h3');
     title.textContent = service.name;
 
-    const badge = document.createElement('span');
-    badge.classList.add('badge', 'confirmed');
-    badge.textContent = service.audience;
-
-    top.append(title, badge);
+    const description = document.createElement('p');
+    description.textContent = service.description;
 
     const price = document.createElement('p');
     price.classList.add('servicePrice');
     price.textContent = service.price;
-
-    const description = document.createElement('p');
-    description.classList.add('subText');
-    description.textContent = service.description;
 
     const duration = document.createElement('p');
     const strong = document.createElement('strong');
     strong.textContent = 'Duração:';
     duration.append(strong, ` ${service.duration}`);
 
-    article.append(top, price, description, duration);
+    const footer = document.createElement('div');
+    footer.classList.add('serviceCardFooter');
+
+    const availabilityLink = document.createElement('a');
+    availabilityLink.href = `#/availability?service=${encodeURIComponent(service.id)}`;
+    availabilityLink.classList.add('btnOutline', 'btnSmall');
+    availabilityLink.textContent = 'Ver Horários';
+
+    const appointmentLink = document.createElement('a');
+    appointmentLink.href = '#/login';
+    appointmentLink.classList.add('btnPrimary', 'btnSmall');
+    appointmentLink.textContent = 'Agendar';
+
+    footer.append(availabilityLink, appointmentLink);
+    body.append(tag, title, description, price, duration, footer);
+    article.append(image, body);
     return article;
 }
 
@@ -384,6 +410,61 @@ function createServicesGrid(services) {
     const cards = services.map(createServiceCatalogCard);
     grid.replaceChildren(...cards);
     return grid;
+}
+
+async function renderPublicServicesCatalog(container) {
+    const parent = container.parentElement;
+    parent?.querySelector('.serviceCatalogAdminControls')?.remove();
+    parent?.querySelector('.serviceForm')?.remove();
+
+    const currentUser = getCurrentServiceUser();
+    if (parent && isAdminServiceUser(currentUser)) {
+        const controls = document.createElement('div');
+        controls.classList.add('serviceCatalogAdminControls');
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.classList.add('btnPrimary');
+        button.textContent = '+ Novo Serviço';
+
+        const form = createNewServiceForm(() => renderPublicServicesCatalog(container));
+        button.addEventListener('click', () => {
+            form.hidden = !form.hidden;
+            if (!form.hidden) {
+                form.querySelector('#serviceNameInput')?.focus();
+            }
+        });
+
+        controls.append(button);
+        parent.insertBefore(controls, container);
+        parent.insertBefore(form, container);
+    }
+
+    container.replaceChildren(createServiceStatusCard('Carregando serviços...'));
+
+    try {
+        const services = await fetchServicesCatalog();
+
+        if (services.length === 0) {
+            container.replaceChildren(
+                createServiceStatusCard('Nenhum serviço cadastrado no momento.')
+            );
+            return;
+        }
+
+        container.replaceChildren(...services.map(createServiceCatalogCard));
+    } catch (error) {
+        console.error(error);
+        container.replaceChildren(
+            createServiceStatusCard(
+                translateError(error, error.message || 'Não foi possível carregar os serviços.'),
+                {
+                    isError: true,
+                    onRetry: () => renderPublicServicesCatalog(container)
+                }
+            )
+        );
+    }
 }
 
 function findServicesContainer() {
@@ -397,6 +478,11 @@ function findServicesContainer() {
 async function renderServicesPage() {
     const container = findServicesContainer();
     if (!container) return;
+
+    if (container.id === 'serviceCatalog') {
+        await renderPublicServicesCatalog(container);
+        return;
+    }
 
     const currentUser = getCurrentServiceUser();
     const canManage = isAdminServiceUser(currentUser);

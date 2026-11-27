@@ -1,0 +1,12 @@
+{
+    "routes": {
+        "/": "aumigopets/src/pages/index.html",
+        "/dashboard": "aumigopets/src/pages/dashboard/index.html",
+        "/admin": "aumigopets/src/pages/admin/index.html"
+    },
+    "static": {
+        "/css": "aumigopets/src/static/css",
+        "/images": "aumigopets/src/static/images/",
+        "/js": "aumigopets/src/static/js"
+    }
+}
