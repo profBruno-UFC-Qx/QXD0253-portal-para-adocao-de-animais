@@ -1,9 +1,10 @@
 import { showErrorModal } from "./errorModal.js";
 
 const URL_BASE = "http://127.0.0.1:1337/api";
+const JWT_AUTH_TOKEN = "JWT_AUTH_TOKEN"
 
 function auth() {
-    const authToken = localStorage.getItem("auth_token");
+    const authToken = localStorage.getItem(JWT_AUTH_TOKEN);
     if (!authToken) {
         window.location.href = "/";
         return null;
