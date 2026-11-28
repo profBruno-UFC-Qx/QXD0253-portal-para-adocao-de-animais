@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/servicos.css">
-    <link rel="stylesheet" href="css/horarios.css">
     <link rel="stylesheet" href="css/auth.css">
     <link rel="icon" href="img/logo.webp">
 </head>
@@ -20,7 +19,6 @@
         <nav class="menu">
             <a href="#/home" data-route="home">Início</a>
             <a href="#/services" data-route="services">Serviços</a>
-            <a href="#/availability" data-route="availability">Horários</a>
             <a href="#/login" class="btnPrimary btnSmall">Entrar / Agendar</a>
         </nav>
     </header>
@@ -59,32 +57,6 @@
         </section>
         <section class="section">
             <div class="serviceGrid" id="serviceCatalog"></div>
-        </section>
-    </template>
-
-    <template id="availability">
-        <section class="pageBanner">
-            <h1>Consulta de Horários</h1>
-            <p>Verifique a disponibilidade de horários livres para o serviço desejado sem compromisso.</p>
-        </section>
-        <section class="section narrow">
-            <div class="filterCard">
-                <div class="filterGrid">
-                    <div class="field">
-                        <label for="serviceSelect">Selecione o Serviço:</label>
-                        <select id="serviceSelect"></select>
-                    </div>
-                    <div class="field">
-                        <label for="dateInput">Escolha a Data:</label>
-                        <input type="date" id="dateInput">
-                    </div>
-                    <button type="button" id="btnSearch" class="btnPrimary">Consultar</button>
-                </div>
-            </div>
-            <div class="slotsCard">
-                <h3 id="slotsTitle">Horários Disponíveis</h3>
-                <div id="slotsArea"></div>
-            </div>
         </section>
     </template>
 
@@ -131,7 +103,7 @@
                 </div>
                 <div class="field">
                     <label for="regPass">Senha</label>
-                    <input type="password" id="regPass" placeholder="Mín. 6 caracteres, 1 maiúscula, 1 número, 1 símbolo" required>
+                    <input type="password" id="regPass" placeholder="Mínimo de 6 caracteres" required>
                 </div>
                 <div class="field">
                     <label for="regConfirm">Confirme a Senha</label>
@@ -164,7 +136,6 @@
     <script src="js/router.js"></script>
     <script src="js/home.js"></script>
     <script src="js/servicos.js"></script>
-    <script src="js/horarios.js"></script>
     <script src="js/auth.js"></script>
 </body>
 </html>

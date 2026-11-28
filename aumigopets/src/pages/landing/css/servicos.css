@@ -64,18 +64,10 @@
     color: var(--pink);
 }
 
-@media (min-width: 640px) {
-    .servicesGrid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
 @media (min-width: 768px) {
-    .pageBanner {
-        padding: 52px 24px;
-    }
-
-    .servicesGrid {
-        grid-template-columns: repeat(3, 1fr);
+    .scheduleAction {
+        width: auto;
+        margin-left: auto;
+        flex-wrap: nowrap;
     }
 }

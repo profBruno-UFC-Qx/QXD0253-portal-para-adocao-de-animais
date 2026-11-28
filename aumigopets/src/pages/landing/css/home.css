@@ -116,22 +116,10 @@
     font-size: 16px;
 }
 
-@media (min-width: 640px) {
-    .serviceGrid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 960px) {
-    .hero {
-        padding: 84px 24px;
-    }
-
-    .heroContent h1 {
-        font-size: 40px;
-    }
-
-    .serviceGrid {
-        grid-template-columns: repeat(3, 1fr);
+@media (min-width: 768px) {
+    .scheduleAction {
+        width: auto;
+        margin-left: auto;
+        flex-wrap: nowrap;
     }
 }

@@ -80,8 +80,10 @@
     text-decoration: underline;
 }
 
-@media (min-width: 640px) {
-    .authCard {
-        padding: 34px 32px;
+@media (min-width: 768px) {
+    .scheduleAction {
+        width: auto;
+        margin-left: auto;
+        flex-wrap: nowrap;
     }
 }

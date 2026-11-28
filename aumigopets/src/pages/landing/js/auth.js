@@ -23,11 +23,39 @@ function setAuthSession(jwt, user) {
     if (user) {
         localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
     }
+    syncHeaderAuthUI();
 }
 
 function clearAuthSession() {
     localStorage.removeItem(AUTH_JWT_KEY);
     localStorage.removeItem(AUTH_USER_KEY);
+    syncHeaderAuthUI();
+}
+
+function syncHeaderAuthUI() {
+    const headerBtn = document.querySelector(
+        '#siteHeader .menu a[href="#/login"], #siteHeader .menu .authSessionBtn'
+    );
+    if (!headerBtn) return;
+
+    const rawUser = localStorage.getItem(AUTH_USER_KEY);
+    const jwt = localStorage.getItem(AUTH_JWT_KEY);
+
+    if (rawUser && jwt) {
+        headerBtn.textContent = 'Sair';
+        headerBtn.href = '#/home';
+        headerBtn.classList.add('authSessionBtn');
+        headerBtn.onclick = (event) => {
+            event.preventDefault();
+            clearAuthSession();
+            goToRoute('home');
+        };
+    } else {
+        headerBtn.textContent = 'Entrar / Agendar';
+        headerBtn.href = '#/login';
+        headerBtn.classList.remove('authSessionBtn');
+        headerBtn.onclick = null;
+    }
 }
 
 async function fetchCurrentUser(jwt) {
@@ -50,7 +78,7 @@ function resolveTargetRoute(user) {
     const roleType = String(user?.role?.type || user?.role?.name || '').toLowerCase();
 
     if (roleType === 'admin' || roleType === 'administrator') {
-        return 'services'; // para mudar ainda
+        return 'services';
     }
 
     return 'home';
@@ -78,10 +106,7 @@ function hideAlert(el) {
 
 function isStrongPassword(password) {
     return (
-        password.length >= 6 &&
-        /[A-Z]/.test(password) &&
-        /[0-9]/.test(password) &&
-        /[^A-Za-z0-9]/.test(password)
+        password.length >= 6 
     );
 }
 
@@ -187,7 +212,7 @@ function initRegister() {
         if (!isStrongPassword(password)) {
             showAlert(
                 errorEl,
-                'A senha deve ter no mínimo 6 caracteres, 1 letra maiúscula, 1 número e 1 símbolo.'
+                'A senha deve ter no mínimo 6 caracteres'
             );
             return;
         }
@@ -283,7 +308,12 @@ function initRecover() {
     });
 }
 
+window.addEventListener('DOMContentLoaded', () => {
+    syncHeaderAuthUI();
+});
+
 document.addEventListener('aumigo:routechange', (event) => {
+    syncHeaderAuthUI();
     const route = event.detail && event.detail.route;
     if (route === 'login') initLogin();
     if (route === 'register') initRegister();

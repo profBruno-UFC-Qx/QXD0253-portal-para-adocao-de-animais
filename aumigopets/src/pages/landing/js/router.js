@@ -2,7 +2,6 @@
     const ROUTES = {
         home: { templateId: 'home', title: 'AuMigo Pet Shop — Início', isAuth: false },
         services: { templateId: 'services', title: 'AuMigo Pet Shop — Serviços', isAuth: false },
-        availability: { templateId: 'availability', title: 'AuMigo Pet Shop — Horários', isAuth: false },
         login: { templateId: 'login', title: 'AuMigo Pet Shop — Entrar', isAuth: true },
         register: { templateId: 'register', title: 'AuMigo Pet Shop — Criar Conta', isAuth: true },
         recover: { templateId: 'recover', title: 'AuMigo Pet Shop — Recuperar Senha', isAuth: true }
@@ -99,16 +98,6 @@
             window.location.replace('#/home');
         }
         render(getCurrentRoute());
-    });
-
-    document.addEventListener('aumigo:routechange', (event) => {
-        if (event.detail && event.detail.route === 'availability') {
-            const queryString = window.location.hash.split('?')[1] || '';
-            const params = new URLSearchParams(queryString);
-            if (typeof initAvailability === 'function') {
-                initAvailability(params);
-            }
-        }
     });
 
     window.AuMigoRouter = {
