@@ -75,10 +75,10 @@ async function updateMenuPetVisibility() {
 }
 
 async function navigate() {
-    // if (!getToken()) {
-    //     location.hash = "#/login"
-    //     return
-    // }
+    if (!getToken()) {
+        location.href = "/#/login"
+        return
+    }
 
     const [path, text] = (location.hash.slice(1) || "/mainPage").split("?")
     const route = routes[path] || routes["/mainPage"]
@@ -115,14 +115,20 @@ async function navigate() {
     }
 }
 
-// document.addEventListener("click", (e) => {
-//     const logoutBtn = e.target.closest(".logout")
-//     if (!logoutBtn) return
+document.addEventListener("click", (e) => {
+    const logoutBtn = e.target.closest(".logout")
+    if (!logoutBtn) return
 
-//     e.preventDefault()
-//     setToken(null)
-//     location.hash = "#/login"
-// })
+    e.preventDefault()
+    const logout = () => sendData("/api/auth/logout", "POST")
+    if(logout) {
+        setToken(null)
+        localStorage.removeItem("current_user")
+        location.href = "/#/login"
+    } else {
+        return
+    }
+})
 
 window.addEventListener("hashchange", navigate)
 navigate()
