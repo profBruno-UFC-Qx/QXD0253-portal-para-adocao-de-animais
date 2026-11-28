@@ -5,9 +5,23 @@ import { renderClientsPage } from './clientes.js';
 import { renderFinancialPage } from './financeiro.js';
 import { renderReportsPage } from './relatorios.js';
 import { renderReviewsPage } from './avaliacoes.js';
+import { postLogout } from './api.js';
 
 function switchOptions() {
     const menuOptions = document.querySelectorAll('[data-dashboard-option]');
+    const logoutOption = document.querySelector(".logout");
+
+    logoutOption.addEventListener('click', async e => {
+        e.preventDefault()
+
+        await postLogout();
+
+        localStorage.removeItem("current_user");
+        localStorage.removeItem("JWT_AUTH_TOKEN");
+
+        window.location.href = "/#/login";
+        return;
+    });
 
     menuOptions.forEach(option => {
         option.addEventListener('click', async event => {

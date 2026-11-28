@@ -169,7 +169,7 @@ export async function getReports() {
 }
 
 export async function listReviews() {
-    const response = await fetchData("/reviews", "", true);
+    const response = await fetchData("/reviews", "?populate[user]=true&populate[appointment][populate][pet]=true&populate[appointment][populate][service]=true", true);
     return response?.data;
 }
 
@@ -185,6 +185,10 @@ export async function listPets() {
 export async function listTransactions() {
     const response = await fetchData("/transactions", "?populate=user&sort=createdAt:desc", true);
     return response?.data;
+}
+
+export async function postLogout() {
+    return await submitData("/auth/logout", {}, true);
 }
 
 export async function postAppointment(payload) {

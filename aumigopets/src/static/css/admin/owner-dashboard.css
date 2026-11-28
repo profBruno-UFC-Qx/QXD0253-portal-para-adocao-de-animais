@@ -2,34 +2,14 @@ body {
     overflow-y: auto;
 }
 
-.app {
-    height: 100vh;
-    overflow: hidden;
-}
-
 .sideBar {
-    min-height: 0;
-    overflow: hidden;
-}
-
-.sideBar .menu {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    padding-right: 4px;
-}
-
-.sideBar .logout {
-    flex-shrink: 0;
+    min-width: 0;
 }
 
 .dashboardMain {
     min-width: 0;
-    height: 100%;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    scroll-behavior: smooth;
 }
 
 .ownerPage {
@@ -64,16 +44,16 @@ body {
 .reportGrid,
 .reviewsGrid {
     display: grid;
+    grid-template-columns: 1fr;
     gap: 16px;
 }
 
 .pipelineCards {
-    grid-template-columns: repeat(3, 1fr);
     margin-bottom: 16px;
 }
 
 .pipelineMetric {
-    padding: 16px 24px;
+    padding: 16px 20px;
 }
 
 .pipelineMetric h1 {
@@ -84,22 +64,22 @@ body {
 
 .pipelineMetric p {
     color: var(--pink);
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 700;
     margin-top: 4px;
     line-height: 1.2;
 }
 
 .completionMetric p {
-    color: #15803d; 
+    color: #15803d;
 }
 
 .pipelineItems {
-    grid-template-columns: repeat(3, 1fr);
     align-items: start;
 }
 
 .pipelineColumn {
+    min-width: 0;
     padding: 16px;
 }
 
@@ -121,7 +101,7 @@ body {
     gap: 6px;
     margin-top: 12px;
     padding: 12px;
-    border-left: 6px solid #c2410c; 
+    border-left: 6px solid #c2410c;
     border-radius: 10px;
     background: var(--bg);
     color: #5b6270;
@@ -149,12 +129,15 @@ body {
 
 .itemInfo {
     grid-column: 1 / -1;
+    overflow-wrap: anywhere;
 }
 
 .itemTime {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: 4px 8px;
     grid-column: 1 / -1;
     font-size: 12px;
     margin-top: 4px;
@@ -162,11 +145,11 @@ body {
 
 .filterBar {
     display: grid;
-    grid-template-columns: 150px 180px 1fr;
-    gap: 16px;
+    grid-template-columns: 1fr;
+    gap: 12px;
     align-items: end;
     margin-bottom: 16px;
-    padding: 16px 20px;
+    padding: 16px;
 }
 
 .filterField {
@@ -174,7 +157,7 @@ body {
 }
 
 .searchField {
-    max-width: 560px;
+    width: 100%;
 }
 
 .tableCard {
@@ -232,15 +215,11 @@ body {
     margin-top: 2px;
 }
 
-.servicesGrid {
-    grid-template-columns: repeat(2, 1fr);
-}
-
 .serviceCard {
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 12px;
-    padding: 20px;
+    padding: 16px;
 }
 
 .serviceCard h1 {
@@ -253,23 +232,22 @@ body {
 
 .servicePrice {
     color: var(--pink);
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     white-space: nowrap;
 }
 
 .metricGrid {
-    grid-template-columns: repeat(3, 1fr);
     margin-bottom: 16px;
 }
 
 .metricCard {
-    padding: 20px 24px;
+    padding: 16px 20px;
 }
 
 .metricCard h1 {
     margin-top: 6px;
-    font-size: 24px;
+    font-size: 22px;
 }
 
 .metricCard span {
@@ -288,12 +266,8 @@ body {
     color: #b3261e;
 }
 
-.reportGrid {
-    grid-template-columns: 2fr 1fr;
-}
-
 .reportCard {
-    padding: 24px;
+    padding: 18px;
 }
 
 .reportCard h1 {
@@ -301,19 +275,19 @@ body {
 }
 
 .reportBars {
-    height: 220px;
+    height: 200px;
     display: flex;
     align-items: flex-end;
     justify-content: space-around;
-    gap: 8px;
+    gap: 6px;
     margin-top: 20px;
-    padding: 0 8px;
+    padding: 0 4px;
     border-bottom: 2px solid var(--line);
 }
 
 .reportBars div {
     width: 15%;
-    min-height: 24px; 
+    min-height: 24px;
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -331,13 +305,13 @@ body {
 }
 
 .reportBars div:last-child span {
-    color: #fff; 
+    color: #fff;
 }
 
 .reportBars div span {
-    padding-bottom: 8px;
+    padding-bottom: 6px;
     color: var(--navy);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
 }
 
@@ -345,6 +319,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
     padding: 12px 0;
     border-bottom: 1px solid var(--line);
     font-size: 14px;
@@ -354,12 +329,8 @@ body {
     border-bottom: none;
 }
 
-.reviewsGrid {
-    grid-template-columns: repeat(3, 1fr);
-}
-
 .reviewCard {
-    padding: 20px;
+    padding: 18px;
 }
 
 .reviewCard h1 {
@@ -404,7 +375,7 @@ body {
 
 .profileDetails {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 12px;
 }
 
@@ -442,7 +413,7 @@ body {
 
 .profileList {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 12px;
 }
 
@@ -464,12 +435,119 @@ body {
     font-size: 14px;
 }
 
-@media (max-width: 760px) {
-    .profileDetails {
-        grid-template-columns: 1fr;
+@media (min-width: 640px) {
+    .pipelineCards,
+    .metricGrid,
+    .servicesGrid,
+    .profileDetails,
+    .profileList {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .profileList {
-        grid-template-columns: 1fr;
+    .filterBar {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .searchField {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (min-width: 768px) {
+    .app {
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .sideBar {
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .sideBar .menu {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        padding-right: 4px;
+    }
+
+    .sideBar .logout {
+        flex-shrink: 0;
+    }
+
+    .dashboardMain {
+        height: 100%;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+    }
+
+    .pipelineMetric {
+        padding: 16px 24px;
+    }
+
+    .pipelineMetric p {
+        font-size: 32px;
+    }
+
+    .serviceCard {
+        padding: 20px;
+    }
+
+    .servicePrice {
+        font-size: 20px;
+    }
+
+    .metricCard {
+        padding: 20px 24px;
+    }
+
+    .metricCard h1 {
+        font-size: 24px;
+    }
+
+    .reportCard {
+        padding: 24px;
+    }
+
+    .reportBars {
+        height: 220px;
+        gap: 8px;
+        padding: 0 8px;
+    }
+
+    .reportBars div span {
+        padding-bottom: 8px;
+        font-size: 12px;
+    }
+
+    .reviewCard {
+        padding: 20px;
+    }
+}
+
+@media (min-width: 1100px) {
+    .pipelineCards,
+    .pipelineItems,
+    .metricGrid,
+    .reviewsGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .profileDetails {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .filterBar {
+        grid-template-columns: 150px 180px 1fr;
+        padding: 16px 20px;
+    }
+
+    .searchField {
+        grid-column: auto;
+        max-width: 560px;
+    }
+
+    .reportGrid {
+        grid-template-columns: 2fr 1fr;
     }
 }

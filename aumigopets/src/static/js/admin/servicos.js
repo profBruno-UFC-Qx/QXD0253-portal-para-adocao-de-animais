@@ -1,6 +1,12 @@
 import { listServices } from "./api.js";
 import { renderServiceForm } from "./serviceForm.js";
 
+const petTypes = {
+    "dog": "Cão",
+    "cat": "Gato",
+    "dog&cat": "Cão e Gato"
+}
+
 function createHeader() {
     const header = document.createElement("header");
     header.classList.add("pageHeader", "dashboardPageHeader");
@@ -71,7 +77,7 @@ async function createServicesGrid() {
     services.forEach(service => {
         section.appendChild(createServiceCard({
             name: service.name,
-            audience: service.species,
+            audience: petTypes[service.species],
             price: Number(service.price).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
             description: service.description,
             duration: service.duration

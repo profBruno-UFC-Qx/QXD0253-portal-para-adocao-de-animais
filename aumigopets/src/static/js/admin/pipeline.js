@@ -137,13 +137,17 @@ async function createMetricCard(name, value, isCompMetric) {
 
 async function createPipelineCards() {
     const total = agendamentos.length;
+
     const completed = agendamentos.filter(agendamento => {
-        return agendamento.estagio === "concluido" || agendamento.estagio === "concluído";
+        return agendamento.current_status === "done";
     }).length;
+
     const expectedRevenue = agendamentos
-        .filter(agendamento => agendamento.estagio === "pendente" || agendamento.estagio === "andamento")
-        .reduce((totalValue, agendamento) => totalValue + Number(agendamento.servico.valor), 0);
+        .filter(agendamento => agendamento.current_status === "pending" || agendamento.current_status === "confirmed" || agendamento.current_status === "done")
+        .reduce((totalValue, agendamento) => totalValue + Number(agendamento.service.price), 0);
+
     const completionRate = total ? Math.round(completed / total * 100) : 0;
+
     const cardsList = [
         ["Agendamentos", total.toString(), false],
         ["Faturamento Previsto", expectedRevenue.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }), false],
@@ -151,6 +155,7 @@ async function createPipelineCards() {
     ];
 
     const section = document.createElement("section");
+
     section.classList.add("pipelineCards");
     section.setAttribute("aria-label", "Resumo do pipeline")
 
