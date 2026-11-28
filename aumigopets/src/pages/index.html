@@ -7,15 +7,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/servicos.css">
-    <link rel="stylesheet" href="css/auth.css">
-    <link rel="icon" href="img/logo.webp">
+    <link rel="stylesheet" href="/css/home/style.css">
+    <link rel="stylesheet" href="/css/home/home.css">
+    <link rel="stylesheet" href="/css/home/servicos.css">
+    <link rel="stylesheet" href="/css/home/auth.css">
+    <link rel="icon" href="/images/logo.webp">
 </head>
 <body>
     <header class="siteHeader" id="siteHeader">
-        <a href="#/home" class="logo"><img src="img/logo.webp" alt="AuMigo Pet Shop"></a>
+        <a href="#/home" class="logo"><img src="/images/logo.webp" alt="AuMigo Pet Shop"></a>
         <nav class="menu">
             <a href="#/home" data-route="home">Início</a>
             <a href="#/services" data-route="services">Serviços</a>
@@ -26,7 +26,7 @@
     <main id="view"></main>
 
     <footer class="siteFooter" id="siteFooter">
-        <a href="#/home" class="logo logoFooter"><img src="img/logo.webp" alt="AuMigo Pet Shop"></a>
+        <a href="#/home" class="logo logoFooter"><img src="/images/logo.webp" alt="AuMigo Pet Shop"></a>
         <p>&copy; 2026 Projeto AuMigo - Todos os direitos reservados. Praticidade para você e seu pet.</p>
     </footer>
 
@@ -62,7 +62,7 @@
 
     <template id="login">
         <div class="authCard">
-            <a href="#/home" class="logo"><img src="img/logo.webp" alt="AuMigo Pet Shop"></a>
+            <a href="#/home" class="logo"><img src="/images/logo.webp" alt="AuMigo Pet Shop"></a>
             <h1>Entrar</h1>
             <p class="subText">Acesse sua conta para agendar o cuidado do seu pet.</p>
             <div class="alertError" id="loginError" hidden></div>
@@ -84,7 +84,7 @@
 
     <template id="register">
         <div class="authCard">
-            <a href="#/home" class="logo"><img src="img/logo.webp" alt="AuMigo Pet Shop"></a>
+            <a href="#/home" class="logo"><img src="/images/logo.webp" alt="AuMigo Pet Shop"></a>
             <h1>Criar Conta</h1>
             <p class="subText">Cadastre-se para agendar e acompanhar os atendimentos do seu pet.</p>
             <div class="alertError" id="registerError" hidden></div>
@@ -117,7 +117,7 @@
 
     <template id="recover">
         <div class="authCard">
-            <a href="#/home" class="logo"><img src="img/logo.webp" alt="AuMigo Pet Shop"></a>
+            <a href="#/home" class="logo"><img src="/images/logo.webp" alt="AuMigo Pet Shop"></a>
             <h1>Recuperar Senha</h1>
             <p class="subText">Esqueceu sua senha? Digite seu e-mail abaixo e enviaremos instruções para redefinição.</p>
             <div class="alertSuccess" id="recoverSuccess" hidden><strong>E-mail enviado!</strong> Verifique sua caixa de entrada para redefinir sua senha.</div>
@@ -133,9 +133,9 @@
         </div>
     </template>
 
-    <script src="js/router.js"></script>
-    <script src="js/home.js"></script>
-    <script src="js/servicos.js"></script>
-    <script src="js/auth.js"></script>
+    <script src="/js/home/router.js"></script>
+    <script src="/js/home/home.js"></script>
+    <script src="/js/home/servicos.js"></script>
+    <script src="/js/home/auth.js"></script>
 </body>
 </html>

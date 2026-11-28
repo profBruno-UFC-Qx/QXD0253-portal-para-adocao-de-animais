@@ -387,17 +387,18 @@ function createServiceCatalogCard(service) {
     const footer = document.createElement('div');
     footer.classList.add('serviceCardFooter');
 
-    const availabilityLink = document.createElement('a');
-    availabilityLink.href = `#/availability?service=${encodeURIComponent(service.id)}`;
-    availabilityLink.classList.add('btnOutline', 'btnSmall');
-    availabilityLink.textContent = 'Ver Horários';
+    // const availabilityLink = document.createElement('a');
+    // availabilityLink.href = `#/availability?service=${encodeURIComponent(service.id)}`;
+    // availabilityLink.classList.add('btnOutline', 'btnSmall');
+    // availabilityLink.textContent = 'Ver Horários';
 
     const appointmentLink = document.createElement('a');
     appointmentLink.href = '#/login';
     appointmentLink.classList.add('btnPrimary', 'btnSmall');
     appointmentLink.textContent = 'Agendar';
 
-    footer.append(availabilityLink, appointmentLink);
+    // footer.append(availabilityLink, appointmentLink);
+    footer.append(appointmentLink);
     body.append(tag, title, description, price, duration, footer);
     article.append(image, body);
     return article;
